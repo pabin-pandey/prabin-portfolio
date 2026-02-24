@@ -15,7 +15,7 @@ const DEFAULT_CONTENT = {
     roles: ["Financial Analyst", "CFA Candidate", "Data-Driven Decision Maker"],
     desc: "Finance professional specializing in quantitative modeling, data analytics, and AI-driven research. I build integrated financial models, interactive BI dashboards, and machine learning tools — bridging traditional finance with modern data science to deliver investment insight and business value.",
     cta1: "View Projects", cta2: "Download Resume",
-    stats: [{ v: "20+", l: "Projects" }, { v: "10+", l: "Tools" }, { v: "3", l: "Languages" }, { v: "L1", l: "CFA" }]
+    stats: [{ v: "3.98", l: "GPA" }, { v: "20+", l: "Projects" }, { v: "10+", l: "Tools" }, { v: "L1", l: "CFA" }]
   },
   about: {
     bio: "Finance professional specializing in corporate valuation, derivative pricing, and machine learning. With a strong foundation spanning quantitative modeling and data science, I bridge traditional finance with cutting-edge technology — from building complex Excel models for PE transactions to creating interactive Power BI dashboards and Python-based valuation tools.",
@@ -166,7 +166,6 @@ export default function App() {
           {/* Logo */}
           <button onClick={() => nav("home")} className="group flex items-center gap-0 text-[15px] font-bold tracking-tight">
             <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text" style={{ WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{content.site.name.split(" ")[0]}</span>
-            <span className={`font-light transition-colors duration-200 ${dark ? "text-gray-700 group-hover:text-gray-500" : "text-gray-300 group-hover:text-gray-500"}`}>.dev</span>
           </button>
 
           {/* Desktop Nav */}
