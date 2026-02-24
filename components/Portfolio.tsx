@@ -13,18 +13,18 @@ const DEFAULT_CONTENT = {
   hero: {
     greeting: "Hi, I'm", name: "Prabin Pandey",
     roles: ["Financial Analyst", "CFA Candidate", "Data-Driven Decision Maker"],
-    desc: "MS Financial Analysis candidate at Temple University's Fox School of Business (3.98 GPA). I build integrated financial models, BI dashboards, and AI-powered analytical tools — bridging the gap between traditional finance and modern data science to drive better investment and business decisions.",
+    desc: "Finance professional specializing in quantitative modeling, data analytics, and AI-driven research. I build integrated financial models, interactive BI dashboards, and machine learning tools — bridging traditional finance with modern data science to deliver investment insight and business value.",
     cta1: "View Projects", cta2: "Download Resume",
-    stats: [{ v: "3.98", l: "GPA" }, { v: "12+", l: "Projects" }, { v: "10+", l: "Tools" }, { v: "L1", l: "CFA" }]
+    stats: [{ v: "20+", l: "Projects" }, { v: "10+", l: "Tools" }, { v: "3", l: "Languages" }, { v: "L1", l: "CFA" }]
   },
   about: {
-    bio: "I'm a finance professional pursuing my MS in Financial Analysis at Temple University's Fox School of Business. With a strong foundation in corporate valuation, derivative pricing, and machine learning, I bridge the gap between traditional finance and cutting-edge technology. My work spans from building complex Excel models for PE transactions to creating interactive Power BI dashboards and Python-based valuation tools.",
+    bio: "Finance professional specializing in corporate valuation, derivative pricing, and machine learning. With a strong foundation spanning quantitative modeling and data science, I bridge traditional finance with cutting-edge technology — from building complex Excel models for PE transactions to creating interactive Power BI dashboards and Python-based valuation tools.",
     education: [
       { school: "Temple University, Fox School of Business", degree: "MS Financial Analysis", period: "Expected May 2026", gpa: "3.98", courses: "Corporate Value Management, Asset Pricing, ML in Finance, Financial Time Series, Data Science in Finance, Derivative Valuation, AI in Portfolio Management", badge: "CFA Level I Candidate" },
       { school: "Tribhuvan University", degree: "BBA", period: "Dec 2023", gpa: "3.81", courses: "Business Administration — Finance focus", badge: "Valedictorian" }
     ],
     experience: [
-      { co: "Sethi Clarity Advisers", role: "Associate Financial Consultant", period: "Sep 2025 – Present", pts: ["Built and tested financial projection tools (retirement income, net worth, contribution strategies) using Bubble and Outgrow", "Produced personalized recommendations using inflation/tax/income assumptions", "Improved UX of interactive tools and data collection accuracy"] },
+      { co: "Sethi Clarity Advisers", role: "Associate Financial Consultant", period: "Sep 2025 – Dec 2025", pts: ["Built and tested financial projection tools (retirement income, net worth, contribution strategies) using Bubble and Outgrow", "Produced personalized recommendations using inflation/tax/income assumptions", "Improved UX of interactive tools and data collection accuracy"] },
       { co: "Temple University, Ambler Campus", role: "IT Consultant", period: "Jan 2025 – Present", pts: ["Designed and maintained Power BI dashboard analyzing visitor traffic trends to inform budget allocation", "Provided technical support and troubleshooting across campus systems"] },
       { co: "Global IME Bank", role: "Customer Relations Intern", period: "Mar – May 2023", pts: ["Client guidance on banking/insurance products and risk profiles", "Transactions & audit documentation with Finacle CRM", "Reporting/financial decision-making support; collateral evaluations for lending"] }
     ],
@@ -36,7 +36,7 @@ const DEFAULT_CONTENT = {
       { n: "Capital IQ", cat: "Finance", lv: 75 }
     ],
     certs: ["CFA Level I Candidate"],
-    now: "Currently deep-diving into AI applications in portfolio management and derivative valuation at Temple University. Building financial projection tools at Sethi Clarity Advisers. Preparing for the CFA Level I exam."
+    now: "Deepening expertise in AI applications for portfolio management and quantitative finance. Advancing toward the CFA Level I exam. Open to full-time roles in investment research, financial analysis, and data-driven finance."
   },
   projects: [
     { id: "pe", title: "Private Equity Transaction & Debt Covenant Model – Pharma Brands Inc.", cat: "Financial Modeling (Excel)", yr: "2024", sum: "Comprehensive 3-statement financial model for Pharma Brands Inc. special dividend recapitalization. Includes projected IS/BS/CF, debt schedule with term loan + revolver, and debt covenant compliance testing (Total Debt/EBITDA ≤ 3.0x, EBIT/Interest ≥ 6.0x). All covenants pass across the 5-year projection.", tags: ["Financial Modeling", "LBO", "Debt Covenants", "Sensitivity Analysis", "3-Statement Model", "Recapitalization"], tools: ["Excel"], metrics: ["6-sheet integrated model", "$3.25B revenue base growing to $4.07B", "All covenants pass (5 years)", "Debt/EBITDA from 2.46x → 0.0x", "EBIT/Interest from 13.1x → 97.0x"], featured: true, cs: { problem: "Pharma Brands Inc. is evaluating a $1B special dividend payment funded by a leveraged recapitalization. The transaction requires a comprehensive financial model to project the company's ability to service new debt (term loan + revolver) while maintaining compliance with restrictive debt covenants over a 5-year horizon.", approach: "Built a fully integrated 6-sheet Excel model: Transaction summary, Projected Income Statement, Balance Sheet, Cash Flow Statement, Debt Schedule (term loan + revolver with automatic sweep), and RE/Fixed Assets Schedule. Revenue assumptions drive through all statements with dynamic debt paydown from excess cash flow.", data: "Pharma Brands Inc. base year (2021) actuals: $3.25B revenue, $345M EBITDA (10.6% margin), $202M net income. $200M term loan at 6% with 20% annual amortization. Revolver facility at 6% interest on average balance. 25% tax rate.", methods: "Revenue growth (5% → 4%), margin expansion (EBITDA 10.6% → 13.0%), COGS/SGA/distribution assumptions as % of revenue, working capital modeling (DSO, DIO, DPO), CapEx at ~2.2% of revenue, automatic cash sweep to repay revolver, dual covenant testing: Total Debt/EBITDA (max 3.0x stepping to 1.5x) and EBIT/Interest Coverage (min 6.0x stepping to 12.0x).", results: "Model projects full revolver paydown by 2026 ($763M → $0). All debt covenants pass across the entire projection period. Net income grows from $200M to $331M. Cash position rebuilds to $133M by 2026. EBITDA margin improves from 11.0% to 13.0% through operational efficiencies.", learnings: "Deepened understanding of leveraged recapitalizations, cash sweep mechanics, covenant step-down structures, and the critical interplay between operating cash flow generation and debt service capacity. The model demonstrates how strong free cash flow can support aggressive leverage while maintaining covenant compliance." }, embed: { type: "excel", url: "", fallback: "Excel Model — Paste your OneDrive/SharePoint embed URL in the admin panel" }, isExcel: true },
@@ -336,9 +336,12 @@ function Home({ c, d, nav }) {
             </div>
 
             {/* Name */}
-            <h1 className="animate-fadeUp-2 text-[clamp(3rem,7.5vw,5.8rem)] font-black tracking-[-0.035em] leading-[1.02] mb-5">
+            <h1 className="animate-fadeUp-2 text-[clamp(3rem,7.5vw,5.8rem)] font-black tracking-[-0.035em] leading-[1.02] mb-3">
               <span className="shimmer-text">{hero.name}</span>
             </h1>
+
+            {/* Finance × Data × AI tagline */}
+            <p className="animate-fadeUp-2 text-sm sm:text-base font-bold tracking-[0.22em] uppercase text-indigo-500 mb-6">Finance × Data × AI</p>
 
             {/* Animated role */}
             <div className="animate-fadeUp-3 h-10 mb-6 flex items-center">
@@ -388,9 +391,9 @@ function Home({ c, d, nav }) {
             {/* Credential chips */}
             <div className="animate-fadeUp-6 flex flex-wrap items-center gap-2 mt-7">
               {[
-                { text: "Temple University", sub: "Fox School of Business" },
-                { text: "MS Financial Analysis", sub: "3.98 GPA" },
                 { text: "CFA Level I", sub: "Candidate" },
+                { text: "Bloomberg · FactSet", sub: "Capital IQ" },
+                { text: "Python · R · SQL", sub: "Quant Stack" },
               ].map((chip, i) => (
                 <span key={i} className="cred-chip">
                   <span>{chip.text}</span>
@@ -518,9 +521,9 @@ function About({ c, d }) {
         {/* Credential chips */}
         <div className="flex flex-wrap gap-2 mt-7">
           {[
-            { label: "Temple University", sub: "Fox School of Business" },
-            { label: "MS Financial Analysis", sub: "GPA 3.98 / 4.0" },
+            { label: "Fox School of Business", sub: "MS Financial Analysis" },
             { label: "CFA Level I", sub: "Candidate" },
+            { label: "Bloomberg · FactSet · Capital IQ", sub: "Proficient" },
           ].map(chip => (
             <div key={chip.label} className="cred-chip">
               <span className="font-bold">{chip.label}</span>
@@ -1996,6 +1999,7 @@ function Contact({ c, d }) {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -2003,6 +2007,22 @@ function Contact({ c, d }) {
     if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = "Valid email required";
     if (!form.message.trim()) e.message = "Required";
     setErrors(e); return Object.keys(e).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("https://formspree.io/f/xpwzklbv", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ name: form.name, email: form.email, subject: form.subject || "(no subject)", message: form.message }),
+      });
+      if (res.ok) { setSent(true); }
+      else { setErrors({ submit: "Failed to send. Please email me at prabin.pandey@temple.edu" }); }
+    } catch { setErrors({ submit: "Network error. Please try again or email me directly." }); }
+    finally { setSubmitting(false); }
   };
 
   const cb = d ? "bg-gray-900/70 border-white/[0.07]" : "bg-white border-gray-200 shadow-sm";
@@ -2035,15 +2055,16 @@ function Contact({ c, d }) {
               <p className={`text-sm ${d ? "text-gray-400" : "text-gray-500"}`}>Thanks for reaching out. I'll get back to you soon.</p>
             </div>
           ) : (
-            <form onSubmit={e => { e.preventDefault(); if (validate()) setSent(true); }} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Your name" className={`${inp} ${errors.name ? "border-red-500" : ""}`}/>{errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}</div>
                 <div><input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="Email" className={`${inp} ${errors.email ? "border-red-500" : ""}`}/>{errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}</div>
               </div>
               <input value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} placeholder="Subject (optional)" className={inp}/>
               <div><textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder="Your message..." rows={5} className={`${inp} resize-none ${errors.message ? "border-red-500" : ""}`}/>{errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}</div>
-              <button type="submit" className="btn-primary w-full px-6 py-3.5 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white rounded-xl text-[13px] font-semibold transition-all duration-200 cta-glow flex items-center justify-center gap-2">
-                {icons.mail} Send Message
+              {errors.submit && <p className="text-red-500 text-xs text-center py-1">{errors.submit}</p>}
+              <button type="submit" disabled={submitting} className="btn-primary w-full px-6 py-3.5 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white rounded-xl text-[13px] font-semibold transition-all duration-200 cta-glow flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+                {icons.mail} {submitting ? "Sending…" : "Send Message"}
               </button>
             </form>
           )}
