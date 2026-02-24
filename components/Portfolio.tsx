@@ -326,14 +326,6 @@ function Home({ c, d, nav }) {
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-28 w-full">
           <div className="max-w-4xl">
-            {/* Status badge */}
-            <div className="animate-fadeUp-1 inline-flex items-center gap-2.5 mb-9">
-              <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold border ${d ? "bg-emerald-500/8 border-emerald-500/22 text-emerald-400" : "bg-emerald-50 border-emerald-200 text-emerald-700"}`}>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 dot-pulse flex-shrink-0" />
-                Available for opportunities · Philadelphia, PA
-              </span>
-            </div>
-
             {/* Name */}
             <h1 className="animate-fadeUp-2 text-[clamp(3rem,7.5vw,5.8rem)] font-black tracking-[-0.035em] leading-[1.02] mb-3">
               <span className="shimmer-text">{hero.name}</span>
