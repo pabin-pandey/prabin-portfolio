@@ -1,0 +1,74 @@
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3020
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1844ms
+ ○ Compiling / ...
+ ✓ Compiled / in 3.8s (511 modules)
+ HEAD / 200 in 3994ms
+ ✓ Compiled /excel-projects/[slug] in 456ms (519 modules)
+ GET /excel-projects/volatility-smile-analysis 200 in 972ms
+ GET /excel-projects/volatility-smile-analysis 200 in 52ms
+ GET /excel-projects/volatility-smile-analysis 200 in 80ms
+ GET / 200 in 491ms
+ ✓ Compiled in 1532ms (519 modules)
+ ✓ Compiled in 3.5s (519 modules)
+ ✓ Compiled in 226ms (266 modules)
+ ✓ Compiled in 402ms (519 modules)
+ ✓ Compiled in 609ms (519 modules)
+ ✓ Compiled in 366ms (519 modules)
+ ✓ Compiled in 264ms (519 modules)
+ GET / 200 in 1834ms
+ GET / 200 in 276ms
+ GET / 200 in 77ms
+ ⚠ Cross origin request detected from 127.0.0.1 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ ✓ Compiled in 2.9s (519 modules)
+ GET / 200 in 549ms
+ GET / 200 in 58ms
+ GET / 200 in 49ms
+ GET /excel-projects/amazon-valuation-model 200 in 83ms
+ ○ Compiling /projects/[slug] ...
+ ✓ Compiled /projects/[slug] in 762ms (527 modules)
+ GET /projects/black-scholes-options-pricing 200 in 1427ms
+ ✓ Compiled /projects in 295ms (519 modules)
+ GET /projects 200 in 370ms
+ GET /projects/monte-carlo-gbm-simulation 200 in 74ms
+ GET / 200 in 110ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1834ms (522 modules)
+ GET /excel-projects 404 in 2333ms
+ GET / 200 in 166ms
+ GET / 200 in 125ms
+ GET / 200 in 76ms
+ GET / 200 in 76ms
+ ✓ Compiled in 2.2s (533 modules)
+ GET / 200 in 160ms
+ GET / 200 in 527ms
+ GET / 200 in 94ms
+ GET / 200 in 68ms
+ GET / 200 in 58ms
+ ✓ Compiled in 1506ms (533 modules)
+ ✓ Compiled in 1106ms (533 modules)
+ ✓ Compiled in 822ms (533 modules)
+ ✓ Compiled in 705ms (533 modules)
+ ✓ Compiled in 813ms (533 modules)
+ ✓ Compiled in 975ms (533 modules)
+ GET / 200 in 131ms
+ ✓ Compiled in 808ms (533 modules)
+ GET / 200 in 109ms
+ GET / 200 in 56ms
+ GET / 200 in 65ms
+ GET / 200 in 63ms
+ GET / 200 in 453ms
+ GET / 200 in 145ms
+ GET / 200 in 136ms
+ GET / 200 in 981ms
+ HEAD / 200 in 163ms
+ GET / 200 in 79ms
+ GET / 200 in 103ms
+ GET / 200 in 123ms
+ HEAD / 200 in 58ms
+ GET / 200 in 99ms
+ HEAD / 200 in 1175ms

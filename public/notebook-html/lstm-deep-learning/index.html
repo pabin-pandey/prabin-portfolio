@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jupyter Notebook</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; padding: 20px; }
+    .notebook-container { max-width: 900px; margin: 0 auto; background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .notebook-cell { margin-bottom: 30px; border: 1px solid #e0e0e0; border-radius: 4px; padding: 0; }
+    .code-cell { background: #f8f8f8; }
+    .markdown-cell { background: white; }
+    .cell-source { background: #f8f8f8; padding: 15px; border-bottom: 1px solid #e0e0e0; }
+    .cell-outputs { padding: 15px; background: white; }
+    .output-item { margin-bottom: 15px; }
+    pre { background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto; border: 1px solid #ddd; }
+    code { font-family: "Monaco", "Courier New", monospace; font-size: 13px; }
+    img { max-width: 100%; height: auto; border-radius: 4px; margin: 10px 0; }
+    .output-image { text-align: center; }
+    h1, h2, h3 { color: #222; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<div class="notebook-container">
+<div class="notebook-cell markdown-cell"><div class="cell-source"><h2>FIN5615 Project #5
+    <p class="text-primary">Black Scholes Options Pricing (Part II)</p>
+</h2></div></div>
+<div class="notebook-cell markdown-cell"><div class="cell-source"><div class = "panel panel-success">
+    <div class = "panel-heading"> 
+    <span style="color:black"><b>Project Introduction</b>
+    </div>
+    <div class = "panel-body"> 
+    The goal of this project is to build an options pricing calculator using the Black-Scholes pricing model. Our calculator will be able to price both put and call options as well as the following set of Greeks: delta, gamma, theta, vega, and rho. 
+    </div>
+</div>
+
+<div class = "panel panel-info">
+    <div class = "panel-heading"> 
+    <span style="color:black"><b>Instructions</b>
+    </div>
+    <div class = "panel-body"> 
+    Please code you solutions directly in this Notebook under each task in the cells provided below. Tasks are intended to be done in order with results from one task informing work in later tasks. Include all code used to produce your results, and support your answers with textual explanations if neccessary. <b>Any written text must be typed in a markdown cell to receive credit!</b> You may feel free to add additional Code and/or Markdown cells as needed. Code must be written using <b>Python 3</b>.
+    <br><br>Please order the cells in your Notebook in the order in which they are intended to run! It is expected that your Notebook is able to run in sequence from start to finish without any errors (before submitting check by: <code>Kernel > Restart & Run All</code>).
+    <br><br>Once ready, please submit your assignment as an <b>.ipynb file</b> (<code>File > Download as > Notebook</code>). You must name your files in the following format: <b><code>FIN5615_Project_1_Richard_Lee_tuc12345.ipynb</code></b>.
+    </div>
+</div>
+
+---
+<div class = "alert alert-block alert-warning">
+    <b>Note</b>: Import all libraries that you plan on using in the code block below.
+</div></div></div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code>import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm </code></pre></div>
+</div>
+<div class="notebook-cell markdown-cell"><div class="cell-source"><div class = "panel panel-primary">
+    <div class = "panel-heading"> 
+    <span style="color:white"><b>Task 1</b>
+    </div>
+    <div class = "panel-body">
+    Recall from the previous project, we coded the function <code>black_scholes_formula(stock_price, strike, term, rf, volatility, option, dividend = 0.)</code>, which returned the price of either a call or put option depending on the value of the input parameter <code>option</code>.
+    <br><br>Write another function called <code>black_scholes_greeks</code> that takes in the same input parameters as <code>black_scholes_formula</code>, and calculates the option's greeks (delta, gamma, vega, theta, and rho) according to the below table:
+    <br><br>
+        
+![Task_1_Table.JPG](attachment:Task_1_Table.JPG)
+    <br><br>Note that $N^{\prime}(x)$ is simply the probability density function of the normal distribution.
+    <br><br>The output should be returned in the form of <b>dictionary</b> with the following keys: <code>delta</code>, <code>gamma</code>, <code>vega</code>, <code>theta</code>, <code>rho</code>, each storing the corresponding greek value for the option. Run <code>black_scholes_greeks</code> on a call option where:
+    <ul>
+        <li><code>stock_price</code> = \$30</li>
+        <li><code>strike</code> = \$35</li>
+        <li><code>term</code> = 6 months</li>
+        <li><code>rf</code> = 1%</li>
+        <li><code>volatility</code> = 0.2</li>
+        <li><code>dividend</code> = 2.5%</li>
+    </ul>
+    </div>
+</div></div></div>
+<div class="notebook-cell markdown-cell"><div class="cell-source">### Q.No.1 Write another function called black_scholes_greeks that takes in the same input parameters as black_scholes_formula, and calculates the option's greeks (delta, gamma, vega, theta, and rho) according to the below table:
+### Answer:</div></div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code># Define the function to calculate the option's Greeks
+def black_scholes_greeks(stock_price, strike, term, rf, volatility, option, dividend=0):
+    
+    # Calculating d1 and d2
+    d1 = (np.log(stock_price / strike) + (rf - dividend + 0.5 * volatility ** 2) * term) / (volatility * np.sqrt(term))
+    d2 = d1 - volatility * np.sqrt(term)
+    
+    # Initialize Greeks to None (to handle the case where the option type is invalid)
+    delta = gamma = theta = vega = rho = None
+
+    # Calculating Option's Greeks based on the option type
+    if option == 'call':
+        delta = np.exp(-dividend * term) * norm.cdf(d1)
+        gamma = (norm.pdf(d1) * np.exp(-dividend * term)) / (stock_price * volatility * np.sqrt(term))
+        theta = (-((stock_price * norm.pdf(d1) * volatility * np.exp(-dividend * term)) / (2 * np.sqrt(term))) 
+                 + dividend * stock_price * norm.cdf(d1) * np.exp(-dividend * term)
+                 - rf * strike * np.exp(-rf * term) * norm.cdf(d2))
+        vega = stock_price * np.sqrt(term) * norm.pdf(d1) * np.exp(-dividend * term)
+        rho = strike * term * np.exp(-rf * term) * norm.cdf(d2)
+    elif option == 'put':
+        delta = np.exp(-dividend * term) * (norm.cdf(d1) - 1)
+        gamma = (norm.pdf(d1) * np.exp(-dividend * term)) / (stock_price * volatility * np.sqrt(term))
+        theta = (-((stock_price * norm.pdf(d1) * volatility * np.exp(-dividend * term)) / (2 * np.sqrt(term))) 
+                 + dividend * stock_price * norm.cdf(-d1) * np.exp(-dividend * term)
+                 - rf * strike * np.exp(-rf * term) * norm.cdf(-d2))
+        vega = stock_price * np.sqrt(term) * norm.pdf(d1) * np.exp(-dividend * term)
+        rho = -strike * term * np.exp(-rf * term) * norm.cdf(-d2)
+    else:
+        raise ValueError("Invalid option type. Use 'call' or 'put'.")
+    
+    # Return the calculated Greeks as a dictionary
+    return {
+        'delta': delta,
+        'gamma': gamma,
+        'rho':   rho,
+        'theta': theta,
+        'vega': vega
+    }
+</code></pre></div>
+</div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code># Running the black_scholes_greeks function on a call option with a given parameters
+greeks_call_option = black_scholes_greeks(
+    stock_price=30,
+    strike=35,
+    term=0.5,        # 6 months in years
+    rf=0.01,         # 1% risk-free rate
+    volatility=0.2,  # Volatility of 20%
+    option='call',   
+    dividend=0.025   # 2.5% dividend yield
+)
+
+# Displaying the calculated Greeks
+print(greeks_call_option)
+</code></pre></div>
+<div class="cell-outputs">
+<div class="output-item"><pre><code>{'delta': 0.14002412854910162, 'gamma': 0.05225745967362611, 'rho': 1.957553740472613, 'theta': -0.8747672525228961, 'vega': 4.703171370626351}
+</code></pre></div>
+</div>
+</div>
+<div class="notebook-cell markdown-cell"><div class="cell-source"><div class = "panel panel-primary">
+    <div class = "panel-heading"> 
+    <span style="color:white"><b>Task 2</b>
+    </div>
+    <div class = "panel-body"> 
+    Modify the function <code>black_scholes_formula</code> to take in a <b>boolean</b> input parameter called <code>greeks</code> that can be either <code>True</code> or <code>False</code>, a default value of <code>False</code>.
+    <br><br>If <code>greeks</code> is <code>True</code>, then in addition to producing the price of a call / put option, <code>black_scholes_formula</code> will also calculate the greeks of the option by calling the function <code>black_scholes_greeks</code> (<b><u>do not</u></b> code the formulas for the greeks again), and return the delta, gamma, vega, theta, and rho as a dictionary, in addition to the price of the option.
+    <br><br>If <code>greeks</code> is <code>False</code>, then simply return the price of the option just like before. Run <code>black_scholes_formula</code> to price of a call option where:
+    <ul>
+        <li><code>stock_price</code> = \$30</li>
+        <li><code>strike</code> = \$35</li>
+        <li><code>term</code> = 6 months</li>
+        <li><code>rf</code> = 1%</li>
+        <li><code>volatility</code> = 0.2</li>
+        <li><code>dividend</code> = 2.5%</li>
+        <li><code>greeks</code> = True</li>
+    </ul>
+    Your function should return an output like this:
+        
+![Task_2_Output.JPG](attachment:Task_2_Output.JPG)
+    </div>
+</div></div></div>
+<div class="notebook-cell markdown-cell"><div class="cell-source">### Q.No.2 Modify the function black_scholes_formula to take in a boolean input parameter called greeks that can be either True or False, a default value of False.
+### Answer:</div></div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code>
+# Define the modified black_scholes_formula function
+def black_scholes_formula(stock_price, strike, term, rf, volatility, option, dividend=0, greeks=False):
+    # Calculate d1 and d2
+    d1 = (np.log(stock_price / strike) + (rf - dividend + 0.5 * volatility ** 2) * term) / (volatility * np.sqrt(term))
+    d2 = d1 - volatility * np.sqrt(term)
+    
+    # Calculate option price
+    if option == 'call':
+        price = stock_price * np.exp(-dividend * term) * norm.cdf(d1) - strike * np.exp(-rf * term) * norm.cdf(d2)
+    elif option == 'put':
+        price = strike * np.exp(-rf * term) * norm.cdf(-d2) - stock_price * np.exp(-dividend * term) * norm.cdf(-d1)
+    else:
+        raise ValueError("Invalid option type. Use 'call' or 'put'.")
+    
+    # If greeks is True, calculating the Greeks and returning both price and Greeks
+    if greeks:
+        greeks_values = black_scholes_greeks(stock_price, strike, term, rf, volatility, option, dividend) # As instructed greek formula is not coded, here I called the greek values if greek is True
+        return price, greeks_values
+    
+    # Otherwise, returning only the option price
+    return price
+</code></pre></div>
+</div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code># Running the black_scholes function on a call option with a given parameters
+result = black_scholes_formula(
+    stock_price=30,
+    strike=35,
+    term=0.5,         # 6 months in years
+    rf=0.01,          # 1% risk-free rate
+    volatility=0.2,   # 20% volatility
+    option='call',
+    dividend=0.025,   # 2.5% dividend yield
+    greeks=True       # Calculate Greeks
+)
+
+print(result)</code></pre></div>
+<div class="cell-outputs">
+<div class="output-item"><pre><code>(0.2856163755278227, {'delta': 0.14002412854910162, 'gamma': 0.05225745967362611, 'rho': 1.957553740472613, 'theta': -0.8747672525228961, 'vega': 4.703171370626351})
+</code></pre></div>
+</div>
+</div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code>
+# For Verification let's test if code return only price if greeks is false?
+
+result = black_scholes_formula(
+    stock_price=30,
+    strike=35,
+    term=0.5,         # 6 months in years
+    rf=0.01,          # 1% risk-free rate
+    volatility=0.2,   # 20% volatility
+    option='call',
+    dividend=0.025,   # 2.5% dividend yield
+    greeks=False       # Calculate Greeks
+)
+
+print(result) </code></pre></div>
+<div class="cell-outputs">
+<div class="output-item"><pre><code>0.2856163755278227
+</code></pre></div>
+</div>
+</div>
+<div class="notebook-cell markdown-cell"><div class="cell-source"><div class = "panel panel-primary">
+    <div class = "panel-heading"> 
+    <span style="color:white"><b>Task 3</b>
+    </div>
+    <div class = "panel-body"> 
+    One of the assumptions to the Black-Scholes pricing model is that the risk-free interest rate is constant. However in practice, interest rates should follow a term structure, such as the spot curve.
+    <br><br>Assume that the spot curve follows the below formula:
+    <br><br>
+    $$r(t) = \beta_0 + \beta_1\left(\frac{1 - e^{-\alpha t}}{\alpha t}\right) + \beta_2\left(\frac{1 - e^{-\alpha t}}{\alpha t} - e^{-\alpha t}\right)$$
+    <br>Note that resulting $r(t)$ is expressed as a percentage. Set the parameters equal to the following values:
+    <ul>
+        <li>$\alpha = .7143$</li>
+        <li>$\beta_0 = 2.99$</li>
+        <li>$\beta_1 = -2.70$</li>
+        <li>$\beta_2 = -2.12$</li>
+    </ul>
+    <br>Next:
+    <ul>
+        <li>Write a function that takes in <code>term</code> as an input parameter, then calculates and returns the spot rate according to the formula above.</li>
+        <li>Plot the spot curve for terms ranging from 1 quarter to 30 years in quarterly increments on a line plot. Provide axis labels and a title for the plot. Your final plot should look something like this:</li>
+        
+![Task_3_Plot.JPG](attachment:Task_3_Plot.JPG)
+        <li>Comment on the shape and reasonableness of this calculated spot curve. </li>
+    </ul>
+    </div>
+</div></div></div>
+<div class="notebook-cell markdown-cell"><div class="cell-source">### Q.No.3.1 Write a function that takes in term as an input parameter, then calculates and returns the spot rate according to the formula above.
+### Answer:</div></div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code># Given Parameters
+alpha = 0.7143
+beta_0 = 2.99
+beta_1 = -2.70
+beta_2 = -2.12
+
+# Define the spot rate function based on the formula
+def spot_rate(term):
+    # Calculating each components of the formula
+    term_factor = (1 - np.exp(-alpha * term)) / (alpha * term)
+    rate = beta_0 + beta_1 * term_factor + beta_2 * (term_factor - np.exp(-alpha * term))
+    return rate
+
+# Generate the terms from 0.25 years to 30 years in quarterly increments
+terms = np.arange(0.25, 30.25, 0.25)
+
+# Calculate the spot rates for each term
+spot_rates = [round(spot_rate(term),3) for term in terms]
+
+print(spot_rates[:10])  # first 10 spot rates to check the result
+print (len(spot_rates))
+print (len(terms))
+</code></pre></div>
+<div class="cell-outputs">
+<div class="output-item"><pre><code>[0.349, 0.42, 0.499, 0.583, 0.67, 0.758, 0.846, 0.933, 1.017, 1.099]
+120
+120
+</code></pre></div>
+</div>
+</div>
+<div class="notebook-cell markdown-cell"><div class="cell-source">### Q.No.3.2 Plot the spot curve for terms ranging from 1 quarter to 30 years in quarterly increments on a line plot. Provide axis labels and a title for the plot.
+### Answer:</div></div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code>plt.figure(figsize=(10, 6))
+plt.plot(terms, spot_rates, label="Spot Rate", color="blue")
+plt.title("Model Spot Curve")
+plt.xlabel("T (Years)")
+plt.ylabel("Spot Rate (%)")
+plt.legend ()
+plt.grid(True)
+plt.show()</code></pre></div>
+<div class="cell-outputs">
+<div class="output-item output-image"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA04AAAIjCAYAAAA0vUuxAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjkuMiwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy8hTgPZAAAACXBIWXMAAA9hAAAPYQGoP6dpAABmCklEQVR4nO3deZyN5f/H8feZMauZsTOGsYtsY9eoRJaxJCJEZddGhVDqW6jvl6JIiSzZKkKiopIl+76FFluispMZZsx67t8f92+GY4aZ4czcZ868no/HeZx7O+f+nLkc5u267uu2GYZhCAAAAABwUx5WFwAAAAAAro7gBAAAAADpIDgBAAAAQDoITgAAAACQDoITAAAAAKSD4AQAAAAA6SA4AQAAAEA6CE4AAAAAkA6CEwAAAACkg+AEAHA6m82mkSNHZvp1f/75p2w2m2bPnu30mgAAuBMEJwBwU7Nnz5bNZpPNZtPGjRtT7TcMQ6GhobLZbHrooYcsqPDO/Pnnn+rVq5fKly8vX19fBQcHq1GjRhoxYkSWnvfkyZMaOXKk9u7dm6nXHT16VE8//bTKlSsnX19fBQUF6d5779XEiRN19erVrCkWAOA0eawuAACQtXx9fTVv3jzdd999DtvXrVunv//+Wz4+PhZVdvuOHDmievXqyc/PT71791aZMmV06tQp7d69W++8845GjRqVZec+efKkRo0apTJlyqhmzZoZes3y5cvVqVMn+fj4qHv37qpWrZri4+O1ceNGDR06VL/88oumTZuWZTUDAO4cwQkA3Fzr1q21aNEiffDBB8qT59pf+/PmzVOdOnV0/vx5C6u7PRMmTNCVK1e0d+9elS5d2mHf2bNnLaoqbceOHdNjjz2m0qVLa82aNSpevHjKvv79++vIkSNavny5U84VHR2tvHnzOuW9AACOGKoHAG6ua9euunDhglauXJmyLT4+Xl9++aW6deuW5muio6P10ksvKTQ0VD4+PqpUqZLeffddGYbhcFxcXJwGDRqkIkWKKDAwUA8//LD+/vvvNN/zn3/+Ue/evVWsWDH5+PioatWqmjlz5m19pqNHj6pkyZKpQpMkFS1a1GG9TJkyeuihh/Tjjz+qZs2a8vX1VZUqVfTVV1+leu0ff/yhTp06qWDBgvL399c999zjEGrWrl2revXqSZJ69eqVMhTyVtdkjR07VleuXNEnn3ziEJqSVahQQS+++KKkW1/jdeN1YyNHjpTNZtOvv/6qbt26qUCBArrvvvv07rvvymaz6fjx46neY/jw4fL29ta///6bsm3btm1q2bKl8uXLJ39/fz3wwAPatGnTTT8PAORWBCcAcHNlypRReHi45s+fn7Lt+++/V2RkpB577LFUxxuGoYcfflgTJkxQy5YtNX78eFWqVElDhw7V4MGDHY7t27ev3n//fbVo0UJvv/22vLy81KZNm1TveebMGd1zzz1atWqVBgwYoIkTJ6pChQrq06eP3n///Ux/ptKlS+uvv/7SmjVrMnT84cOH1aVLF7Vq1UpjxoxRnjx51KlTJ4cweebMGTVs2FArVqzQc889p//973+KjY3Vww8/rCVLlkiS7r77br355puSpKeeekqffvqpPv30UzVq1Oim5/72229Vrlw5NWzYMNOfMyM6deqkmJgYjR49Wv369VPnzp1ls9m0cOHCVMcuXLhQLVq0UIECBSRJa9asUaNGjRQVFaURI0Zo9OjRunTpkh588EFt3749S+oFgBzLAAC4pVmzZhmSjB07dhiTJk0yAgMDjZiYGMMwDKNTp05GkyZNDMMwjNKlSxtt2rRJed3SpUsNScZ///tfh/d79NFHDZvNZhw5csQwDMPYu3evIcl47rnnHI7r1q2bIckYMWJEyrY+ffoYxYsXN86fP+9w7GOPPWbky5cvpa5jx44ZkoxZs2bd8rMdOHDA8PPzMyQZNWvWNF588UVj6dKlRnR0dKpjS5cubUgyFi9enLItMjLSKF68uFGrVq2UbQMHDjQkGRs2bEjZdvnyZaNs2bJGmTJljKSkJMMwDGPHjh0ZqjH5PJKMdu3apXusYdz689/4Mx0xYoQhyejatWuqY8PDw406deo4bNu+fbshyZg7d65hGIZht9uNihUrGhEREYbdbk85LiYmxihbtqzRvHnzDNUMALkFPU4AkAt07txZV69e1bJly3T58mUtW7bspsP0vvvuO3l6euqFF15w2P7SSy/JMAx9//33KcdJSnXcwIEDHdYNw9DixYvVtm1bGYah8+fPpzwiIiIUGRmp3bt3Z+rzVK1aVXv37tUTTzyhP//8UxMnTlT79u1VrFgxTZ8+PdXxISEheuSRR1LWg4KC1L17d+3Zs0enT59O+Tz169d3mEQjICBATz31lP7880/9+uuvmapRkqKioiRJgYGBmX5tRj3zzDOptnXp0kW7du3S0aNHU7YtWLBAPj4+ateunSRp7969Onz4sLp166YLFy6ktEl0dLSaNm2q9evXy263Z1ndAJDTEJwAIBcoUqSImjVrpnnz5umrr75SUlKSHn300TSPPX78uEJCQlL9sn/33Xen7E9+9vDwUPny5R2Oq1SpksP6uXPndOnSJU2bNk1FihRxePTq1UvS7U3ocNddd+nTTz/V+fPntW/fPo0ePVp58uTRU089pVWrVjkcW6FCBdlstlSvl8zripI/z421p/W5MyMoKEiSdPny5Uy/NqPKli2balunTp3k4eGhBQsWSDLD66JFi9SqVauUmg4fPixJ6tGjR6p2mTFjhuLi4hQZGZlldQNATsOsegCQS3Tr1k39+vXT6dOn1apVK+XPnz9bzpvca/HEE0+oR48eaR5To0aN235/T09PVa9eXdWrV1d4eLiaNGmizz//XM2aNbvt93SWoKAghYSE6MCBAxk6/sZwlywpKemmr/Hz80u1LSQkRPfff78WLlyoV199VVu3btWJEyf0zjvvpByT3C7jxo276bTqAQEBGaobAHIDghMA5BKPPPKInn76aW3dujWlJyItpUuX1qpVq3T58mWHXqfff/89ZX/ys91u19GjRx16ag4ePOjwfskz7iUlJWV5mKlbt64k6dSpUw7bjxw5IsMwHILJoUOHJJmTZ0jm57mxdin1575ZuLmZhx56SNOmTdOWLVsUHh5+y2OTJ224dOmSw/bb6e3q0qWLnnvuOR08eFALFiyQv7+/2rZtm7I/uacwKCjIJUImALg6huoBQC4REBCgKVOmaOTIkQ6/QN+odevWSkpK0qRJkxy2T5gwQTabTa1atZKklOcPPvjA4bgbZ8nz9PRUx44dtXjx4jR7Xs6dO5fpz7JhwwYlJCSk2p583dWNQ+5OnjyZMjOeZF57NHfuXNWsWVPBwcGSzM+9fft2bdmyJeW46OhoTZs2TWXKlFGVKlUkKeU+STeGm5sZNmyY8ubNq759++rMmTOp9h89elQTJ06UZIaYwoULa/369Q7HTJ48OUPnul7Hjh3l6emp+fPna9GiRXrooYcc7vFUp04dlS9fXu+++66uXLmS6vW30y4A4M7ocQKAXORmQ+Wu17ZtWzVp0kSvvfaa/vzzT4WFhenHH3/U119/rYEDB6b0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9FTr1q31xRdfOPGnBgDITnmsLgAAgNu1YcMG1a1b12FbkSJFNG3aNHXt2lVhYWEaNGiQJk6cqNDQUPXr10+//vqrvvjiC4WEhGjJkiVq2bKl9u/fr4oVKyo2NlZ16tTRyy+/rKCgIC1fvlxPPvmkypcvr/r166ecY86cOXr22We1adMmSdLixYs1YcIEffHFF6patapOnz6tn3/+2aGu+vXr6+233876HwoAIEswVA8A4FJmz56tgQMH6tKlS+keW7NmTXXs2FGvv/56qn09evTQZ599prZt22rp0qU6ceKEypUrpxMnTigkJCTluGbNmql+/foaPXp0mud46KGHVLlyZb377ruSzB6nqKgo7d69O+WY8ePHa+rUqTpw4IC8vLzSfJ9vvvlGjzzyiBISElKGEAIAcg7+5gYA5FhXr16Vr69vmvtef/112e12/ec//5Ek7d+/X0lJSbrrrrtSrpkKCAjQunXrdPToUUnmtUhvvfWWqlevroIFCyogIEArVqzQiRMnHN67Tp06DuudOnXS1atXVa5cOfXr109LlixRYmKiwzF+fn6y2+2Ki4tz1scHAGQjhuoBAHKswoUL699//01zX548eRyer1y5Ik9PT+3atUuenp4OxyZfQzVu3DhNnDhR77//vqpXr668efNq4MCBio+Pdzg+b968DuuhoaE6ePCgVq1apZUrV+q5557TuHHjtG7dupQeqIsXLypv3rzy8/O78w8OAMh2BCcAQI5Vq1Yt/frrrxk+NikpSWfPntX999+f5jGbNm1Su3bt9MQTT0iS7Ha7Dh06pCpVqqT7/n5+fmrbtq3atm2r/v37q3Llytq/f79q164tSTpw4IBq1aqVwU8GAHA1BCcAQI4VERGhvn37KikpKVUv0o3uuusuPf744+revbvee+891apVS+fOndPq1atVo0YNtWnTRhUrVtSXX36pzZs3q0CBAho/frzOnDmTbnCaPXu2kpKS1KBBA/n7++uzzz6Tn5+fSpcunXLMhg0b1KJFC6d8bgBA9uMaJwBAjtWqVSvlyZNHq1atytDxs2bNUvfu3fXSSy+pUqVKat++vXbs2KFSpUpJMm9UW7t2bUVERKhx48YKDg5W+/bt033f/Pnza/r06br33ntVo0YNrVq1St9++60KFSokSfrnn3+0efNm9erV67Y/KwDAWsyqBwDI0T766CN98803WrFihdWl3NTLL7+sf//9V9OmTbO6FADAbWKoHgAgR3v66ad16dIlXb58WYGBgVaXk6aiRYtq8ODBVpcBALgD9DgBAAAAQDq4xgkAAAAA0kFwAgAAAIB0EJwAAAAAIB0EJwAAAABIB8EJAAAAANJBcAIAAACAdBCcAAAAACAdBCcAAAAASAfBCQAAAADS8X/PH6WuVRjFuQAAAABJRU5ErkJggg==" alt="Output"></div>
+</div>
+</div>
+<div class="notebook-cell markdown-cell"><div class="cell-source">### Q.No.3.3 Comment on the shape and reasonableness of this calculated spot curve.
+### Answer:</div></div>
+<div class="notebook-cell markdown-cell"><div class="cell-source">**Comments:**
+The calculated spot curve shows an upward slope that flattens over time. This shape is typical and reasonable—it suggests that shorter-term rates are lower, while longer-term rates stabilize as market expectations even out. This reflects a normal interest rate environment, where investors expect higher returns for longer commitments, but rates level off as they factor in long-term economic stability.</div></div>
+<div class="notebook-cell markdown-cell"><div class="cell-source"><div class = "panel panel-primary">
+    <div class = "panel-heading"> 
+    <span style="color:white"><b>Task 4</b>
+    </div>
+    <div class = "panel-body"> 
+    Modify the function <code>black_scholes_formula</code> to use the spot rate outputted from the function in the previous task as the appropriate risk-free rate in our Black-Scholes formula based on the term of the options contract.
+    <br><br>Note that this means <code>rf</code> will no longer be an input to the <code>black_scholes_formula</code> function. Run <code>black_scholes_formula</code> to price the following options:
+    <ul>
+        <li>A call option where the stock price is \$30, strike is \$35, term is 9 months, volatility is 20%, that also pays a 2.5% annual dividend, with <code>greeks</code> set to <code>True</code>. Check that your function prices this option at approximately \$0.4822.</li>
+        <li>A put option where the stock price is \$35, strike is \$30, term is 2 years, volatility is 20%, that also pays a 2.5% annual dividend, with <code>greeks</code> set to <code>True</code>. Check that your function prices this option at approximately \$1.9289.</li>
+    </ul>
+    </div>
+</div></div></div>
+<div class="notebook-cell markdown-cell"><div class="cell-source">### Q.No. 4.0 Defining the function:
+### Answer:</div></div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code>
+# Definining the spot rate function as in the previous task
+def spot_rate(term):
+    term_factor = (1 - np.exp(-alpha * term)) / (alpha * term)
+    rate = beta_0 + beta_1 * term_factor + beta_2 * (term_factor - np.exp(-alpha * term))
+    return rate / 100  # Convert rate from percentage to decimal for calculations
+
+# Definining  the modified black_scholes_formula function
+def black_scholes_formula(stock_price, strike, term, volatility, option, dividend=0, greeks=False): 
+    
+    # Calculate the risk-free rate based on the term
+    rf = spot_rate(term)
+    
+    # Calculate d1 and d2
+    d1 = (np.log(stock_price / strike) + (rf - dividend + 0.5 * volatility ** 2) * term) / (volatility * np.sqrt(term))
+    d2 = d1 - volatility * np.sqrt(term)
+    
+    # Calculate option price
+    if option == 'call':
+        price = stock_price * np.exp(-dividend * term) * norm.cdf(d1) - strike * np.exp(-rf * term) * norm.cdf(d2)
+    elif option == 'put':
+        price = strike * np.exp(-rf * term) * norm.cdf(-d2) - stock_price * np.exp(-dividend * term) * norm.cdf(-d1)
+    else:
+        raise ValueError("Invalid option type. Use 'call' or 'put'.")
+    
+    # If greeks is True, calculating the Greeks and returning both price and Greeks
+    if greeks:
+        greeks_values = black_scholes_greeks(stock_price, strike, term, rf, volatility, option, dividend)
+        return price, greeks_values
+    
+    # Otherwise, returning only the option price
+    return price
+
+# Define the black_scholes_greeks function to calculate the Greeks
+def black_scholes_greeks(stock_price, strike, term, rf, volatility, option, dividend=0):
+    d1 = (np.log(stock_price / strike) + (rf - dividend + 0.5 * volatility ** 2) * term) / (volatility * np.sqrt(term))
+    d2 = d1 - volatility * np.sqrt(term)
+    
+    if option == 'call':
+        delta = np.exp(-dividend * term) * norm.cdf(d1)
+        gamma = (norm.pdf(d1) * np.exp(-dividend * term)) / (stock_price * volatility * np.sqrt(term))
+        theta = (-((stock_price * norm.pdf(d1) * volatility * np.exp(-dividend * term)) / (2 * np.sqrt(term))) 
+                 + dividend * stock_price * norm.cdf(d1) * np.exp(-dividend * term)
+                 - rf * strike * np.exp(-rf * term) * norm.cdf(d2))
+        vega = stock_price * np.sqrt(term) * norm.pdf(d1) * np.exp(-dividend * term)
+        rho = strike * term * np.exp(-rf * term) * norm.cdf(d2)
+    elif option == 'put':
+        delta = np.exp(-dividend * term) * (norm.cdf(d1) - 1)
+        gamma = (norm.pdf(d1) * np.exp(-dividend * term)) / (stock_price * volatility * np.sqrt(term))
+        theta = (-((stock_price * norm.pdf(d1) * volatility * np.exp(-dividend * term)) / (2 * np.sqrt(term))) 
+                 - dividend * stock_price * norm.cdf(-d1) * np.exp(-dividend * term)
+                 + rf * strike * np.exp(-rf * term) * norm.cdf(-d2))
+        vega = stock_price * np.sqrt(term) * norm.pdf(d1) * np.exp(-dividend * term)
+        rho = -strike * term * np.exp(-rf * term) * norm.cdf(-d2)
+    else:
+        raise ValueError("Invalid option type. Use 'call' or 'put'.")
+    
+    return {
+        'delta': delta,
+        'gamma': gamma,
+        'vega': vega,
+        'theta': theta,
+        'rho': rho
+    }</code></pre></div>
+</div>
+<div class="notebook-cell markdown-cell"><div class="cell-source">### Q.No.4.1 A call option where the stock price is 30, strike is 35, term is 9 months, volatility is 20%, that also pays a 2.5% annual dividend, with greeks set to True. Check that your function prices this option at approximately $0.4822.
+### Answer:</div></div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code>
+# Checking the  Call option Price stays at $0.4822
+call_option_price, call_option_greeks = black_scholes_formula(
+    stock_price=30,
+    strike=35,
+    term=9/12,       # 9 months in years
+    volatility=0.2,  # 20% volatility
+    option='call',
+    dividend=0.025,  # 2.5% dividend yield
+    greeks=True      # Calculate Greeks
+)
+print("Call Option Price:", call_option_price)
+print("Call Option Greeks:", call_option_greeks)
+
+</code></pre></div>
+<div class="cell-outputs">
+<div class="output-item"><pre><code>Call Option Price: 0.48218332751282755
+Call Option Greeks: {'delta': 0.18325689060721748, 'gamma': 0.05070746895955708, 'vega': 6.845508309540205, 'theta': -0.8003244109498754, 'rho': 3.7616425430277722}
+</code></pre></div>
+</div>
+</div>
+<div class="notebook-cell markdown-cell"><div class="cell-source">### Q.No.4.2 A put option where the stock price is 35, strike is 30, term is 2 years, volatility is 20%, that also pays a 2.5% annual dividend, with greeks set to True. Check that your function prices this option at approximately 1.9289.
+### Answer:</div></div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code># Checking the  Call option Price stays at $1.9289
+put_option_price, put_option_greeks = black_scholes_formula(
+    stock_price=35,
+    strike=30,
+    term=2,          # 2 years
+    volatility=0.2,  # 20% volatility
+    option='put',
+    dividend=0.025,  # 2.5% dividend yield
+    greeks=True      # Calculate Greeks
+)
+print("Put Option Price:", put_option_price)
+print("Put Option Greeks:", put_option_greeks)
+</code></pre></div>
+<div class="cell-outputs">
+<div class="output-item"><pre><code>Put Option Price: 1.928873211758626
+Put Option Greeks: {'delta': -0.2686684112582906, 'gamma': 0.03248168051657731, 'vega': 15.91602345312288, 'theta': -0.9251949038785192, 'rho': -22.664535211597595}
+</code></pre></div>
+</div>
+</div>
+<div class="notebook-cell markdown-cell"><div class="cell-source"><div class = "panel panel-primary">
+    <div class = "panel-heading"> 
+    <span style="color:white"><b>Task 5</b>
+    </div>
+    <div class = "panel-body"> 
+    On June 30th, 2020, the AAPL's stock price was valued at \$364.14 and paying a dividend yield of 0.9%. On that same day, a call option on AAPL with a strike of \$380, expiring in 6-months was trading at \$26.
+    <br><br>Estimate the implied volatility on this call option using the bisection method with a tolerance of $0.001 on the error of the calculated Black-Scholes call option price. Set <code>option</code> to <code>call</code> and <code>greeks</code> to <code>False</code> when calling the function <code>black_scholes_formula</code>.
+    <br><br>Your final estimated implied volatility should be approximately 0.3228.
+    </div>
+</div></div></div>
+<div class="notebook-cell markdown-cell"><div class="cell-source">### Q.No.5 Estimate the implied volatility on this call option using the bisection method with a tolerance of $0.001 on the error of the calculated Black-Scholes call option price. Set option to call and greeks to False when calling the function black_scholes_formula.
+### Answer:</div></div>
+<div class="notebook-cell code-cell">
+<div class="cell-source"><pre><code># Given data
+market_price = 26  
+stock_price = 364.14  # AAPL stock price on June 30th, 2020
+strike = 380  
+term = 6 / 12  # 6 months to expiration
+dividend_yield = 0.009  # 0.9% dividend yield
+tolerance = 0.001  # Tolerance for price difference
+
+# Bisection method to find implied volatility
+def implied_volatility_bisection(stock_price, strike, term, dividend_yield, market_price, tolerance):
+    lower_bound = 0.01  # Starting lower bound for volatility
+    upper_bound = 1.0   # Starting upper bound for volatility
+
+    while upper_bound - lower_bound &gt; tolerance:
+        mid_vol = (lower_bound + upper_bound) / 2
+        # Calculate the option price with the midpoint volatility
+        price = black_scholes_formula(
+            stock_price=stock_price,
+            strike=strike,
+            term=term,
+            volatility=mid_vol,
+            option='call',
+            dividend=dividend_yield,
+            greeks=False
+        )
+
+        # Checking if the calculated price is close to the market price within the tolerance
+        if abs(price - market_price) &lt; tolerance:
+            return mid_vol
+        elif price &lt; market_price:
+            lower_bound = mid_vol  # Implies we need higher volatility
+        else:
+            upper_bound = mid_vol  # Implies we need lower volatility
+
+    # Returning the best estimate of volatility
+    return (lower_bound + upper_bound) / 2
+
+# Calculating implied volatility
+implied_volatility = implied_volatility_bisection(stock_price, strike, term, dividend_yield, market_price, tolerance)
+print("Implied Volatility:", implied_volatility)
+</code></pre></div>
+<div class="cell-outputs">
+<div class="output-item"><pre><code>Implied Volatility: 0.3227587890625
+</code></pre></div>
+</div>
+</div>
+</div>
+</body>
+</html>
