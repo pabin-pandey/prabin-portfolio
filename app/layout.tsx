@@ -71,7 +71,7 @@ export default function RootLayout({
                 addressCountry: "US",
               },
               sameAs: [
-                "https://linkedin.com/in/prabinpandey",
+                "https://linkedin.com/in/prabin-pandey-1482362b7/",
                 "https://github.com/pabin-pandey",
               ],
             }),

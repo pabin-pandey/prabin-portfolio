@@ -50,7 +50,7 @@ const DEFAULT_CONTENT = {
     { name: "Professor Name", role: "Faculty, Fox School of Business", quote: "Prabin consistently demonstrates exceptional analytical skills and a deep understanding of financial modeling concepts." },
     { name: "Colleague Name", role: "Sethi Clarity Advisers", quote: "Prabin's ability to translate complex financial concepts into intuitive tools is remarkable." }
   ],
-  contact: { email: "prabin.pandey@temple.edu", phone: "835-207-9312", location: "Philadelphia, PA", linkedin: "https://linkedin.com/in/prabinpandey", github: "https://github.com/pabin-pandey", msg: "I'd love to hear from you. Whether you have a question, opportunity, or just want to connect — drop me a message." },
+  contact: { email: "prabin.pandey@temple.edu", phone: "835-207-9312", location: "Philadelphia, PA", linkedin: "https://linkedin.com/in/prabin-pandey-1482362b7/", github: "https://github.com/pabin-pandey", msg: "I'd love to hear from you. Whether you have a question, opportunity, or just want to connect — drop me a message." },
   resume: { label: "Download Resume", path: "/resume/Prabin_Pandey_Resume.pdf" }
 };
 
