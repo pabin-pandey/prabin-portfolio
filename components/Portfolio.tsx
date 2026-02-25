@@ -143,11 +143,30 @@ export default function App() {
   // Ref keeps the current page accessible inside event-handler closures
   const pageRef = useRef("home");
 
-  // Scroll position tracking
+  // Scroll position + progress tracking
+  const [scrollProgress, setScrollProgress] = useState(0);
   useEffect(() => {
-    const h = () => setScrollY(window.scrollY);
+    const h = () => {
+      const sy = window.scrollY;
+      setScrollY(sy);
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(total > 0 ? Math.min(100, (sy / total) * 100) : 0);
+    };
     window.addEventListener("scroll", h, { passive: true });
     return () => window.removeEventListener("scroll", h);
+  }, []);
+
+  // Mouse tracker for card-premium cursor spotlight
+  useEffect(() => {
+    const h = (e: MouseEvent) => {
+      document.querySelectorAll('.card-premium').forEach((card) => {
+        const rect = (card as HTMLElement).getBoundingClientRect();
+        (card as HTMLElement).style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        (card as HTMLElement).style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      });
+    };
+    window.addEventListener('mousemove', h);
+    return () => window.removeEventListener('mousemove', h);
   }, []);
 
   // Keep pageRef in sync with page state
@@ -264,6 +283,9 @@ export default function App() {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${bg}`} style={{ fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
+      {/* ─── SCROLL PROGRESS BAR ─── */}
+      <div className="scroll-progress" style={{ width: `${scrollProgress}%` }} />
+
       {/* ─── NAV ─── */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBg}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
@@ -381,6 +403,20 @@ export default function App() {
   );
 }
 
+// ─── Section Reveal Observer ───
+function useSectionReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll('.section-reveal');
+    if (!els.length) return;
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { (e.target as HTMLElement).classList.add('visible'); obs.unobserve(e.target); } }),
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+}
+
 // ═══════════════════════════════════════════════════════════════
 // HOME
 // ═══════════════════════════════════════════════════════════════
@@ -390,6 +426,7 @@ function Home({ c, d, nav }) {
   const [ci, setCi] = useState(0);
   const [del, setDel] = useState(false);
   const [carIdx, setCarIdx] = useState(0);
+  useSectionReveal();
 
   useEffect(() => {
     const cur = hero.roles[ri % hero.roles.length];
@@ -529,8 +566,53 @@ function Home({ c, d, nav }) {
         </div>
       </section>
 
+      {/* ═══ RECRUITER SNAPSHOT STRIP ═══ */}
+      <div className={`py-5 border-y ${d ? "border-white/[0.05] bg-gray-900/40" : "border-gray-100 bg-gray-50"}`}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-center gap-x-0 gap-y-4">
+            {[
+              { label: "GPA", value: "3.98", sub: "Fox School of Business", color: "text-emerald-400" },
+              { label: "Projects Built", value: "20+", sub: "Production-grade systems", color: "text-indigo-400" },
+              { label: "LLMs Benchmarked", value: "9", sub: "Calibration analysis", color: "text-violet-400" },
+              { label: "Designation", value: "CFA Candidate", sub: "Level I — sitting 2025", color: "text-amber-400" },
+              { label: "Available", value: "May 2026", sub: "Philadelphia, PA · Open to relocation", color: "text-blue-400" },
+            ].map((item, i) => (
+              <div key={i} className={`flex items-center gap-3 px-6 py-1 ${i > 0 ? `border-l ${d ? "border-white/[0.07]" : "border-gray-200"}` : ""}`}>
+                <div className="text-center sm:text-left">
+                  <div className={`text-base sm:text-lg font-black tracking-tight ${item.color}`}>{item.value}</div>
+                  <div className={`text-[10px] font-bold uppercase tracking-[0.12em] mt-0.5 ${d ? "text-gray-500" : "text-gray-500"}`}>{item.label}</div>
+                  <div className={`text-[10px] ${d ? "text-gray-700" : "text-gray-400"}`}>{item.sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ SKILLS MARQUEE TICKER ═══ */}
+      <div className={`py-3 border-b overflow-hidden ${d ? "border-white/[0.04] bg-gray-950/60" : "border-gray-100 bg-white/70"}`}>
+        <div className={`ticker-outer ${d ? "ticker-outer-dark" : "ticker-outer-light"}`}>
+          <div className="ticker-track">
+            {[...Array(2)].flatMap((_, ai) =>
+              ["Python", "NumPy", "Pandas", "SciPy", "Streamlit", "Power BI", "Tableau", "DAX",
+               "Bloomberg Terminal", "FactSet", "Capital IQ", "Excel VBA", "MySQL", "yfinance",
+               "DCF Valuation", "LBO Modeling", "Black-Scholes", "Monte Carlo GBM", "CAPM",
+               "Carhart 4-Factor", "Sharpe Ratio", "WACC", "SEC Filing Intelligence", "BeautifulSoup",
+               "LLM Calibration", "Claude AI", "AI Governance", "CFA Candidate", "R (Statistical Analysis)"].map((skill, i) => (
+                <span key={`${ai}-${i}`} className="ticker-item">
+                  <span className={`text-[10px] font-bold tracking-[0.12em] uppercase whitespace-nowrap ${d ? "text-gray-600" : "text-gray-400"}`}>
+                    {skill}
+                  </span>
+                  <span className={`w-1 h-1 rounded-full flex-shrink-0 ${d ? "bg-indigo-500/40" : "bg-indigo-300"}`} />
+                </span>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* ═══ CORE CAPABILITIES ═══ */}
-      <section className={`py-24 border-t ${d ? "border-white/[0.05] bg-gradient-to-b from-gray-950 to-gray-900/60" : "border-gray-100 bg-gradient-to-b from-white to-gray-50/80"}`}>
+      <section className={`py-24 border-t section-reveal ${d ? "border-white/[0.05] bg-gradient-to-b from-gray-950 to-gray-900/60" : "border-gray-100 bg-gradient-to-b from-white to-gray-50/80"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>What I Build</p>
@@ -657,7 +739,7 @@ function Home({ c, d, nav }) {
       </section>
 
       {/* ═══ FEATURED CAROUSEL ═══ */}
-      <section className={`py-28 ${d ? "bg-gradient-to-b from-gray-950/0 via-gray-900/40 to-gray-950/0" : "bg-gradient-to-b from-white/0 via-gray-50/90 to-white/0"}`}>
+      <section className={`py-28 section-reveal ${d ? "bg-gradient-to-b from-gray-950/0 via-gray-900/40 to-gray-950/0" : "bg-gradient-to-b from-white/0 via-gray-50/90 to-white/0"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-12">
             <div>
