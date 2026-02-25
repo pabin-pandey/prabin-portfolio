@@ -42,7 +42,6 @@ export default function GenAiProjectPage() {
   const slug    = params.slug as string;
   const project = genaiProjects.find((p) => p.id === slug);
   const [activeTab, setActiveTab] = useState<TabId>('overview');
-  const [streamlitLoaded, setStreamlitLoaded] = useState(false);
 
   if (!project) {
     return (
@@ -253,11 +252,12 @@ export default function GenAiProjectPage() {
         {activeTab === 'dashboard' && (
           <div className="space-y-8 animate-fadeIn">
 
-            {/* ── Live Streamlit Embed ─────────────────────────────────────── */}
-            {project.streamlitUrl ? (
+            {/* ── Live Dashboard Launch Card ───────────────────────────────── */}
+            {project.streamlitUrl && (
               <div className="rounded-2xl overflow-hidden border border-violet-700/40 bg-gray-900 shadow-2xl">
-                {/* Header bar */}
-                <div className="flex items-center justify-between px-5 py-3 border-b border-gray-800 bg-gray-900/80 backdrop-blur-sm">
+
+                {/* Mock browser chrome */}
+                <div className="flex items-center justify-between px-5 py-3 border-b border-gray-800 bg-gray-900/80">
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1.5">
                       <span className="w-3 h-3 rounded-full bg-red-500/70" />
@@ -265,72 +265,65 @@ export default function GenAiProjectPage() {
                       <span className="w-3 h-3 rounded-full bg-green-500/70" />
                     </div>
                     <span className="text-gray-500 text-xs font-mono">|</span>
-                    <span className="text-sm font-medium text-gray-200 flex items-center gap-2">
-                      {Icon.monitor}
-                      Portfolio Analytics Dashboard
-                    </span>
+                    <span className="text-xs font-mono text-gray-500 truncate max-w-xs">{project.streamlitUrl}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {streamlitLoaded ? (
-                      <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium bg-emerald-950/50 border border-emerald-700/50 px-2.5 py-1 rounded-full">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        Live
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1.5 text-xs text-amber-400 font-medium bg-amber-950/50 border border-amber-700/50 px-2.5 py-1 rounded-full">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                        Waking up…
-                      </span>
-                    )}
+                  <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium bg-emerald-950/50 border border-emerald-700/50 px-2.5 py-1 rounded-full shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Live App
+                  </span>
+                </div>
+
+                {/* Launch body */}
+                <div className="relative p-8 bg-gradient-to-br from-violet-950/30 via-gray-900 to-gray-950">
+                  {/* Decorative glow */}
+                  <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-b-2xl">
+                    <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl" />
+                  </div>
+
+                  {/* Mock dashboard preview grid */}
+                  <div className="relative grid grid-cols-4 gap-3 mb-6">
+                    {[
+                      { label: 'Sharpe Ratio',      value: '1.84',   color: 'text-violet-400', border: 'border-violet-500/30' },
+                      { label: 'Max Drawdown',      value: '-12.3%', color: 'text-red-400',    border: 'border-red-500/30'    },
+                      { label: 'Alpha (ann.)',       value: '+4.2%',  color: 'text-emerald-400',border: 'border-emerald-500/30'},
+                      { label: 'Beta',              value: '0.87',   color: 'text-blue-400',   border: 'border-blue-500/30'   },
+                    ].map((kpi, i) => (
+                      <div key={i} className={`rounded-xl bg-gray-800/60 border ${kpi.border} p-3 text-center`}>
+                        <p className="text-xs text-gray-500 mb-1">{kpi.label}</p>
+                        <p className={`text-lg font-bold ${kpi.color}`}>{kpi.value}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Fake chart bars */}
+                  <div className="relative rounded-xl border border-gray-700/50 bg-gray-800/40 p-4 mb-6 flex items-end gap-1 h-28 overflow-hidden">
+                    <div className="absolute inset-0 flex items-center pointer-events-none opacity-10">
+                      {[...Array(6)].map((_, i) => <div key={i} className="flex-1 border-r border-gray-400" />)}
+                    </div>
+                    {[35,58,42,70,55,80,62,90,74,85,68,95].map((h, i) => (
+                      <div key={i} className="flex-1 rounded-t" style={{ height: `${h}%`, background: `rgba(139,92,246,${0.3 + i*0.05})` }} />
+                    ))}
+                    <div className="absolute bottom-2 left-3 text-xs text-gray-500 font-mono">Excess Return — NVDA · MSFT · GOOGL</div>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="text-center">
+                    <p className="text-gray-400 text-sm mb-1">Interactive portfolio analytics — live data, adjustable parameters</p>
+                    <p className="text-xs text-gray-600 mb-5">
+                      Streamlit Community Cloud apps open in a new tab for the best experience
+                    </p>
                     <a
                       href={project.streamlitUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-violet-400 hover:text-violet-300 border border-violet-700/50 bg-violet-950/30 px-2.5 py-1 rounded-full transition-colors font-medium"
+                      className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-violet-900/40"
                     >
-                      Open Full Screen ↗
+                      {Icon.monitor}
+                      Launch Live Dashboard
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
                     </a>
                   </div>
                 </div>
-
-                {/* Sleep-state notice shown while iframe loads */}
-                {!streamlitLoaded && (
-                  <div className="px-5 py-4 border-b border-gray-800 bg-amber-950/10 flex items-start gap-3">
-                    <span className="text-amber-400 text-lg shrink-0">⏱</span>
-                    <div>
-                      <p className="text-sm font-medium text-amber-300">App is waking up</p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        Streamlit Community Cloud apps sleep after inactivity. It will be ready in ~30 seconds.
-                        {' '}While you wait, use{' '}
-                        <a href={project.streamlitUrl} target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline">Open Full Screen ↗</a>
-                        {' '}for the best experience.
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Iframe */}
-                <iframe
-                  src={project.streamlitUrl}
-                  width="100%"
-                  height="850"
-                  frameBorder="0"
-                  title="Portfolio Analytics Dashboard — Live Streamlit App"
-                  className="block bg-gray-950"
-                  allow="fullscreen"
-                  onLoad={() => setStreamlitLoaded(true)}
-                />
-              </div>
-            ) : (
-              /* Placeholder if no URL set */
-              <div className="rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-950/20 to-gray-900 p-7">
-                <div className="flex items-center gap-2 mb-3">
-                  {Icon.monitor}
-                  <h2 className="text-sm font-semibold uppercase tracking-wider text-violet-400">Interactive Portfolio Analytics Platform</h2>
-                </div>
-                <p className="text-gray-300 leading-relaxed">
-                  Three iteratively refined Streamlit applications — from a core analytics engine to a 621-line client-grade wealth management platform — designed around professional portfolio reporting and decision-support use cases.
-                </p>
               </div>
             )}
 
