@@ -1291,6 +1291,24 @@ function Projects({ c, d }) {
   );
 }
 
+// ─── Lazy Iframe (click-to-load facade) ───
+function LazyIframe({ src, iframeStyle, className, title, placeholder, ...rest }: any) {
+  const [loaded, setLoaded] = useState(false);
+  const minH = iframeStyle?.height || iframeStyle?.minHeight || '400px';
+  if (!loaded) {
+    return (
+      <div style={{ width: '100%', minHeight: minH, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#0f172a', borderRadius: '0.5rem', gap: '0.75rem' }} className={className}>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+        <p style={{ color: '#94a3b8', fontSize: '0.8rem', margin: 0 }}>{placeholder || title || 'Interactive Dashboard'}</p>
+        <button onClick={() => setLoaded(true)} style={{ background: '#6366f1', color: '#fff', border: 'none', borderRadius: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', letterSpacing: '0.02em' }}>
+          Load Dashboard
+        </button>
+      </div>
+    );
+  }
+  return <iframe src={src} style={iframeStyle} className={className} title={title} {...rest} />;
+}
+
 // ─── Tableau Public Embed ───
 function TableauPublicEmbed({ vizUrl, title }) {
   const [containerHeight, setContainerHeight] = useState(1000);
@@ -1321,9 +1339,9 @@ function TableauPublicEmbed({ vizUrl, title }) {
 
   return (
     <div style={{ width: '100%', position: 'relative', backgroundColor: '#fff' }}>
-      <iframe
+      <LazyIframe
         src={embedUrl}
-        style={{
+        iframeStyle={{
           width: '100%',
           height: `${containerHeight}px`,
           border: 'none',
@@ -1335,6 +1353,7 @@ function TableauPublicEmbed({ vizUrl, title }) {
         allowFullScreen
         allow="fullscreen"
         title={title || 'Tableau Dashboard'}
+        placeholder="Tableau Public Dashboard"
         sandbox="allow-same-origin allow-scripts allow-presentation allow-popups allow-popups-to-escape-sandbox"
       />
     </div>
@@ -1884,7 +1903,7 @@ function PBIDashboardViewer({ d, p }) {
         {activeView === "embed" && (
           <div className="p-5">
             {p.embed && p.embed.url ? (
-              <iframe src={p.embed.url} className="w-full h-96 rounded-lg" frameBorder="0" allowFullScreen title="Power BI Dashboard"/>
+              <LazyIframe src={p.embed.url} iframeStyle={{ height: '384px' }} className="w-full h-96 rounded-lg" frameBorder="0" allowFullScreen title="Power BI Dashboard" placeholder="Power BI Dashboard"/>
             ) : (
               <div>
                 <div className="flex items-center gap-3 mb-3">
@@ -1976,13 +1995,14 @@ function ExcelCaseStudyViewer({ d, p }) {
           <div className={`rounded-xl border overflow-hidden ${d ? "bg-gray-800/50 border-gray-700" : "bg-gray-100 border-gray-200"}`}>
             {p.embed?.url ? (
               <div className="flex items-center justify-center bg-white rounded-lg">
-                <iframe
+                <LazyIframe
                   src={p.embed.url}
+                  iframeStyle={{ height: "800px" }}
                   className="w-full rounded-lg"
-                  style={{ height: "800px" }}
                   frameBorder="0"
                   allowFullScreen
                   title={p.title}
+                  placeholder="Excel Model"
                 />
               </div>
             ) : (
