@@ -178,13 +178,38 @@ export default function App() {
             const sy = saved.scrollY || 0;
             if (sy > 0) {
               requestAnimationFrame(() =>
-                setTimeout(() => window.scrollTo({ top: sy, behavior: 'instant' as ScrollBehavior }), 80)
+                setTimeout(() => window.scrollTo({ top: sy, behavior: 'instant' as ScrollBehavior }), 200)
               );
             }
           }
         }
       }
     } catch { /* ignore */ }
+  }, []);
+
+  // ── popstate: restore scroll when browser back/forward fires (handles Next.js page cache) ──
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.history.scrollRestoration = 'manual';
+    const VALID_PAGES = ['about', 'projects', 'blog', 'contact'];
+    const handlePopstate = () => {
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      if (hash && VALID_PAGES.includes(hash)) setPage(hash);
+      else if (!hash) setPage('home');
+      try {
+        const raw = sessionStorage.getItem('returnTo');
+        if (!raw) return;
+        const saved = JSON.parse(raw) as { path: string; hash: string; scrollY: number; ts: number };
+        if (Date.now() - (saved.ts || 0) > 30 * 60 * 1000) { sessionStorage.removeItem('returnTo'); return; }
+        if (saved.path === window.location.pathname && (saved.hash || '') === window.location.hash) {
+          sessionStorage.removeItem('returnTo');
+          const sy = saved.scrollY || 0;
+          if (sy > 0) requestAnimationFrame(() => setTimeout(() => window.scrollTo({ top: sy, behavior: 'instant' as ScrollBehavior }), 200));
+        }
+      } catch { /* ignore */ }
+    };
+    window.addEventListener('popstate', handlePopstate);
+    return () => window.removeEventListener('popstate', handlePopstate);
   }, []);
 
   // ── Save return-to state before any navigation to a sub-page ─────────────
