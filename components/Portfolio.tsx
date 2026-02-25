@@ -406,11 +406,11 @@ export default function App() {
 // ─── Section Reveal Observer ───
 function useSectionReveal() {
   useEffect(() => {
-    const els = document.querySelectorAll('.section-reveal');
+    const els = document.querySelectorAll('.section-reveal, .stagger-children');
     if (!els.length) return;
     const obs = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) { (e.target as HTMLElement).classList.add('visible'); obs.unobserve(e.target); } }),
-      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.06, rootMargin: '0px 0px -30px 0px' }
     );
     els.forEach(el => obs.observe(el));
     return () => obs.disconnect();
@@ -614,85 +614,96 @@ function Home({ c, d, nav }) {
       {/* ═══ CORE CAPABILITIES ═══ */}
       <section className={`py-24 border-t section-reveal ${d ? "border-white/[0.05] bg-gradient-to-b from-gray-950 to-gray-900/60" : "border-gray-100 bg-gradient-to-b from-white to-gray-50/80"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-12">
-            <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>What I Build</p>
-            <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">Core Capabilities</h2>
-            <p className={`text-sm max-w-2xl leading-relaxed ${d ? "text-gray-500" : "text-gray-500"}`}>
-              Applied analytical systems built from real financial workflows — not classroom exercises. Each capability reflects production-grade work validated against institutional standards.
-            </p>
+          <div className="mb-14 flex flex-col sm:flex-row sm:items-end gap-4">
+            <div>
+              <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>What I Build</p>
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight">Core Capabilities</h2>
+            </div>
+            <div className={`hidden sm:block flex-1 h-px mb-1.5 ${d ? "bg-gradient-to-r from-indigo-500/25 to-transparent" : "bg-gradient-to-r from-indigo-200 to-transparent"}`} />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 stagger-children">
             {[
               {
                 icon: icons.sheet,
-                color: "emerald",
                 title: "AI-Augmented Financial Modeling",
                 desc: "Parallel WACC worksheets — one analyst-built, one Claude-assisted — enabling direct output comparison and model risk auditing. DCF, LBO, and PE exit models with scenario sensitivity analysis.",
                 tools: ["Excel", "Python", "Claude", "DCF", "LBO"],
-                accent: d ? "border-emerald-500/20 hover:border-emerald-500/40" : "border-emerald-200 hover:border-emerald-300",
+                gradBar: "from-emerald-500 to-teal-400",
+                accent: d ? "border-emerald-500/20 hover:border-emerald-500/35" : "border-emerald-200 hover:border-emerald-300",
                 iconBg: d ? "bg-emerald-500/10 text-emerald-400" : "bg-emerald-50 text-emerald-600",
-                tagBg: d ? "bg-emerald-500/10 text-emerald-400" : "bg-emerald-50 text-emerald-700",
+                tagBg: d ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15" : "bg-emerald-50 text-emerald-700 border border-emerald-200",
+                glow: d ? "group-hover:shadow-[0_8px_32px_rgba(16,185,129,0.12)]" : "",
               },
               {
                 icon: icons.bar,
-                color: "violet",
                 title: "Portfolio Risk & Performance Analytics",
                 desc: "35-year fund analytics engine computing Sharpe ratio, max drawdown, alpha, beta, skewness, and Carhart 4-factor attribution. Live market data integration via yfinance API.",
                 tools: ["Python", "yfinance", "Pandas", "NumPy", "Factor Models"],
-                accent: d ? "border-violet-500/20 hover:border-violet-500/40" : "border-violet-200 hover:border-violet-300",
+                gradBar: "from-violet-500 to-purple-400",
+                accent: d ? "border-violet-500/20 hover:border-violet-500/35" : "border-violet-200 hover:border-violet-300",
                 iconBg: d ? "bg-violet-500/10 text-violet-400" : "bg-violet-50 text-violet-600",
-                tagBg: d ? "bg-violet-500/10 text-violet-400" : "bg-violet-50 text-violet-700",
+                tagBg: d ? "bg-violet-500/10 text-violet-400 border border-violet-500/15" : "bg-violet-50 text-violet-700 border border-violet-200",
+                glow: d ? "group-hover:shadow-[0_8px_32px_rgba(139,92,246,0.12)]" : "",
               },
               {
                 icon: icons.trend,
-                color: "blue",
                 title: "Quantitative Derivatives Pricing",
                 desc: "Black-Scholes implementation with full Greeks (Δ, Γ, Θ, ν, ρ), Monte Carlo GBM simulation (1,000 trials), CRR binomial trees (5,000× convergence analysis), and implied volatility calibration via bisection.",
                 tools: ["Python", "NumPy", "SciPy", "Black-Scholes", "Monte Carlo"],
-                accent: d ? "border-blue-500/20 hover:border-blue-500/40" : "border-blue-200 hover:border-blue-300",
+                gradBar: "from-blue-500 to-cyan-400",
+                accent: d ? "border-blue-500/20 hover:border-blue-500/35" : "border-blue-200 hover:border-blue-300",
                 iconBg: d ? "bg-blue-500/10 text-blue-400" : "bg-blue-50 text-blue-600",
-                tagBg: d ? "bg-blue-500/10 text-blue-400" : "bg-blue-50 text-blue-700",
+                tagBg: d ? "bg-blue-500/10 text-blue-400 border border-blue-500/15" : "bg-blue-50 text-blue-700 border border-blue-200",
+                glow: d ? "group-hover:shadow-[0_8px_32px_rgba(59,130,246,0.12)]" : "",
               },
               {
                 icon: icons.db,
-                color: "amber",
                 title: "Financial Data Engineering",
                 desc: "Multi-asset data alignment pipelines for NVDA, MSFT, SPY, and risk-free rate. SEC 10-K MD&A extraction from HTML filings (GOOGL, META, NFLX) using BeautifulSoup with regex parsing.",
                 tools: ["Python", "BeautifulSoup", "Pandas", "SEC Filings", "APIs"],
-                accent: d ? "border-amber-500/20 hover:border-amber-500/40" : "border-amber-200 hover:border-amber-300",
+                gradBar: "from-amber-400 to-orange-400",
+                accent: d ? "border-amber-500/20 hover:border-amber-500/35" : "border-amber-200 hover:border-amber-300",
                 iconBg: d ? "bg-amber-500/10 text-amber-400" : "bg-amber-50 text-amber-600",
-                tagBg: d ? "bg-amber-500/10 text-amber-400" : "bg-amber-50 text-amber-700",
+                tagBg: d ? "bg-amber-500/10 text-amber-400 border border-amber-500/15" : "bg-amber-50 text-amber-700 border border-amber-200",
+                glow: d ? "group-hover:shadow-[0_8px_32px_rgba(245,158,11,0.12)]" : "",
               },
               {
                 icon: icons.zap,
-                color: "indigo",
                 title: "Interactive Decision-Support Systems",
                 desc: "Three Streamlit dashboard versions (272 → 380 → 621 lines) with rolling factor analytics, returns histograms, multi-security scatter, and CSV export. Power BI FP&A dashboards and Tableau macroeconomic intelligence platforms.",
                 tools: ["Streamlit", "Power BI", "Tableau", "DAX", "Plotly"],
-                accent: d ? "border-indigo-500/20 hover:border-indigo-500/40" : "border-indigo-200 hover:border-indigo-300",
+                gradBar: "from-indigo-500 to-violet-500",
+                accent: d ? "border-indigo-500/20 hover:border-indigo-500/35" : "border-indigo-200 hover:border-indigo-300",
                 iconBg: d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600",
-                tagBg: d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-700",
+                tagBg: d ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/15" : "bg-indigo-50 text-indigo-700 border border-indigo-200",
+                glow: d ? "group-hover:shadow-[0_8px_32px_rgba(99,102,241,0.14)]" : "",
               },
               {
                 icon: icons.shield,
-                color: "rose",
                 title: "AI Governance & Model Risk Awareness",
                 desc: "Benchmarked 9 LLMs: 84% exhibited systematic overconfidence; nominal 99% CIs covered only 65% of outcomes. Documented dual-validation framework — no AI output enters a financial deliverable without human sign-off.",
                 tools: ["Python", "ECE Analysis", "Statistical Testing", "LLM Calibration"],
-                accent: d ? "border-rose-500/20 hover:border-rose-500/40" : "border-rose-200 hover:border-rose-300",
+                gradBar: "from-rose-500 to-pink-400",
+                accent: d ? "border-rose-500/20 hover:border-rose-500/35" : "border-rose-200 hover:border-rose-300",
                 iconBg: d ? "bg-rose-500/10 text-rose-400" : "bg-rose-50 text-rose-600",
-                tagBg: d ? "bg-rose-500/10 text-rose-400" : "bg-rose-50 text-rose-700",
+                tagBg: d ? "bg-rose-500/10 text-rose-400 border border-rose-500/15" : "bg-rose-50 text-rose-700 border border-rose-200",
+                glow: d ? "group-hover:shadow-[0_8px_32px_rgba(244,63,94,0.12)]" : "",
               },
             ].map((cap, i) => (
-              <div key={i} className={`group relative rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${d ? `bg-gray-900/60 ${cap.accent}` : `bg-white ${cap.accent} shadow-sm hover:shadow-md`}`}>
-                <div className="flex items-start gap-4 mb-4">
-                  <div className={`p-2.5 rounded-xl flex-shrink-0 ${cap.iconBg}`}>
-                    {cap.icon}
-                  </div>
-                  <h3 className={`text-[14px] font-bold leading-snug pt-1 ${d ? "text-gray-100" : "text-gray-900"}`}>{cap.title}</h3>
+              <div key={i} className={`cap-card card-premium group relative rounded-2xl border p-6 overflow-hidden flex flex-col ${cap.glow} ${d ? `bg-gray-900/60 ${cap.accent}` : `bg-white ${cap.accent} shadow-sm hover:shadow-xl`}`}>
+                {/* Gradient top accent bar */}
+                <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${cap.gradBar} opacity-40 group-hover:opacity-100 transition-opacity duration-500`} />
+                {/* Number watermark */}
+                <span className={`absolute top-3.5 right-4 text-[28px] font-black tabular-nums leading-none pointer-events-none select-none ${d ? "text-white/[0.04] group-hover:text-white/[0.08]" : "text-black/[0.04] group-hover:text-black/[0.07]"} transition-colors duration-300`}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                {/* Icon */}
+                <div className={`inline-flex p-3 rounded-2xl mb-5 ${cap.iconBg} group-hover:scale-110 transition-transform duration-300 w-fit`}>
+                  {cap.icon}
                 </div>
-                <p className={`text-[13px] leading-relaxed mb-4 ${d ? "text-gray-500" : "text-gray-600"}`}>{cap.desc}</p>
+                <h3 className={`text-[14px] font-bold leading-snug mb-3 ${d ? "text-gray-100 group-hover:text-white" : "text-gray-900"} transition-colors duration-200`}>{cap.title}</h3>
+                <p className={`text-[13px] leading-relaxed mb-5 flex-1 ${d ? "text-gray-500" : "text-gray-600"}`}>{cap.desc}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {cap.tools.map(t => (
                     <span key={t} className={`text-[11px] font-medium px-2 py-0.5 rounded-md ${cap.tagBg}`}>{t}</span>
@@ -703,36 +714,39 @@ function Home({ c, d, nav }) {
           </div>
 
           {/* AI Workflow Strip */}
-          <div className={`mt-12 rounded-2xl border p-6 ${d ? "bg-gray-900/40 border-white/[0.06]" : "bg-gray-50 border-gray-200"}`}>
-            <p className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-5 text-center ${d ? "text-gray-600" : "text-gray-400"}`}>
-              AI-Augmented Workflow · Human Validation at Every Step
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-0">
-              {[
-                { step: "01", label: "Market / Filing Data", sub: "yfinance · SEC · Bloomberg", icon: icons.db },
-                { step: "02", label: "AI-Assisted Analysis", sub: "Python · Claude · Modeling", icon: icons.brain },
-                { step: "03", label: "Human Validation", sub: "Cross-check · Source verify", icon: icons.shield },
-                { step: "04", label: "Financial Output", sub: "Reports · Dashboards · Models", icon: icons.bar },
-              ].map((step, i, arr) => (
-                <div key={i} className="flex items-center">
-                  <div className={`flex flex-col items-center text-center px-5 py-3 rounded-xl transition-all duration-200 ${d ? "hover:bg-white/[0.03]" : "hover:bg-white"}`}>
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2 ${
-                      i === 2 ? (d ? "bg-emerald-500/15 text-emerald-400" : "bg-emerald-50 text-emerald-600")
-                              : (d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600")
-                    }`}>
-                      {step.icon}
+          <div className={`mt-12 rounded-2xl border overflow-hidden relative ${d ? "border-white/[0.06] bg-gradient-to-br from-indigo-950/50 via-gray-900/60 to-violet-950/30" : "border-indigo-100 bg-gradient-to-br from-indigo-50/70 via-white to-violet-50/40"}`}>
+            {/* Subtle glow orb */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-16 blur-3xl rounded-full ${d ? "bg-indigo-500/8" : "bg-indigo-100/60"}`} />
+            </div>
+            <div className="relative px-6 py-7">
+              <p className={`text-[10px] font-bold tracking-[0.22em] uppercase mb-7 text-center ${d ? "text-indigo-400/70" : "text-indigo-500/80"}`}>
+                AI-Augmented Workflow · Human Validation at Every Step
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center">
+                {[
+                  { step: "01", label: "Market / Filing Data", sub: "yfinance · SEC · Bloomberg", icon: icons.db, color: d ? "bg-indigo-500/15 text-indigo-400" : "bg-indigo-50 text-indigo-600" },
+                  { step: "02", label: "AI-Assisted Analysis", sub: "Python · Claude · Modeling", icon: icons.brain, color: d ? "bg-violet-500/15 text-violet-400" : "bg-violet-50 text-violet-600" },
+                  { step: "03", label: "Human Validation", sub: "Cross-check · Source verify", icon: icons.shield, color: d ? "bg-emerald-500/20 text-emerald-400" : "bg-emerald-50 text-emerald-600" },
+                  { step: "04", label: "Financial Output", sub: "Reports · Dashboards · Models", icon: icons.bar, color: d ? "bg-indigo-500/15 text-indigo-400" : "bg-indigo-50 text-indigo-600" },
+                ].map((step, i, arr) => (
+                  <div key={i} className="flex items-center">
+                    <div className={`group flex flex-col items-center text-center px-6 py-3 rounded-2xl cursor-default transition-all duration-200 ${d ? "hover:bg-white/[0.04]" : "hover:bg-white"}`}>
+                      <div className={`w-11 h-11 rounded-2xl flex items-center justify-center mb-3 ${step.color} transition-transform duration-300 group-hover:scale-110 ${i === 2 ? (d ? "shadow-[0_0_18px_rgba(16,185,129,0.2)]" : "") : ""}`}>
+                        {step.icon}
+                      </div>
+                      <span className={`text-[9px] font-black tracking-[0.2em] uppercase mb-1 ${d ? "text-gray-700" : "text-gray-400"}`}>{step.step}</span>
+                      <span className={`text-[12px] font-bold ${d ? "text-gray-200" : "text-gray-800"}`}>{step.label}</span>
+                      <span className={`text-[10px] mt-0.5 ${d ? "text-gray-600" : "text-gray-400"}`}>{step.sub}</span>
                     </div>
-                    <span className={`text-[9px] font-bold tracking-[0.15em] uppercase mb-0.5 ${d ? "text-gray-700" : "text-gray-400"}`}>{step.step}</span>
-                    <span className={`text-[12px] font-semibold ${d ? "text-gray-300" : "text-gray-700"}`}>{step.label}</span>
-                    <span className={`text-[10px] mt-0.5 ${d ? "text-gray-600" : "text-gray-400"}`}>{step.sub}</span>
+                    {i < arr.length - 1 && (
+                      <div className="hidden sm:flex items-center mx-0.5">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`${d ? "text-indigo-700/50" : "text-indigo-200"}`} style={{ animation: "pulse 2.5s ease-in-out infinite" }}><polyline points="9 18 15 12 9 6"/></svg>
+                      </div>
+                    )}
                   </div>
-                  {i < arr.length - 1 && (
-                    <div className={`hidden sm:flex items-center text-gray-700 mx-1`}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={d ? "text-gray-700" : "text-gray-300"}><polyline points="9 18 15 12 9 6"/></svg>
-                    </div>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -745,7 +759,6 @@ function Home({ c, d, nav }) {
             <div>
               <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>Applied Analytical Work</p>
               <h2 className="text-3xl sm:text-4xl font-black tracking-tight">Featured Systems</h2>
-              <p className={`text-sm mt-2 ${d ? "text-gray-500" : "text-gray-500"}`}>Quantitative models, BI platforms, and AI-integrated financial systems.</p>
             </div>
             <div className="flex gap-2 items-center">
               <button
@@ -767,25 +780,25 @@ function Home({ c, d, nav }) {
               {featured.map(p => {
                 const grad = CAT_COLORS[p.cat] || "from-indigo-500 to-violet-500";
                 return (
-                  <div key={p.id} className={`flex-shrink-0 w-[348px] rounded-2xl border overflow-hidden hover-lift card-premium cursor-pointer group transition-all duration-300 ${d ? "bg-gray-900/75 border-white/[0.08] hover:border-indigo-500/35" : "bg-white border-gray-200 hover:border-indigo-200 shadow-sm hover:shadow-lg"}`}>
-                    {/* Top accent — thicker for premium feel */}
-                    <div className={`h-[3px] w-full bg-gradient-to-r ${grad}`} />
+                  <div key={p.id} className={`flex-shrink-0 w-[348px] rounded-2xl border overflow-hidden card-premium cursor-pointer group transition-all duration-300 hover:-translate-y-1 ${d ? "bg-gray-900/75 border-white/[0.08] hover:border-indigo-500/40 hover:shadow-[0_16px_48px_rgba(99,102,241,0.15)]" : "bg-white border-gray-200 hover:border-indigo-200 shadow-sm hover:shadow-xl"}`}>
+                    {/* Gradient top accent — grows on hover */}
+                    <div className={`h-[3px] w-full bg-gradient-to-r ${grad} transition-all duration-300`} style={{ boxShadow: `0 0 12px rgba(99,102,241,0.3)` }} />
                     <div className="p-6">
                       <div className="flex items-center gap-2.5 mb-4">
-                        <div className="p-2 rounded-xl" style={{ background: "rgba(99,102,241,0.1)" }}>
+                        <div className={`p-2 rounded-xl transition-transform duration-300 group-hover:scale-110`} style={{ background: "rgba(99,102,241,0.1)" }}>
                           <span className="text-indigo-400">{catIcon[p.cat] || icons.code}</span>
                         </div>
                         <span className={`text-[11px] font-bold px-2.5 py-1 rounded-lg tracking-wide ${d ? "bg-white/[0.06] text-gray-400" : "bg-gray-100 text-gray-500"}`}>{p.cat}</span>
-                        {p.featured && <span className="ml-auto text-amber-400/80">{icons.star}</span>}
+                        {p.featured && <span className="ml-auto text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.4)]">{icons.star}</span>}
                       </div>
                       <h3 className={`text-[15px] font-semibold leading-snug mb-2.5 ${d ? "text-gray-100 group-hover:text-white" : "text-gray-900"} transition-colors`}>{p.title}</h3>
                       <p className={`text-[13px] leading-relaxed mb-4 line-clamp-3 ${d ? "text-gray-500" : "text-gray-500"}`}>{p.sum}</p>
-                      <div className="flex flex-wrap gap-1.5 mb-4">
+                      <div className="flex flex-wrap gap-1.5 mb-5">
                         {p.tags.slice(0, 3).map(t => (
                           <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-white/[0.04] text-gray-500 border border-white/[0.07]" : "bg-gray-50 text-gray-400 border border-gray-200"}`}>{t}</span>
                         ))}
                       </div>
-                      <div className={`flex items-center gap-1.5 text-[12px] font-semibold text-indigo-400 group-hover:text-indigo-300 transition-colors`}>
+                      <div className={`flex items-center gap-1.5 text-[12px] font-semibold text-indigo-400 group-hover:text-indigo-300 group-hover:gap-2 transition-all duration-200`}>
                         View project {icons.chevR}
                       </div>
                     </div>

@@ -812,12 +812,25 @@ input:focus, textarea:focus, select:focus, button:focus-visible {
    CAPABILITY CARD HOVER GLOW
    ════════════════════════════════════════════════════════════════ */
 .cap-card {
-  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease, border-color 0.25s ease;
 }
 .cap-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 48px rgba(0,0,0,0.3);
+  transform: translateY(-6px);
+  box-shadow: 0 24px 56px rgba(0,0,0,0.32);
 }
+
+/* Stagger children timing — slightly faster reveal */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.52s cubic-bezier(0.16,1,0.3,1), transform 0.52s cubic-bezier(0.16,1,0.3,1);
+}
+.stagger-children.visible > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.04s; }
+.stagger-children.visible > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.10s; }
+.stagger-children.visible > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.16s; }
+.stagger-children.visible > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.22s; }
+.stagger-children.visible > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 0.28s; }
+.stagger-children.visible > *:nth-child(6) { opacity: 1; transform: translateY(0); transition-delay: 0.34s; }
 
 /* ════════════════════════════════════════════════════════════════
    SCROLLBAR (page-level fine-tuning)
