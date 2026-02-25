@@ -12,8 +12,8 @@ const DEFAULT_CONTENT = {
   site: { name: "Prabin Pandey", domain: "www.prabin.com", tagline: "Finance × Data × AI" },
   hero: {
     greeting: "Hi, I'm", name: "Prabin Pandey",
-    roles: ["Financial Analyst", "CFA Candidate", "Data-Driven Decision Maker"],
-    desc: "Finance professional specializing in quantitative modeling, data analytics, and AI-driven research. I build integrated financial models, interactive BI dashboards, and machine learning tools — bridging traditional finance with modern data science to deliver investment insight and business value.",
+    roles: ["AI-Augmented Financial Analyst", "Quantitative Systems Builder", "Investment Analytics Specialist"],
+    desc: "MS Financial Analysis candidate at Temple University (Fox School of Business). I build quantitative financial systems — derivatives pricing engines, portfolio risk analytics, SEC document intelligence pipelines, and AI-integrated decision-support dashboards — with documented human validation at every AI-assisted step.",
     cta1: "View Projects", cta2: "Download Resume",
     stats: [{ v: "3.98", l: "GPA" }, { v: "20+", l: "Projects" }, { v: "10+", l: "Tools" }, { v: "CFA", l: "Level 1 Candidate" }]
   },
@@ -36,7 +36,7 @@ const DEFAULT_CONTENT = {
       { n: "Capital IQ", cat: "Finance", lv: 75 }
     ],
     certs: ["CFA Level I Candidate"],
-    now: "Deepening expertise in AI applications for portfolio management and quantitative finance. Advancing toward the CFA Level I exam. Open to full-time roles in investment research, financial analysis, and data-driven finance."
+    now: "Actively seeking Summer 2026 internship and full-time opportunities in investment analytics, financial data engineering, and AI-augmented research at firms such as BlackRock, JPMorgan, Vanguard, or quantitative finance / AI analytics teams. Advancing toward the CFA Level I exam. Available May 2026."
   },
   projects: [
     { id: "pe", title: "Private Equity Transaction & Debt Covenant Model – Pharma Brands Inc.", cat: "Financial Modeling (Excel)", yr: "2024", sum: "Comprehensive 3-statement financial model for Pharma Brands Inc. special dividend recapitalization. Includes projected IS/BS/CF, debt schedule with term loan + revolver, and debt covenant compliance testing (Total Debt/EBITDA ≤ 3.0x, EBIT/Interest ≥ 6.0x). All covenants pass across the 5-year projection.", tags: ["Financial Modeling", "LBO", "Debt Covenants", "Sensitivity Analysis", "3-Statement Model", "Recapitalization"], tools: ["Excel"], metrics: ["6-sheet integrated model", "$3.25B revenue base growing to $4.07B", "All covenants pass (5 years)", "Debt/EBITDA from 2.46x → 0.0x", "EBIT/Interest from 13.1x → 97.0x"], featured: true, cs: { problem: "Pharma Brands Inc. is evaluating a $1B special dividend payment funded by a leveraged recapitalization. The transaction requires a comprehensive financial model to project the company's ability to service new debt (term loan + revolver) while maintaining compliance with restrictive debt covenants over a 5-year horizon.", approach: "Built a fully integrated 6-sheet Excel model: Transaction summary, Projected Income Statement, Balance Sheet, Cash Flow Statement, Debt Schedule (term loan + revolver with automatic sweep), and RE/Fixed Assets Schedule. Revenue assumptions drive through all statements with dynamic debt paydown from excess cash flow.", data: "Pharma Brands Inc. base year (2021) actuals: $3.25B revenue, $345M EBITDA (10.6% margin), $202M net income. $200M term loan at 6% with 20% annual amortization. Revolver facility at 6% interest on average balance. 25% tax rate.", methods: "Revenue growth (5% → 4%), margin expansion (EBITDA 10.6% → 13.0%), COGS/SGA/distribution assumptions as % of revenue, working capital modeling (DSO, DIO, DPO), CapEx at ~2.2% of revenue, automatic cash sweep to repay revolver, dual covenant testing: Total Debt/EBITDA (max 3.0x stepping to 1.5x) and EBIT/Interest Coverage (min 6.0x stepping to 12.0x).", results: "Model projects full revolver paydown by 2026 ($763M → $0). All debt covenants pass across the entire projection period. Net income grows from $200M to $331M. Cash position rebuilds to $133M by 2026. EBITDA margin improves from 11.0% to 13.0% through operational efficiencies.", learnings: "Deepened understanding of leveraged recapitalizations, cash sweep mechanics, covenant step-down structures, and the critical interplay between operating cash flow generation and debt service capacity. The model demonstrates how strong free cash flow can support aggressive leverage while maintaining covenant compliance." }, embed: { type: "excel", url: "", fallback: "Excel Model — Paste your OneDrive/SharePoint embed URL in the admin panel" }, isExcel: true },
@@ -334,8 +334,8 @@ export default function App() {
                     <span className="w-2 h-2 rounded-full bg-emerald-400 dot-pulse" />
                     <span className={`text-xs font-bold tracking-[0.15em] uppercase ${dark ? "text-emerald-400" : "text-emerald-600"}`}>Available for opportunities</span>
                   </div>
-                  <h3 className={`text-2xl sm:text-3xl font-black tracking-tight mb-2 ${dark ? "text-white" : "text-gray-900"}`}>Let's build something together.</h3>
-                  <p className={`text-sm leading-relaxed ${dark ? "text-gray-400" : "text-gray-600"}`}>Open to financial analysis roles, consulting, and AI × finance collaborations.</p>
+                  <h3 className={`text-2xl sm:text-3xl font-black tracking-tight mb-2 ${dark ? "text-white" : "text-gray-900"}`}>Seeking Summer 2026 Opportunities</h3>
+                  <p className={`text-sm leading-relaxed ${dark ? "text-gray-400" : "text-gray-600"}`}>Investment analytics, financial data engineering, AI-augmented research, and quantitative finance roles. Available May 2026.</p>
                 </div>
                 <div className="flex gap-3 flex-shrink-0">
                   <a href={`mailto:${content.contact.email}`} className="btn-primary px-6 py-3 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white rounded-xl text-[13px] font-semibold transition-all duration-200 cta-glow flex items-center gap-2">{icons.mail} Get in touch</a>
@@ -428,18 +428,29 @@ function Home({ c, d, nav }) {
         <div className="absolute top-[30%] left-[45%] w-[400px] h-[300px] hero-orb pointer-events-none"
           style={{ background: d ? "rgba(232,121,249,0.04)" : "transparent", "--blur": "120px" } as React.CSSProperties} />
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-28 w-full">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-24 w-full">
           <div className="max-w-4xl">
+
+            {/* Availability badge */}
+            <div className="animate-fadeUp-2 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border mb-6 text-xs font-semibold tracking-wide"
+              style={{ background: d ? "rgba(16,185,129,0.07)" : "rgba(16,185,129,0.08)", borderColor: d ? "rgba(16,185,129,0.25)" : "rgba(16,185,129,0.3)", color: d ? "#34d399" : "#059669" }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" style={{ animation: "pulse 2s ease-in-out infinite" }} />
+              Seeking Summer 2026 Finance / AI Analytics Opportunities
+            </div>
+
             {/* Name */}
             <h1 className="animate-fadeUp-2 text-[clamp(3rem,7.5vw,5.8rem)] font-black tracking-[-0.035em] leading-[1.02] mb-3">
               <span className="shimmer-text">{hero.name}</span>
             </h1>
 
-            {/* Finance × Data × AI tagline */}
-            <p className="animate-fadeUp-2 text-sm sm:text-base font-bold tracking-[0.22em] uppercase text-indigo-500 mb-6">Finance × Data × AI</p>
+            {/* Subtitle — specific positioning */}
+            <p className="animate-fadeUp-2 text-sm sm:text-base font-bold tracking-[0.18em] uppercase mb-5"
+              style={{ color: d ? "#818cf8" : "#6366f1" }}>
+              AI-Augmented Financial Analytics · Python · Investment Data Systems
+            </p>
 
             {/* Animated role */}
-            <div className="animate-fadeUp-3 h-10 mb-6 flex items-center">
+            <div className="animate-fadeUp-3 h-10 mb-5 flex items-center">
               <span className={`text-xl sm:text-2xl font-semibold ${d ? "text-gray-300" : "text-gray-600"}`}>
                 {hero.roles[ri % hero.roles.length].substring(0, ci)}
               </span>
@@ -466,6 +477,16 @@ function Home({ c, d, nav }) {
               >
                 {icons.dl} {hero.cta2}
               </a>
+              <a href="https://github.com/pabin-pandey" target="_blank" rel="noopener noreferrer"
+                className={`px-4 py-3.5 rounded-xl text-[13px] font-semibold flex items-center gap-2 border transition-all duration-200 hover:-translate-y-0.5 ${d ? "border-white/10 text-gray-400 hover:bg-white/5 hover:text-gray-200 hover:border-white/18" : "border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300"}`}
+                title="GitHub">
+                {icons.github}
+              </a>
+              <a href="https://linkedin.com/in/prabin-pandey-1482362b7/" target="_blank" rel="noopener noreferrer"
+                className={`px-4 py-3.5 rounded-xl text-[13px] font-semibold flex items-center gap-2 border transition-all duration-200 hover:-translate-y-0.5 ${d ? "border-white/10 text-gray-400 hover:bg-white/5 hover:text-gray-200 hover:border-white/18" : "border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300"}`}
+                title="LinkedIn">
+                {icons.linkedin}
+              </a>
             </div>
 
             {/* Stats — premium cards */}
@@ -487,8 +508,9 @@ function Home({ c, d, nav }) {
             <div className="animate-fadeUp-6 flex flex-wrap items-center gap-2 mt-7">
               {[
                 { text: "CFA Level I", sub: "Candidate" },
-                { text: "Bloomberg · FactSet", sub: "Capital IQ" },
+                { text: "Bloomberg · FactSet · Capital IQ", sub: "Proficient" },
                 { text: "Python · R · SQL", sub: "Quant Stack" },
+                { text: "Fox School of Business", sub: "MS Financial Analysis" },
               ].map((chip, i) => (
                 <span key={i} className="cred-chip">
                   <span>{chip.text}</span>
@@ -507,14 +529,141 @@ function Home({ c, d, nav }) {
         </div>
       </section>
 
+      {/* ═══ CORE CAPABILITIES ═══ */}
+      <section className={`py-24 border-t ${d ? "border-white/[0.05] bg-gradient-to-b from-gray-950 to-gray-900/60" : "border-gray-100 bg-gradient-to-b from-white to-gray-50/80"}`}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-12">
+            <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>What I Build</p>
+            <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">Core Capabilities</h2>
+            <p className={`text-sm max-w-2xl leading-relaxed ${d ? "text-gray-500" : "text-gray-500"}`}>
+              Applied analytical systems built from real financial workflows — not classroom exercises. Each capability reflects production-grade work validated against institutional standards.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              {
+                icon: icons.sheet,
+                color: "emerald",
+                title: "AI-Augmented Financial Modeling",
+                desc: "Parallel WACC worksheets — one analyst-built, one Claude-assisted — enabling direct output comparison and model risk auditing. DCF, LBO, and PE exit models with scenario sensitivity analysis.",
+                tools: ["Excel", "Python", "Claude", "DCF", "LBO"],
+                accent: d ? "border-emerald-500/20 hover:border-emerald-500/40" : "border-emerald-200 hover:border-emerald-300",
+                iconBg: d ? "bg-emerald-500/10 text-emerald-400" : "bg-emerald-50 text-emerald-600",
+                tagBg: d ? "bg-emerald-500/10 text-emerald-400" : "bg-emerald-50 text-emerald-700",
+              },
+              {
+                icon: icons.bar,
+                color: "violet",
+                title: "Portfolio Risk & Performance Analytics",
+                desc: "35-year fund analytics engine computing Sharpe ratio, max drawdown, alpha, beta, skewness, and Carhart 4-factor attribution. Live market data integration via yfinance API.",
+                tools: ["Python", "yfinance", "Pandas", "NumPy", "Factor Models"],
+                accent: d ? "border-violet-500/20 hover:border-violet-500/40" : "border-violet-200 hover:border-violet-300",
+                iconBg: d ? "bg-violet-500/10 text-violet-400" : "bg-violet-50 text-violet-600",
+                tagBg: d ? "bg-violet-500/10 text-violet-400" : "bg-violet-50 text-violet-700",
+              },
+              {
+                icon: icons.trend,
+                color: "blue",
+                title: "Quantitative Derivatives Pricing",
+                desc: "Black-Scholes implementation with full Greeks (Δ, Γ, Θ, ν, ρ), Monte Carlo GBM simulation (1,000 trials), CRR binomial trees (5,000× convergence analysis), and implied volatility calibration via bisection.",
+                tools: ["Python", "NumPy", "SciPy", "Black-Scholes", "Monte Carlo"],
+                accent: d ? "border-blue-500/20 hover:border-blue-500/40" : "border-blue-200 hover:border-blue-300",
+                iconBg: d ? "bg-blue-500/10 text-blue-400" : "bg-blue-50 text-blue-600",
+                tagBg: d ? "bg-blue-500/10 text-blue-400" : "bg-blue-50 text-blue-700",
+              },
+              {
+                icon: icons.db,
+                color: "amber",
+                title: "Financial Data Engineering",
+                desc: "Multi-asset data alignment pipelines for NVDA, MSFT, SPY, and risk-free rate. SEC 10-K MD&A extraction from HTML filings (GOOGL, META, NFLX) using BeautifulSoup with regex parsing.",
+                tools: ["Python", "BeautifulSoup", "Pandas", "SEC Filings", "APIs"],
+                accent: d ? "border-amber-500/20 hover:border-amber-500/40" : "border-amber-200 hover:border-amber-300",
+                iconBg: d ? "bg-amber-500/10 text-amber-400" : "bg-amber-50 text-amber-600",
+                tagBg: d ? "bg-amber-500/10 text-amber-400" : "bg-amber-50 text-amber-700",
+              },
+              {
+                icon: icons.zap,
+                color: "indigo",
+                title: "Interactive Decision-Support Systems",
+                desc: "Three Streamlit dashboard versions (272 → 380 → 621 lines) with rolling factor analytics, returns histograms, multi-security scatter, and CSV export. Power BI FP&A dashboards and Tableau macroeconomic intelligence platforms.",
+                tools: ["Streamlit", "Power BI", "Tableau", "DAX", "Plotly"],
+                accent: d ? "border-indigo-500/20 hover:border-indigo-500/40" : "border-indigo-200 hover:border-indigo-300",
+                iconBg: d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600",
+                tagBg: d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-700",
+              },
+              {
+                icon: icons.shield,
+                color: "rose",
+                title: "AI Governance & Model Risk Awareness",
+                desc: "Benchmarked 9 LLMs: 84% exhibited systematic overconfidence; nominal 99% CIs covered only 65% of outcomes. Documented dual-validation framework — no AI output enters a financial deliverable without human sign-off.",
+                tools: ["Python", "ECE Analysis", "Statistical Testing", "LLM Calibration"],
+                accent: d ? "border-rose-500/20 hover:border-rose-500/40" : "border-rose-200 hover:border-rose-300",
+                iconBg: d ? "bg-rose-500/10 text-rose-400" : "bg-rose-50 text-rose-600",
+                tagBg: d ? "bg-rose-500/10 text-rose-400" : "bg-rose-50 text-rose-700",
+              },
+            ].map((cap, i) => (
+              <div key={i} className={`group relative rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${d ? `bg-gray-900/60 ${cap.accent}` : `bg-white ${cap.accent} shadow-sm hover:shadow-md`}`}>
+                <div className="flex items-start gap-4 mb-4">
+                  <div className={`p-2.5 rounded-xl flex-shrink-0 ${cap.iconBg}`}>
+                    {cap.icon}
+                  </div>
+                  <h3 className={`text-[14px] font-bold leading-snug pt-1 ${d ? "text-gray-100" : "text-gray-900"}`}>{cap.title}</h3>
+                </div>
+                <p className={`text-[13px] leading-relaxed mb-4 ${d ? "text-gray-500" : "text-gray-600"}`}>{cap.desc}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {cap.tools.map(t => (
+                    <span key={t} className={`text-[11px] font-medium px-2 py-0.5 rounded-md ${cap.tagBg}`}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* AI Workflow Strip */}
+          <div className={`mt-12 rounded-2xl border p-6 ${d ? "bg-gray-900/40 border-white/[0.06]" : "bg-gray-50 border-gray-200"}`}>
+            <p className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-5 text-center ${d ? "text-gray-600" : "text-gray-400"}`}>
+              AI-Augmented Workflow · Human Validation at Every Step
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-0">
+              {[
+                { step: "01", label: "Market / Filing Data", sub: "yfinance · SEC · Bloomberg", icon: icons.db },
+                { step: "02", label: "AI-Assisted Analysis", sub: "Python · Claude · Modeling", icon: icons.brain },
+                { step: "03", label: "Human Validation", sub: "Cross-check · Source verify", icon: icons.shield },
+                { step: "04", label: "Financial Output", sub: "Reports · Dashboards · Models", icon: icons.bar },
+              ].map((step, i, arr) => (
+                <div key={i} className="flex items-center">
+                  <div className={`flex flex-col items-center text-center px-5 py-3 rounded-xl transition-all duration-200 ${d ? "hover:bg-white/[0.03]" : "hover:bg-white"}`}>
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2 ${
+                      i === 2 ? (d ? "bg-emerald-500/15 text-emerald-400" : "bg-emerald-50 text-emerald-600")
+                              : (d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600")
+                    }`}>
+                      {step.icon}
+                    </div>
+                    <span className={`text-[9px] font-bold tracking-[0.15em] uppercase mb-0.5 ${d ? "text-gray-700" : "text-gray-400"}`}>{step.step}</span>
+                    <span className={`text-[12px] font-semibold ${d ? "text-gray-300" : "text-gray-700"}`}>{step.label}</span>
+                    <span className={`text-[10px] mt-0.5 ${d ? "text-gray-600" : "text-gray-400"}`}>{step.sub}</span>
+                  </div>
+                  {i < arr.length - 1 && (
+                    <div className={`hidden sm:flex items-center text-gray-700 mx-1`}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={d ? "text-gray-700" : "text-gray-300"}><polyline points="9 18 15 12 9 6"/></svg>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ FEATURED CAROUSEL ═══ */}
       <section className={`py-28 ${d ? "bg-gradient-to-b from-gray-950/0 via-gray-900/40 to-gray-950/0" : "bg-gradient-to-b from-white/0 via-gray-50/90 to-white/0"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-12">
             <div>
-              <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>Featured Work</p>
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight">Selected Projects</h2>
-              <p className={`text-sm mt-2 ${d ? "text-gray-500" : "text-gray-500"}`}>End-to-end finance × data work.</p>
+              <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>Applied Analytical Work</p>
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight">Featured Systems</h2>
+              <p className={`text-sm mt-2 ${d ? "text-gray-500" : "text-gray-500"}`}>Quantitative models, BI platforms, and AI-integrated financial systems.</p>
             </div>
             <div className="flex gap-2 items-center">
               <button
@@ -707,39 +856,47 @@ function About({ c, d }) {
         </div>
       </section>
 
-      {/* ── Skills — premium grid with bars ── */}
+      {/* ── Skills — grouped chips (no progress bars) ── */}
       <section className="mb-20">
         <div className="flex items-center gap-3 mb-8">
           <span className={`p-2 rounded-xl ${d ? "bg-violet-500/10 text-violet-400" : "bg-violet-50 text-violet-600"}`}>{icons.code}</span>
           <h2 className="text-2xl font-bold tracking-tight">Skills &amp; Tools</h2>
         </div>
-        {["Finance", "Tools", "Viz", "Code"].map(cat => {
-          const skills = about.skills.filter(s => s.cat === cat);
-          if (!skills.length) return null;
-          const catMeta = SKILL_CATS[cat];
-          const catLabels = { Finance: "Finance & Markets", Tools: "Productivity Tools", Viz: "Data Visualization", Code: "Programming" };
-          const catColor = { Finance: "from-emerald-500 to-teal-400", Tools: "from-amber-400 to-orange-400", Viz: "from-blue-400 to-cyan-400", Code: "from-indigo-500 to-violet-400" };
-          return (
-            <div key={cat} className="mb-8">
-              <p className={`text-[10px] font-bold tracking-[0.18em] uppercase mb-4 ${d ? "text-gray-600" : "text-gray-400"}`}>{catLabels[cat]}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {skills.map((sk) => (
-                  <div key={sk.n} className={`px-4 py-3 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 ${catMeta.bg(d)}`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[13px] font-semibold">{sk.n}</span>
-                      <span className={`text-[10px] font-bold tabular-nums ${d ? "opacity-50" : "opacity-40"}`}>{sk.lv}%</span>
-                    </div>
-                    <div className="skill-bar-track">
-                      <div className="skill-bar-fill" style={{ width: `${sk.lv}%`, background: `linear-gradient(90deg, var(--from), var(--to))` } as React.CSSProperties}>
-                        <div className={`h-full rounded-full bg-gradient-to-r ${catColor[cat]}`} style={{ width: "100%" }} />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+        {[
+          {
+            label: "Financial Analysis",
+            color: d ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-emerald-50 text-emerald-700 border border-emerald-200",
+            headerColor: d ? "text-emerald-500" : "text-emerald-700",
+            items: ["DCF Valuation", "LBO Modeling", "WACC / CAPM", "Derivatives Pricing", "Portfolio Analytics", "Factor Models", "Debt Covenant Analysis", "M&A / IPO Structuring", "Financial Statement Analysis"],
+          },
+          {
+            label: "Data & Engineering",
+            color: d ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" : "bg-indigo-50 text-indigo-700 border border-indigo-200",
+            headerColor: d ? "text-indigo-400" : "text-indigo-700",
+            items: ["Python (NumPy, Pandas, SciPy)", "SQL / MySQL", "R (Statistical Analysis)", "BeautifulSoup / Web Scraping", "Data Pipeline Engineering", "Excel (Advanced Modeling)", "Streamlit Development", "API Integration (yfinance)"],
+          },
+          {
+            label: "Visualization & BI",
+            color: d ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" : "bg-blue-50 text-blue-700 border border-blue-200",
+            headerColor: d ? "text-blue-400" : "text-blue-700",
+            items: ["Power BI (DAX, Power Query)", "Tableau (LOD, Parameters)", "Matplotlib / Seaborn", "Plotly (Interactive Charts)", "Executive Dashboard Design"],
+          },
+          {
+            label: "AI & Research Tools",
+            color: d ? "bg-violet-500/10 text-violet-400 border border-violet-500/20" : "bg-violet-50 text-violet-700 border border-violet-200",
+            headerColor: d ? "text-violet-400" : "text-violet-700",
+            items: ["Generative AI (Claude, GPT)", "LLM Calibration Testing", "Prompt-Controlled Development", "AI Model Risk Awareness", "Bloomberg Terminal", "FactSet", "Capital IQ"],
+          },
+        ].map(group => (
+          <div key={group.label} className="mb-7">
+            <p className={`text-[10px] font-bold tracking-[0.18em] uppercase mb-3 ${group.headerColor}`}>{group.label}</p>
+            <div className="flex flex-wrap gap-2">
+              {group.items.map(item => (
+                <span key={item} className={`text-[12px] font-medium px-3 py-1.5 rounded-lg ${group.color}`}>{item}</span>
+              ))}
             </div>
-          );
-        })}
+          </div>
+        ))}
       </section>
 
       {/* ── Certifications ── */}
@@ -761,20 +918,28 @@ function About({ c, d }) {
         </div>
       </section>
 
-      {/* ── Now ── */}
+      {/* ── Availability & Now ── */}
       <section>
         <div className="flex items-center gap-3 mb-6">
-          <span className={`p-2.5 rounded-xl ${d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600"}`}>{icons.zap}</span>
-          <h2 className="text-2xl font-bold tracking-tight">What I'm Doing Now</h2>
+          <span className={`p-2.5 rounded-xl ${d ? "bg-emerald-500/10 text-emerald-400" : "bg-emerald-50 text-emerald-600"}`}>{icons.zap}</span>
+          <h2 className="text-2xl font-bold tracking-tight">Availability</h2>
         </div>
-        <div className={`aurora-border relative overflow-hidden rounded-2xl border p-7 ${d ? "bg-indigo-500/[0.04] border-indigo-500/18" : "bg-indigo-50 border-indigo-200"}`}>
-          <div className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl opacity-25" style={{ background: "radial-gradient(circle, #6366f1, transparent)" }} />
-          <div className="absolute -bottom-10 -left-10 w-36 h-36 rounded-full blur-2xl opacity-15" style={{ background: "radial-gradient(circle, #a78bfa, transparent)" }} />
-          <div className="relative flex gap-3 mb-3">
-            <span className="mt-1.5 w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 dot-pulse" />
-            <span className={`text-[10px] font-bold uppercase tracking-[0.18em] ${d ? "text-emerald-400" : "text-emerald-600"}`}>Currently active</span>
+        <div className={`relative overflow-hidden rounded-2xl border p-7 ${d ? "bg-emerald-950/20 border-emerald-500/20" : "bg-emerald-50 border-emerald-200"}`}>
+          <div className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl opacity-20" style={{ background: "radial-gradient(circle, #10b981, transparent)" }} />
+          <div className="relative">
+            <div className="flex items-center gap-2.5 mb-4">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 flex-shrink-0" style={{ animation: "pulse 2s ease-in-out infinite" }} />
+              <span className={`text-[11px] font-bold uppercase tracking-[0.18em] ${d ? "text-emerald-400" : "text-emerald-600"}`}>Open to opportunities — Available May 2026</span>
+            </div>
+            <p className={`text-[15px] leading-[1.8] ${d ? "text-gray-300" : "text-gray-700"}`}>{about.now}</p>
+            <div className="flex flex-wrap gap-2 mt-5">
+              {["Investment Analytics", "Financial Data Engineering", "AI-Augmented Research", "Portfolio Analytics", "Quantitative Finance"].map(role => (
+                <span key={role} className={`text-xs font-medium px-3 py-1.5 rounded-lg ${d ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-emerald-100 text-emerald-700 border border-emerald-200"}`}>
+                  {role}
+                </span>
+              ))}
+            </div>
           </div>
-          <p className={`text-[15px] leading-[1.8] ${d ? "text-gray-300" : "text-gray-700"}`}>{about.now}</p>
         </div>
       </section>
 
