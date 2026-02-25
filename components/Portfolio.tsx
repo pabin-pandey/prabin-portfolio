@@ -193,20 +193,30 @@ export default function App() {
     window.history.scrollRestoration = 'manual';
     const VALID_PAGES = ['about', 'projects', 'blog', 'contact'];
     const handlePopstate = () => {
+      try {
+        const raw = sessionStorage.getItem('returnTo');
+        if (raw) {
+          const saved = JSON.parse(raw) as { path: string; hash: string; scrollY: number; ts: number };
+          if (Date.now() - (saved.ts || 0) <= 30 * 60 * 1000 && saved.path === window.location.pathname) {
+            // Restore section from saved hash (may differ from URL hash if pushState wasn't used)
+            const savedHash = (saved.hash || '').replace('#', '').toLowerCase();
+            if (savedHash && VALID_PAGES.includes(savedHash)) {
+              setPage(savedHash);
+              window.history.replaceState(null, '', `/${saved.hash}`);
+            } else {
+              setPage('home');
+            }
+            sessionStorage.removeItem('returnTo');
+            const sy = saved.scrollY || 0;
+            if (sy > 0) requestAnimationFrame(() => setTimeout(() => window.scrollTo({ top: sy, behavior: 'instant' as ScrollBehavior }), 200));
+            return;
+          }
+        }
+      } catch { /* ignore */ }
+      // Fall back to URL hash
       const hash = window.location.hash.replace('#', '').toLowerCase();
       if (hash && VALID_PAGES.includes(hash)) setPage(hash);
       else if (!hash) setPage('home');
-      try {
-        const raw = sessionStorage.getItem('returnTo');
-        if (!raw) return;
-        const saved = JSON.parse(raw) as { path: string; hash: string; scrollY: number; ts: number };
-        if (Date.now() - (saved.ts || 0) > 30 * 60 * 1000) { sessionStorage.removeItem('returnTo'); return; }
-        if (saved.path === window.location.pathname && (saved.hash || '') === window.location.hash) {
-          sessionStorage.removeItem('returnTo');
-          const sy = saved.scrollY || 0;
-          if (sy > 0) requestAnimationFrame(() => setTimeout(() => window.scrollTo({ top: sy, behavior: 'instant' as ScrollBehavior }), 200));
-        }
-      } catch { /* ignore */ }
     };
     window.addEventListener('popstate', handlePopstate);
     return () => window.removeEventListener('popstate', handlePopstate);

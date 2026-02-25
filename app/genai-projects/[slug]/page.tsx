@@ -42,6 +42,7 @@ export default function GenAiProjectPage() {
   const slug    = params.slug as string;
   const project = genaiProjects.find((p) => p.id === slug);
   const [activeTab, setActiveTab] = useState<TabId>('overview');
+  const [streamlitLoaded, setStreamlitLoaded] = useState(false);
 
   if (!project) {
     return (
@@ -258,7 +259,6 @@ export default function GenAiProjectPage() {
                 {/* Header bar */}
                 <div className="flex items-center justify-between px-5 py-3 border-b border-gray-800 bg-gray-900/80 backdrop-blur-sm">
                   <div className="flex items-center gap-3">
-                    {/* Traffic lights */}
                     <div className="flex items-center gap-1.5">
                       <span className="w-3 h-3 rounded-full bg-red-500/70" />
                       <span className="w-3 h-3 rounded-full bg-yellow-500/70" />
@@ -271,20 +271,44 @@ export default function GenAiProjectPage() {
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium bg-emerald-950/50 border border-emerald-700/50 px-2.5 py-1 rounded-full">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      Live App
-                    </span>
+                    {streamlitLoaded ? (
+                      <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium bg-emerald-950/50 border border-emerald-700/50 px-2.5 py-1 rounded-full">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        Live
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1.5 text-xs text-amber-400 font-medium bg-amber-950/50 border border-amber-700/50 px-2.5 py-1 rounded-full">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                        Waking up…
+                      </span>
+                    )}
                     <a
                       href={project.streamlitUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-violet-400 hover:text-violet-300 border border-violet-700/50 bg-violet-950/30 px-2.5 py-1 rounded-full transition-colors"
+                      className="text-xs text-violet-400 hover:text-violet-300 border border-violet-700/50 bg-violet-950/30 px-2.5 py-1 rounded-full transition-colors font-medium"
                     >
                       Open Full Screen ↗
                     </a>
                   </div>
                 </div>
+
+                {/* Sleep-state notice shown while iframe loads */}
+                {!streamlitLoaded && (
+                  <div className="px-5 py-4 border-b border-gray-800 bg-amber-950/10 flex items-start gap-3">
+                    <span className="text-amber-400 text-lg shrink-0">⏱</span>
+                    <div>
+                      <p className="text-sm font-medium text-amber-300">App is waking up</p>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        Streamlit Community Cloud apps sleep after inactivity. It will be ready in ~30 seconds.
+                        {' '}While you wait, use{' '}
+                        <a href={project.streamlitUrl} target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline">Open Full Screen ↗</a>
+                        {' '}for the best experience.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Iframe */}
                 <iframe
                   src={project.streamlitUrl}
@@ -294,6 +318,7 @@ export default function GenAiProjectPage() {
                   title="Portfolio Analytics Dashboard — Live Streamlit App"
                   className="block bg-gray-950"
                   allow="fullscreen"
+                  onLoad={() => setStreamlitLoaded(true)}
                 />
               </div>
             ) : (
