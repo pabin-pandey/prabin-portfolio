@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { pythonProjects, PythonProject } from '@/lib/projects-data';
 import { useParams } from 'next/navigation';
 import ProfessionalNotebookParser from '@/components/ProfessionalNotebookParser';
+import BackButton from '@/components/BackButton';
 
 // ─── Icon set ─────────────────────────────────────────────────────────────────
 const Icon = {
@@ -52,9 +53,9 @@ export default function ProjectDetailPage() {
         <p className="text-5xl mb-4">🔍</p>
         <h1 className="text-2xl font-bold text-white mb-2">Project not found</h1>
         <p className="text-gray-400 mb-6">The project <code className="text-blue-400">{slug}</code> does not exist.</p>
-        <Link href="/projects" className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium transition-colors">
+        <BackButton fallback="/projects" className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium transition-colors">
           ← Back to Projects
-        </Link>
+        </BackButton>
       </div>
     );
   }
@@ -71,12 +72,12 @@ export default function ProjectDetailPage() {
       {/* ── Sticky top nav ─────────────────────────────────────────────── */}
       <header className="sticky top-0 z-30 border-b border-gray-800 bg-gray-950/90 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link
-            href="/projects"
+          <BackButton
+            fallback="/projects"
             className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-800"
           >
             {Icon.back} All Projects
-          </Link>
+          </BackButton>
 
           <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${DIFFICULTY_STYLE[project.difficulty]}`}>
             {project.difficulty}

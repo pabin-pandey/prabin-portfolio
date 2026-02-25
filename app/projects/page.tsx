@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { pythonProjects } from '@/lib/projects-data';
+import BackButton from '@/components/BackButton';
 
 const Icon = {
   search: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
@@ -17,6 +18,40 @@ const DIFFICULTY_STYLE: Record<string, string> = {
 
 export default function ProjectsPage() {
   const [query, setQuery] = useState('');
+
+  // Restore scroll position when returning from a project detail page
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem('returnTo');
+      if (raw) {
+        const saved = JSON.parse(raw) as { path: string; scrollY: number; ts: number };
+        if (saved.path === '/projects') {
+          sessionStorage.removeItem('returnTo');
+          const sy = saved.scrollY || 0;
+          if (sy > 0) requestAnimationFrame(() => setTimeout(() => window.scrollTo({ top: sy, behavior: 'instant' as ScrollBehavior }), 80));
+        }
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  // Save return-to state before navigating to a Python project detail page
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      const anchor = (e.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null;
+      if (!anchor) return;
+      const href = anchor.getAttribute('href') || '';
+      if (href.startsWith('/projects/')) {
+        sessionStorage.setItem('returnTo', JSON.stringify({
+          path: '/projects',
+          hash: '',
+          scrollY: window.scrollY,
+          ts: Date.now(),
+        }));
+      }
+    };
+    document.addEventListener('click', handler, true);
+    return () => document.removeEventListener('click', handler, true);
+  }, []);
 
   const filtered = query.trim()
     ? pythonProjects.filter(
@@ -35,9 +70,9 @@ export default function ProjectsPage() {
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Link href="/" className="text-gray-500 hover:text-gray-300 text-sm transition-colors">
+              <BackButton fallback="/" className="text-gray-500 hover:text-gray-300 text-sm transition-colors">
                 Portfolio
-              </Link>
+              </BackButton>
               <span className="text-gray-700 text-sm">/</span>
               <span className="text-sm text-gray-300">Python Projects</span>
             </div>

@@ -43,7 +43,7 @@ const DEFAULT_CONTENT = {
     { id: "pbi", title: "Campus Operations Analytics Dashboard – Temple University", cat: "Power BI", yr: "2025", sum: "Enterprise Power BI dashboard built for Temple University Ambler campus operations. Analyzes visitor traffic patterns, seasonal trends, and resource utilization to support data-driven budget allocation decisions — applying the same BI principles used in financial planning & analysis (FP&A) at Fortune 500 companies.", tags: ["Business Intelligence", "FP&A Analytics", "Data Visualization", "Operational KPIs", "Budget Planning"], tools: ["Power BI", "DAX", "Power Query", "Excel", "SQL"], metrics: ["Reduced manual reporting time by 60%", "3 executive-ready dashboard pages", "YoY trend analysis across 4+ semesters", "Automated KPI tracking"], featured: true, cs: { problem: "Campus leadership relied on manual spreadsheet-based reporting to track visitor traffic and allocate budgets — a process that was slow, error-prone, and lacked the real-time insights needed for effective resource planning. This mirrors the challenge FP&A teams face when transitioning from static Excel reports to dynamic BI solutions.", approach: "Applied financial planning & analysis (FP&A) best practices to an operational context: identified key performance indicators (KPIs), designed a star-schema data model in Power Query, built DAX measures for variance analysis, and created interactive dashboards with drill-down capabilities from summary to detail views.", data: "Visitor traffic logs, campus scheduling data, historical utilization records, budget allocation spreadsheets, and seasonal enrollment data from Temple University Ambler campus.", methods: "Power Query ETL for data cleansing and transformation. Star-schema data model optimized for analytical queries. DAX measures including: YoY growth rates, rolling 4-week averages, peak detection algorithms, budget-vs-actual variance calculations, and semester-over-semester comparisons. Interactive slicers for time period, location, and category filtering. Conditional formatting for KPI status indicators.", results: "Delivered a self-service analytics platform that replaced manual reporting workflows. Campus leadership now has real-time visibility into traffic patterns, can identify underutilized time slots for resource reallocation, and makes budget decisions backed by quantitative evidence. The approach directly parallels how financial analysts use BI tools for revenue forecasting and cost center analysis.", learnings: "Reinforced that the core principles of financial analysis — variance analysis, trend identification, KPI tracking, and data-driven decision making — apply universally across business domains. Power BI's DAX language shares conceptual overlap with financial modeling logic: both require building measures from assumptions and linking them through a coherent analytical framework." }, embed: { type: "powerbi", url: "", fallback: "Power BI Dashboard — To embed: publish your .pbix to Power BI Service → File → Embed → Website or portal → paste the iframe URL here" }, links: { pbix: "https://tuprd-my.sharepoint.com/:u:/g/personal/tuu00197_temple_edu/IQDyxjYKZrRwRreUuC10M4kYAW-GZA4FgEJIeyyC6XOWiT4?e=fcPsWd" }, isPBI: true },
     { id: "tab1", title: "Global Macroeconomic Intelligence Dashboard", cat: "Tableau", yr: "2025", sum: "Executive-grade Tableau dashboard benchmarking four major economies — China, India, Russia, and the USA — across five macroeconomic indicators spanning 34 years of World Bank data. Features dynamic parameter controls, LOD-calculated volatility metrics, and interactive cross-filter actions.", tags: ["Macroeconomic Analysis", "Business Intelligence", "Data Visualization", "Country Benchmarking", "World Bank Data", "Interactive Dashboard"], tools: ["Tableau", "Excel", "LOD Expressions", "Table Calculations"], metrics: ["4 countries benchmarked", "5 economic indicators", "34 years of data (1990–2024)", "9 interactive worksheets", "Dynamic parameter controls", "LOD volatility engine"], featured: true, cs: { problem: "Macroeconomic decision-making — whether for asset allocation, country risk assessment, or strategic planning — requires a unified view of how major economies diverge across key financial indicators over time. Static spreadsheet reports cannot capture the dynamic, multi-dimensional nature of cross-country economic comparison.", approach: "Designed a parameter-driven Tableau workbook using World Bank macroeconomic data. Built a layered architecture: four KPI snapshot sheets feeding into a single coordinated dashboard, a dynamic indicator selector parameter powering all trend charts, and LOD expressions ensuring accurate country-level calculations independent of view context.", data: "World Bank Open Data via Excel: GDP (current USD), CPI Inflation (annual %), Unemployment rate (% of labor force), FDI net inflows (% of GDP), and Real Interest Rate (%) for China, India, Russia, and USA — 1990 through 2024. 260 rows × 7 fields.", methods: "CASE-based parameter routing to switch all charts between 5 indicators with one click. FIXED LOD expressions to calculate latest available year per country. Table calculations (LOOKUP) for YoY GDP growth rate. STDEV aggregation for the 34-year volatility index. Cross-sheet filter actions enabling click-to-drill from map → trend → comparison.", results: "A self-contained macroeconomic research platform that replicates the analytical workflow used by sovereign wealth funds and global asset managers. Any analyst can instantly compare how the 2008 financial crisis, COVID-19 shock, and 2022 geopolitical events impacted each economy's trajectory across all five indicators — in under 30 seconds.", learnings: "LOD expressions are the core differentiator in advanced Tableau work — FIXED calculations allow measure values to remain stable regardless of dashboard filter context, enabling accurate KPI cards that aren't distorted by cross-sheet interactions. Parameter routing is more scalable than building separate sheets per indicator." }, embed: { type: "tableau", url: "https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=yes", fallback: "Interactive Tableau Dashboard — Live on Tableau Public" }, isTableau: true },
     { id: "tab2", title: "Portfolio Risk & Return Analyzer", cat: "Tableau", yr: "2025", sum: "Interactive risk-return visualization tool with efficient frontier plotting, VaR calculations, and Monte Carlo simulation results.", tags: ["Portfolio Theory", "Risk Management", "Monte Carlo", "Efficient Frontier"], tools: ["Tableau", "Python", "NumPy"], metrics: ["Efficient frontier viz", "VaR at 95%/99%", "10K Monte Carlo sims"], featured: false, cs: { problem: "Portfolio managers need intuitive visualization of risk-return tradeoffs and downside risk metrics.", approach: "Combined Python-based quantitative analysis with Tableau's visualization capabilities for interactive exploration.", data: "Historical returns for 50+ assets, correlation matrices, and simulated portfolio outcomes.", methods: "Mean-Variance Optimization, Monte Carlo simulation, VaR (parametric & historical), CVaR.", results: "Interactive tool allowing portfolio managers to visually explore allocation impacts on risk-return profiles.", learnings: "Integrated quantitative finance theory with practical visualization for decision support." }, embed: { type: "tableau", url: "", fallback: "Tableau Dashboard — Paste Tableau Public embed URL in admin" } },
-    { id: "genai", title: "Generative AI in Finance – Copilot Prototype", cat: "GenAI Finance", yr: "2025", sum: "Flagship case study exploring the architecture, safety guardrails, and practical applications of generative AI in financial analysis workflows.", tags: ["Generative AI", "LLM", "Finance Copilot", "RAG", "Safety"], tools: ["Python", "LangChain", "OpenAI API", "Vector DB"], metrics: ["End-to-end RAG pipeline", "Safety guardrail framework", "Interactive demo"], featured: true, cs: { problem: "Financial analysts spend significant time on repetitive research tasks. Deploying LLMs in finance requires careful consideration of accuracy, hallucination risks, and regulatory compliance.", approach: "Designed a Retrieval-Augmented Generation (RAG) architecture for financial document analysis, with multi-layer safety guardrails and human-in-the-loop validation.", data: "Financial reports (10-K, 10-Q), earnings transcripts, market data feeds, and regulatory filings.", methods: "RAG pipeline with domain-specific embeddings; prompt engineering for financial reasoning; output validation; confidence scoring; audit trail logging.", results: "Working prototype that analyzes earnings reports, extracts key metrics, compares against consensus estimates, and generates analyst-ready summaries with source citations.", learnings: "AI in finance must prioritize accuracy over speed. Guardrails are non-negotiable. Human-in-the-loop is essential for high-stakes financial decisions." }, embed: null, isGenAI: true }
+    { id: "genai-in-finance", title: "GenAI in Finance — AI-Augmented Financial Analytics & Portfolio Intelligence", cat: "GenAI Finance", yr: "2025", sum: "Integrated financial analytics system applying generative AI across quantitative modeling, market risk analytics, SEC document intelligence, and interactive decision-support dashboards — with a documented AI governance framework embedded throughout.", tags: ["Generative AI", "Python", "Streamlit", "WACC", "CAPM", "Factor Models", "SEC Filings", "AI Governance", "Portfolio Analytics", "LLM Calibration"], tools: ["Python", "Streamlit", "yfinance", "Pandas", "NumPy", "Plotly", "BeautifulSoup", "Excel", "Claude"], metrics: ["5 Python analytics systems", "3 Streamlit dashboard versions", "35-year fund analytics", "9 LLMs benchmarked"], featured: true, cs: { problem: "Financial analysts face a dual challenge: AI tools accelerate analytical throughput but introduce model risk — hallucination, overconfidence, and unverified assumptions — that can corrupt financial outputs if not explicitly managed.", approach: "Built five Python analytics systems and three Streamlit dashboard versions, with generative AI integrated at the code scaffolding, modeling, and research synthesis stages. Every AI output subject to a documented human validation checkpoint.", data: "Live market data (yfinance), 35-year mutual fund returns, SEC 10-K HTML filings (GOOGL, META, NFLX), 8-source Excel financial data (Coca-Cola KO), Carhart 4-factor and Fama-French 3-factor monthly datasets.", methods: "Covariance-based beta estimation, CAPM, WACC modeling, SMA signal detection, BeautifulSoup HTML parsing, Streamlit dashboard engineering with rolling factor analytics, ECE analysis across 9 LLMs.", results: "Five production Python systems, three client-grade Streamlit dashboards, a validated WACC model, a live SEC extraction pipeline, and a 25-slide LLM governance research presentation.", learnings: "AI in finance must prioritize accuracy over speed. The governance framework — dual-worksheet validation, source verification, distractor prompting, human sign-off — is the differentiator between AI-assisted analysis and AI-contaminated outputs." }, embed: null, isGenAI: true }
   ],
   blog: [{ id: "b1", title: "Why Financial Analysts Should Learn Python", date: "2025-01-15", excerpt: "The financial industry is rapidly adopting Python for everything from risk modeling to algorithmic trading.", content: "Python has become the lingua franca of quantitative finance...", published: true, tags: ["Python", "Finance", "Career"] }],
   testimonials: [
@@ -140,13 +140,82 @@ export default function App() {
   const [scrollY, setScrollY] = useState(0);
   const [admin, setAdmin] = useState(false);
 
+  // Ref keeps the current page accessible inside event-handler closures
+  const pageRef = useRef("home");
+
+  // Scroll position tracking
   useEffect(() => {
     const h = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", h, { passive: true });
     return () => window.removeEventListener("scroll", h);
   }, []);
 
-  const nav = (p: string) => { setPage(p); setMobMenu(false); window.scrollTo(0, 0); };
+  // Keep pageRef in sync with page state
+  useEffect(() => { pageRef.current = page; }, [page]);
+
+  // ── On mount: restore section from URL hash + scroll from sessionStorage ──
+  useEffect(() => {
+    const VALID_PAGES = ['about', 'projects', 'blog', 'contact'];
+
+    // 1. Read URL hash to restore the correct section (e.g. /#projects)
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    if (hash && VALID_PAGES.includes(hash)) setPage(hash);
+
+    // 2. Restore scroll position that was saved before navigating to a detail page
+    try {
+      const raw = sessionStorage.getItem('returnTo');
+      if (raw) {
+        const saved = JSON.parse(raw) as { path: string; hash: string; scrollY: number; ts: number };
+        const MAX_AGE = 30 * 60 * 1000; // 30-minute TTL
+        if (Date.now() - (saved.ts || 0) > MAX_AGE) {
+          sessionStorage.removeItem('returnTo');
+        } else {
+          // Only restore if the current URL matches what we saved
+          const matchPath = saved.path === window.location.pathname;
+          const matchHash = (saved.hash || '') === window.location.hash;
+          if (matchPath && matchHash) {
+            sessionStorage.removeItem('returnTo');
+            const sy = saved.scrollY || 0;
+            if (sy > 0) {
+              requestAnimationFrame(() =>
+                setTimeout(() => window.scrollTo({ top: sy, behavior: 'instant' as ScrollBehavior }), 80)
+              );
+            }
+          }
+        }
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  // ── Save return-to state before any navigation to a sub-page ─────────────
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      const anchor = (e.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null;
+      if (!anchor) return;
+      const href = anchor.getAttribute('href') || '';
+      // Match /r-projects/…, /excel-projects/…, /genai-projects/…, /projects, /projects/…
+      if (/^\/(r-projects|excel-projects|genai-projects|projects)/.test(href)) {
+        sessionStorage.setItem('returnTo', JSON.stringify({
+          path: '/',
+          hash: pageRef.current !== 'home' ? `#${pageRef.current}` : '',
+          scrollY: window.scrollY,
+          ts: Date.now(),
+        }));
+      }
+    };
+    document.addEventListener('click', handler, true); // capture phase
+    return () => document.removeEventListener('click', handler, true);
+  }, []);
+
+  // ── Navigation helper ─────────────────────────────────────────────────────
+  const nav = (p: string) => {
+    setPage(p);
+    setMobMenu(false);
+    window.scrollTo(0, 0);
+    // Push a URL hash so browser back/forward tracks section changes
+    const hash = p === 'home' ? '' : `#${p}`;
+    window.history.pushState({ page: p }, '', `/${hash}`);
+  };
 
   if (admin) return <Admin content={content} setContent={setContent} onClose={() => setAdmin(false)} />;
 
@@ -356,8 +425,8 @@ function Home({ c, d, nav }) {
                 {hero.cta1} {icons.chevR}
               </button>
               <a
-                href="/resume/Prabin_Pandey_Resume.pdf"
-                download
+                href="/resume/Prabin Master Resume - Updated.docx"
+                download="Prabin Master Resume - Updated.docx"
                 className={`px-7 py-3.5 rounded-xl text-[13px] font-semibold flex items-center gap-2 border transition-all duration-200 hover:-translate-y-0.5 ${d ? "border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/18 hover:shadow-lg hover:shadow-black/20" : "border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 hover:shadow-md"}`}
               >
                 {icons.dl} {hero.cta2}
@@ -874,6 +943,10 @@ function Projects({ c, d }) {
                   </button>
                 ) : p.isPython && p.pythonProject ? (
                   <Link href={`/projects/${p.pythonProject.id}`} className={`text-[13px] font-semibold flex items-center gap-1.5 transition-colors ${linkColor}`}>
+                    Open Case Study {icons.chevR}
+                  </Link>
+                ) : p.isGenAI ? (
+                  <Link href={`/genai-projects/${p.id}`} className={`text-[13px] font-semibold flex items-center gap-1.5 transition-colors ${linkColor}`}>
                     Open Case Study {icons.chevR}
                   </Link>
                 ) : (
@@ -1517,17 +1590,31 @@ function PBIDashboardViewer({ d, p }) {
             {p.embed && p.embed.url ? (
               <iframe src={p.embed.url} className="w-full h-96 rounded-lg" frameBorder="0" allowFullScreen title="Power BI Dashboard"/>
             ) : (
-              <div className="flex flex-col items-center justify-center h-64 text-center">
-                <img src={TU_LOGO} alt="Temple" className="h-12 mb-4"/>
-                <p className={`text-sm font-medium mb-2 ${d ? "text-gray-300" : "text-gray-600"}`}>Ready to Embed Live Dashboard</p>
-                <div className={`text-left p-4 rounded-lg border max-w-md w-full ${d ? "bg-gray-900 border-gray-700" : "bg-white border-gray-200"}`}>
-                  <ol className={`text-xs space-y-2 ${d ? "text-gray-400" : "text-gray-600"}`}>
-                    {["Open Prabin_Ambler_Visitors.pbix in Power BI Desktop", "Click Publish → select your workspace", "In Power BI Service → open the report", "File → Embed report → Publish to web", "Copy the iframe src URL", "Paste in Admin → Projects → Embed URL"].map((s, i) => (
-                      <li key={i} className="flex gap-2"><span style={{ color: TU_RED }} className="font-bold">{i+1}.</span><span dangerouslySetInnerHTML={{ __html: s }}/></li>
-                    ))}
-                  </ol>
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <img src={TU_LOGO} alt="Temple University" className="h-7 w-auto" />
+                  <div>
+                    <h3 className={`text-sm font-bold ${d ? "text-gray-100" : "text-gray-900"}`}>Live Dashboard — Ambler Campus Visitor Traffic</h3>
+                    <p className={`text-xs ${d ? "text-gray-500" : "text-gray-400"}`}>Power BI · Temple University · Deployed 2025</p>
+                  </div>
                 </div>
-                {p.links && p.links.pbix && (<a href={p.links.pbix} target="_blank" rel="noopener noreferrer" className="mt-4 px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center gap-2 hover:opacity-90" style={{ background: TU_RED }}>{icons.dl} Download .pbix File</a>)}
+                <div className={`rounded-lg overflow-hidden border ${d ? "border-gray-700" : "border-gray-200"}`}>
+                  <img
+                    src="/images/powerbi-ambler-dashboard.png"
+                    alt="Power BI Dashboard — Ambler Campus Visitor Traffic Analysis"
+                    className="w-full h-auto"
+                    style={{ display: "block" }}
+                  />
+                </div>
+                <div className={`mt-3 flex items-start gap-2 px-3 py-2 rounded-lg text-xs ${d ? "bg-amber-500/5 border border-amber-500/20 text-amber-300/80" : "bg-amber-50 border border-amber-200 text-amber-700"}`}>
+                  <span className="mt-0.5">ℹ️</span>
+                  <span>Live embed unavailable — Temple University's Power BI admin policy restricts public publishing. Screenshot reflects actual dashboard output.</span>
+                </div>
+                {p.links && p.links.pbix && (
+                  <a href={p.links.pbix} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg text-xs font-medium hover:opacity-90" style={{ background: TU_RED }}>
+                    {icons.dl} Download .pbix Source File
+                  </a>
+                )}
               </div>
             )}
           </div>
@@ -2005,15 +2092,28 @@ function Contact({ c, d }) {
     if (!validate()) return;
     setSubmitting(true);
     try {
-      const res = await fetch("https://formspree.io/f/xpwzklbv", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ name: form.name, email: form.email, subject: form.subject || "(no subject)", message: form.message }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: "0f12b7bc-45cb-4a6a-9e06-88bb81affdbc",
+          name: form.name,
+          email: form.email,
+          subject: form.subject || `Portfolio contact from ${form.name}`,
+          message: form.message,
+        }),
       });
-      if (res.ok) { setSent(true); }
-      else { setErrors({ submit: "Failed to send. Please email me at prabin.pandey@temple.edu" }); }
-    } catch { setErrors({ submit: "Network error. Please try again or email me directly." }); }
-    finally { setSubmitting(false); }
+      const data = await res.json();
+      if (data.success) {
+        setSent(true);
+      } else {
+        setErrors({ submit: "Failed to send. Please email me directly at prabin.pandey@temple.edu" });
+      }
+    } catch {
+      setErrors({ submit: "Failed to send. Please email me directly at prabin.pandey@temple.edu" });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const cb = d ? "bg-gray-900/70 border-white/[0.07]" : "bg-white border-gray-200 shadow-sm";

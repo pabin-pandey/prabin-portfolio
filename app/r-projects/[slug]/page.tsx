@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import BackButton from '@/components/BackButton';
 import { rProjects } from '@/lib/r-projects-data';
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
@@ -70,9 +71,9 @@ export default function RProjectPage() {
         <p className="text-gray-400 mb-6">
           The project <code className="text-blue-400">{slug}</code> does not exist.
         </p>
-        <Link href="/" className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium transition-colors">
+        <BackButton fallback="/" className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium transition-colors">
           ← Back to Portfolio
-        </Link>
+        </BackButton>
       </div>
     );
   }
@@ -90,9 +91,9 @@ export default function RProjectPage() {
       {/* ── Sticky header ─────────────────────────────────────────────────── */}
       <header className="sticky top-0 z-30 border-b border-gray-800 bg-gray-950/90 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-800">
+          <BackButton fallback="/" className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-800">
             {Icon.back} Portfolio
-          </Link>
+          </BackButton>
           <span className="text-xs font-semibold px-3 py-1 rounded-full border border-blue-500/40 text-blue-400 bg-blue-950/30">
             Financial Analytics (R)
           </span>

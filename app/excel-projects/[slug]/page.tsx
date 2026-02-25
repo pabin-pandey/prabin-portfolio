@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { excelProjects } from '@/lib/excel-projects-data';
+import BackButton from '@/components/BackButton';
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const Icon = {
@@ -54,12 +55,12 @@ export default function ExcelProjectPage() {
         <p className="text-gray-400 mb-6">
           The project <code className="text-emerald-400">{slug}</code> does not exist.
         </p>
-        <Link
-          href="/"
+        <BackButton
+          fallback="/"
           className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-medium transition-colors"
         >
           ← Back to Portfolio
-        </Link>
+        </BackButton>
       </div>
     );
   }
@@ -77,12 +78,12 @@ export default function ExcelProjectPage() {
       {/* ── Sticky header ───────────────────────────────────────────────── */}
       <header className="sticky top-0 z-30 border-b border-gray-800 bg-gray-950/90 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link
-            href="/"
+          <BackButton
+            fallback="/"
             className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-800"
           >
             {Icon.back} Portfolio
-          </Link>
+          </BackButton>
           <span className="text-xs font-semibold px-3 py-1 rounded-full border border-emerald-500/40 text-emerald-400 bg-emerald-950/30">
             {project.category}
           </span>
