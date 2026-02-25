@@ -24,9 +24,9 @@ const DEFAULT_CONTENT = {
       { school: "Tribhuvan University", degree: "BBA", period: "Dec 2023", gpa: "3.81", courses: "Business Administration — Finance focus", badge: "Valedictorian" }
     ],
     experience: [
-      { co: "Sethi Clarity Advisers", role: "Associate Financial Consultant", period: "Sep 2025 – Dec 2025", pts: ["Built and tested financial projection tools (retirement income, net worth, contribution strategies) using Bubble and Outgrow", "Produced personalized recommendations using inflation/tax/income assumptions", "Improved UX of interactive tools and data collection accuracy"] },
-      { co: "Temple University, Ambler Campus", role: "IT Consultant", period: "Jan 2025 – Present", pts: ["Designed and maintained Power BI dashboard analyzing visitor traffic trends to inform budget allocation", "Provided technical support and troubleshooting across campus systems"] },
-      { co: "Global IME Bank", role: "Customer Relations Intern", period: "Mar – May 2023", pts: ["Client guidance on banking/insurance products and risk profiles", "Transactions & audit documentation with Finacle CRM", "Reporting/financial decision-making support; collateral evaluations for lending"] }
+      { co: "Sethi Clarity Advisers", role: "Associate Financial Consultant", period: "Sep 2025 – Dec 2025", pts: ["Engineered AI-driven financial planning models simulating retirement income trajectories, net worth accumulation, and multi-scenario contribution strategies for client portfolios", "Developed AI-based analytical tools to evaluate investment allocations, optimize portfolio construction, and monitor client performance against benchmarks", "Maintained client investment data in portfolio management software, ensuring accurate performance reporting and audit-ready financial records", "Designed and developed an internal financial planning website, integrating AI-driven models into a user-friendly interface to streamline data input and advisory analysis"] },
+      { co: "Temple University, Ambler Campus", role: "IT Consultant", period: "Jan 2025 – Present", pts: ["Developed Power BI dashboard analyzing visitor traffic patterns and resource utilization across campus facilities, supporting operational decision-making and financial reporting"] },
+      { co: "Global IME Bank", role: "Customer Relations Intern", period: "Mar – May 2023", pts: ["Organized and maintained client documentation, tax records, and collateral files, supporting audit readiness", "Prepared financial reports and cost summaries to inform management decisions on lending terms, product pricing, and operational planning", "Counseled clients on banking products, insurance, and wealth management strategies"] }
     ],
     skills: [
       { n: "Excel", cat: "Tools", lv: 95 }, { n: "Python", cat: "Code", lv: 85 },
@@ -36,7 +36,7 @@ const DEFAULT_CONTENT = {
       { n: "Capital IQ", cat: "Finance", lv: 75 }
     ],
     certs: ["CFA Level I Candidate"],
-    now: "Actively seeking Summer 2026 internship and full-time opportunities in investment analytics, financial data engineering, and AI-augmented research at firms such as BlackRock, JPMorgan, Vanguard, or quantitative finance / AI analytics teams. Advancing toward the CFA Level I exam. Available May 2026."
+    now: "Open to full-time opportunities in investment analytics, financial data engineering, and AI-augmented financial research. Advancing toward the CFA Level I examination. Available May 2026."
   },
   projects: [
     { id: "pe", title: "Private Equity Transaction & Debt Covenant Model – Pharma Brands Inc.", cat: "Financial Modeling (Excel)", yr: "2024", sum: "Comprehensive 3-statement financial model for Pharma Brands Inc. special dividend recapitalization. Includes projected IS/BS/CF, debt schedule with term loan + revolver, and debt covenant compliance testing (Total Debt/EBITDA ≤ 3.0x, EBIT/Interest ≥ 6.0x). All covenants pass across the 5-year projection.", tags: ["Financial Modeling", "LBO", "Debt Covenants", "Sensitivity Analysis", "3-Statement Model", "Recapitalization"], tools: ["Excel"], metrics: ["6-sheet integrated model", "$3.25B revenue base growing to $4.07B", "All covenants pass (5 years)", "Debt/EBITDA from 2.46x → 0.0x", "EBIT/Interest from 13.1x → 97.0x"], featured: true, cs: { problem: "Pharma Brands Inc. is evaluating a $1B special dividend payment funded by a leveraged recapitalization. The transaction requires a comprehensive financial model to project the company's ability to service new debt (term loan + revolver) while maintaining compliance with restrictive debt covenants over a 5-year horizon.", approach: "Built a fully integrated 6-sheet Excel model: Transaction summary, Projected Income Statement, Balance Sheet, Cash Flow Statement, Debt Schedule (term loan + revolver with automatic sweep), and RE/Fixed Assets Schedule. Revenue assumptions drive through all statements with dynamic debt paydown from excess cash flow.", data: "Pharma Brands Inc. base year (2021) actuals: $3.25B revenue, $345M EBITDA (10.6% margin), $202M net income. $200M term loan at 6% with 20% annual amortization. Revolver facility at 6% interest on average balance. 25% tax rate.", methods: "Revenue growth (5% → 4%), margin expansion (EBITDA 10.6% → 13.0%), COGS/SGA/distribution assumptions as % of revenue, working capital modeling (DSO, DIO, DPO), CapEx at ~2.2% of revenue, automatic cash sweep to repay revolver, dual covenant testing: Total Debt/EBITDA (max 3.0x stepping to 1.5x) and EBIT/Interest Coverage (min 6.0x stepping to 12.0x).", results: "Model projects full revolver paydown by 2026 ($763M → $0). All debt covenants pass across the entire projection period. Net income grows from $200M to $331M. Cash position rebuilds to $133M by 2026. EBITDA margin improves from 11.0% to 13.0% through operational efficiencies.", learnings: "Deepened understanding of leveraged recapitalizations, cash sweep mechanics, covenant step-down structures, and the critical interplay between operating cash flow generation and debt service capacity. The model demonstrates how strong free cash flow can support aggressive leverage while maintaining covenant compliance." }, embed: { type: "excel", url: "", fallback: "Excel Model — Paste your OneDrive/SharePoint embed URL in the admin panel" }, isExcel: true },
@@ -574,7 +574,7 @@ function Home({ c, d, nav }) {
               { label: "GPA", value: "3.98", sub: "Fox School of Business", color: "text-emerald-400" },
               { label: "Projects Built", value: "20+", sub: "Production-grade systems", color: "text-indigo-400" },
               { label: "LLMs Benchmarked", value: "9", sub: "Calibration analysis", color: "text-violet-400" },
-              { label: "Designation", value: "CFA Candidate", sub: "Level I — sitting 2025", color: "text-amber-400" },
+              { label: "Designation", value: "CFA Candidate", sub: "Level I — sitting 2026", color: "text-amber-400" },
               { label: "Available", value: "May 2026", sub: "Philadelphia, PA · Open to relocation", color: "text-blue-400" },
             ].map((item, i) => (
               <div key={i} className={`flex items-center gap-3 px-6 py-1 ${i > 0 ? `border-l ${d ? "border-white/[0.07]" : "border-gray-200"}` : ""}`}>
@@ -1006,7 +1006,7 @@ function About({ c, d }) {
               <div className={`p-2.5 rounded-xl ${d ? "bg-amber-500/15 text-amber-400" : "bg-amber-100 text-amber-600"}`}>{icons.award}</div>
               <div>
                 <p className={`font-bold text-sm tracking-tight ${d ? "text-amber-300" : "text-amber-800"}`}>{cert}</p>
-                <p className={`text-xs mt-0.5 ${d ? "text-amber-500/60" : "text-amber-600/70"}`}>In progress · sitting 2025</p>
+                <p className={`text-xs mt-0.5 ${d ? "text-amber-500/60" : "text-amber-600/70"}`}>In progress · sitting 2026</p>
               </div>
             </div>
           ))}
