@@ -52,7 +52,7 @@ const DEFAULT_CONTENT = {
     { name: "Colleague Name", role: "Sethi Clarity Advisers", quote: "Prabin's ability to translate complex financial concepts into intuitive tools is remarkable." }
   ],
   contact: { email: "prabin.pandey@temple.edu", phone: "835-207-9312", location: "Philadelphia, PA", linkedin: "https://linkedin.com/in/prabin-pandey-1482362b7/", github: "https://github.com/pabin-pandey", msg: "I'd love to hear from you. Whether you have a question, opportunity, or just want to connect — drop me a message." },
-  resume: { label: "Download Resume", path: "/resume/Prabin_Pandey_Resume.pdf" }
+  resume: { label: "Download Resume", path: "/resume/Prabin_Pandey_Resume_2026.docx" }
 };
 
 // ─── Hooks ───
@@ -291,17 +291,18 @@ export default function App() {
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBg}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
           {/* Logo */}
-          <button onClick={() => nav("home")} className="group flex items-center gap-0 text-[15px] font-bold tracking-tight">
+          <a href="/" onClick={(e) => { e.preventDefault(); nav("home"); }} className="group flex items-center gap-0 text-[15px] font-bold tracking-tight">
             <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text" style={{ WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{content.site.name.split(" ")[0]}</span>
-          </button>
+          </a>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-0.5">
-            {["home", "about", "projects", "blog", "contact"].map(p => (
-              <button
+            {([["home","/"],["about","/about"],["projects","/projects"],["blog","/blog"],["contact","/contact"]] as [string,string][]).map(([p,href]) => (
+              <a
                 key={p}
-                onClick={() => nav(p)}
-                className={`relative px-3.5 py-2 text-[13px] font-medium capitalize transition-all duration-200 rounded-lg
+                href={href}
+                onClick={(e) => { e.preventDefault(); nav(p); }}
+                className={`relative px-3.5 py-2 text-[13px] font-medium capitalize transition-all duration-200 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400
                   ${page === p
                     ? dark ? "text-white" : "text-gray-900"
                     : dark ? "text-gray-500 hover:text-gray-200" : "text-gray-500 hover:text-gray-800"}`}
@@ -310,7 +311,7 @@ export default function App() {
                 {page === p && (
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full bg-gradient-to-r from-indigo-500 to-violet-500" />
                 )}
-              </button>
+              </a>
             ))}
             <div className={`w-px h-4 mx-2 ${dark ? "bg-white/10" : "bg-black/10"}`} />
             <button onClick={() => setDark(!dark)} className={`p-2 rounded-lg transition-colors duration-200 ${dark ? "text-gray-500 hover:text-gray-200 hover:bg-white/8" : "text-gray-400 hover:text-gray-700 hover:bg-black/5"}`}>{dark ? icons.sun : icons.moon}</button>
@@ -326,8 +327,8 @@ export default function App() {
 
         {mobMenu && (
           <div className={`md:hidden border-t pb-2 ${dark ? "bg-gray-950/95 backdrop-blur-xl border-gray-800/60" : "bg-white/95 backdrop-blur-xl border-gray-200"}`}>
-            {["home", "about", "projects", "blog", "contact"].map(p => (
-              <button key={p} onClick={() => nav(p)} className={`block w-full text-left px-6 py-3 text-sm capitalize font-medium transition-colors ${page === p ? "text-indigo-400" : dark ? "text-gray-400" : "text-gray-600"}`}>{p}</button>
+            {([["home","/"],["about","/about"],["projects","/projects"],["blog","/blog"],["contact","/contact"]] as [string,string][]).map(([p,href]) => (
+              <a key={p} href={href} onClick={(e) => { e.preventDefault(); nav(p); }} className={`block w-full text-left px-6 py-3 text-sm capitalize font-medium transition-colors ${page === p ? "text-indigo-400" : dark ? "text-gray-400" : "text-gray-600"}`}>{p}</a>
             ))}
           </div>
         )}
@@ -375,8 +376,8 @@ export default function App() {
                 <span className={`text-xs ${dark ? "text-gray-600" : "text-gray-400"}`}>Finance × Data × AI</span>
               </div>
               <div className="flex items-center gap-1">
-                {["home", "about", "projects", "contact"].map(p => (
-                  <button key={p} onClick={() => nav(p)} className={`px-3 py-1.5 text-xs capitalize rounded-lg transition-colors ${dark ? "text-gray-600 hover:text-gray-300" : "text-gray-400 hover:text-gray-700"}`}>{p}</button>
+                {([["home","/"],["about","/about"],["projects","/projects"],["contact","/contact"]] as [string,string][]).map(([p,href]) => (
+                  <a key={p} href={href} onClick={(e) => { e.preventDefault(); nav(p); }} className={`px-3 py-1.5 text-xs capitalize rounded-lg transition-colors ${dark ? "text-gray-600 hover:text-gray-300" : "text-gray-400 hover:text-gray-700"}`}>{p}</a>
                 ))}
               </div>
               <div className="flex items-center gap-3">
@@ -502,16 +503,17 @@ function Home({ c, d, nav }) {
 
             {/* CTA Buttons */}
             <div className="animate-fadeUp-5 flex flex-wrap gap-3 mb-14">
-              <button
-                onClick={() => nav("projects")}
-                className="btn-primary px-7 py-3.5 bg-gradient-to-r from-indigo-500 to-violet-500 text-white rounded-xl text-[13px] font-semibold flex items-center gap-2 cta-glow"
+              <a
+                href="/projects"
+                onClick={(e) => { e.preventDefault(); nav("projects"); }}
+                className="btn-primary px-7 py-3.5 bg-gradient-to-r from-indigo-500 to-violet-500 text-white rounded-xl text-[13px] font-semibold flex items-center gap-2 cta-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
               >
                 {hero.cta1} {icons.chevR}
-              </button>
+              </a>
               <a
-                href="/resume/Prabin Master Resume - Updated.docx"
-                download="Prabin Master Resume - Updated.docx"
-                className={`px-7 py-3.5 rounded-xl text-[13px] font-semibold flex items-center gap-2 border transition-all duration-200 hover:-translate-y-0.5 ${d ? "border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/18 hover:shadow-lg hover:shadow-black/20" : "border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 hover:shadow-md"}`}
+                href="/resume/Prabin_Pandey_Resume_2026.docx"
+                download="Prabin_Pandey_Resume_2026.docx"
+                className={`px-7 py-3.5 rounded-xl text-[13px] font-semibold flex items-center gap-2 border transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${d ? "border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/18 hover:shadow-lg hover:shadow-black/20" : "border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 hover:shadow-md"}`}
               >
                 {icons.dl} {hero.cta2}
               </a>
@@ -822,12 +824,13 @@ function Home({ c, d, nav }) {
 
           {/* CTA to full projects */}
           <div className="flex justify-center mt-10">
-            <button
-              onClick={() => nav("projects")}
-              className={`inline-flex items-center gap-2 text-[13px] font-semibold border px-5 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 ${d ? "border-white/10 text-gray-400 hover:text-gray-200 hover:bg-white/5" : "border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+            <a
+              href="/projects"
+              onClick={(e) => { e.preventDefault(); nav("projects"); }}
+              className={`inline-flex items-center gap-2 text-[13px] font-semibold border px-5 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${d ? "border-white/10 text-gray-400 hover:text-gray-200 hover:bg-white/5" : "border-gray-200 text-gray-600 hover:bg-gray-50"}`}
             >
-              View all {d ? "projects" : "projects"} {icons.chevR}
-            </button>
+              View all projects {icons.chevR}
+            </a>
           </div>
         </div>
       </section>
