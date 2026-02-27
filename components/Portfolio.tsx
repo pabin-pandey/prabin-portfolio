@@ -49,7 +49,6 @@ const DEFAULT_CONTENT = {
   ],
   testimonials: [
     { name: "Dr. John Soss", role: "Faculty, Fox School of Business", quote: "Prabin ranks among the very top graduates of our MS in Financial Analysis program, with a rare breadth spanning investment banking, investment management, and advanced AI applications in finance. He has the acclaimed talent, drive, and creativity to thrive in today's demanding financial landscape. #TempleProud" },
-    { name: "Colleague Name", role: "Sethi Clarity Advisers", quote: "Prabin's ability to translate complex financial concepts into intuitive tools is remarkable." }
   ],
   contact: { email: "prabin.pandey@temple.edu", phone: "835-207-9312", location: "Philadelphia, PA", linkedin: "https://linkedin.com/in/prabin-pandey-1482362b7/", github: "https://github.com/pabin-pandey", msg: "I'd love to hear from you. Whether you have a question, opportunity, or just want to connect — drop me a message." },
   resume: { label: "Download Resume", path: "/resume/Prabin_Pandey_Resume_2026.pdf" }
