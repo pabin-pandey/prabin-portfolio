@@ -41,12 +41,10 @@ export default function ContactForm() {
     );
   }
 
-  const inputCls = "w-full px-4 py-3 rounded-xl bg-gray-900 border border-white/[0.08] text-gray-200 placeholder-gray-600 text-sm focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/30 transition-all";
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="cf-name" className="block text-xs font-medium text-gray-500 mb-1.5">Name</label>
+        <label htmlFor="cf-name" className="form-label">Name</label>
         <input
           id="cf-name"
           type="text"
@@ -54,11 +52,11 @@ export default function ContactForm() {
           required
           value={state.name}
           onChange={(e) => setState(s => ({ ...s, name: e.target.value }))}
-          className={inputCls}
+          className="form-input"
         />
       </div>
       <div>
-        <label htmlFor="cf-email" className="block text-xs font-medium text-gray-500 mb-1.5">Email</label>
+        <label htmlFor="cf-email" className="form-label">Email</label>
         <input
           id="cf-email"
           type="email"
@@ -66,11 +64,11 @@ export default function ContactForm() {
           required
           value={state.email}
           onChange={(e) => setState(s => ({ ...s, email: e.target.value }))}
-          className={inputCls}
+          className="form-input"
         />
       </div>
       <div>
-        <label htmlFor="cf-message" className="block text-xs font-medium text-gray-500 mb-1.5">Message</label>
+        <label htmlFor="cf-message" className="form-label">Message</label>
         <textarea
           id="cf-message"
           rows={5}
@@ -78,17 +76,18 @@ export default function ContactForm() {
           required
           value={state.message}
           onChange={(e) => setState(s => ({ ...s, message: e.target.value }))}
-          className={`${inputCls} resize-none`}
+          className="form-input resize-none"
         />
       </div>
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white text-[13px] font-semibold transition-all disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+        className="w-full py-3 px-6 rounded-xl text-white text-[13px] font-bold transition-all duration-200 disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 btn-primary"
+        style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}
       >
         {loading ? "Opening email client…" : "Send Message →"}
       </button>
-      <p className="text-xs text-gray-600 text-center">
+      <p className="text-xs text-center" style={{ color: "var(--text-faint)" }}>
         Opens your email client with the message pre-filled.
       </p>
     </form>

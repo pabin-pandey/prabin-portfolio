@@ -20,7 +20,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-gray-950 text-gray-100" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
       <SiteNav active="contact" />
 
-      <main className="pt-24 pb-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main id="main-content" className="pt-24 pb-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Header ── */}
         <div className="mb-12">

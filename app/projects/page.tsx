@@ -21,7 +21,7 @@ export default function ProjectsPage() {
     <div className="min-h-screen bg-gray-950 text-gray-100" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
       <SiteNav active="projects" />
 
-      <main className="pt-24 pb-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main id="main-content" className="pt-24 pb-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ── Header ── */}
         <div className="relative mb-12 pb-10" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
           {/* Subtle background orb */}

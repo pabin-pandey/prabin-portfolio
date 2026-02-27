@@ -5,6 +5,99 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100;0,14..32,200;0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* ════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — CSS Custom Properties
+   Single source of truth for the entire site
+   ════════════════════════════════════════════════════════════════ */
+:root {
+  /* Colors */
+  --bg-base:        #030712;
+  --bg-surface:     #111827;
+  --bg-surface-2:   rgba(17,24,39,0.9);
+  --border-subtle:  rgba(255,255,255,0.06);
+  --border-hover:   rgba(255,255,255,0.12);
+  --border-accent:  rgba(99,102,241,0.25);
+
+  /* Accent — overridden per-theme by Portfolio.tsx JS */
+  --accent-from:    #818cf8;
+  --accent-mid:     #a78bfa;
+  --accent-to:      #c084fc;
+  --accent-solid:   #6366f1;
+  --accent-glow:    rgba(99,102,241,0.15);
+
+  /* Text */
+  --text-primary:   #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-muted:     #9ca3af;
+  --text-subtle:    #6b7280;
+  --text-faint:     #4b5563;
+
+  /* Typography scale */
+  --text-display:   clamp(2.5rem, 6vw, 4.5rem);
+  --text-h1:        clamp(2rem, 4vw, 3rem);
+  --text-h2:        1.5rem;
+  --text-h3:        1.125rem;
+  --text-body:      0.9375rem;
+  --text-sm:        0.8125rem;
+  --text-label:     0.6875rem;
+
+  /* Spacing */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px;
+  --space-24: 96px; --space-32: 128px;
+
+  /* Border radius */
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  20px;
+  --radius-2xl: 24px;
+
+  /* Shadows */
+  --shadow-card:  0 1px 3px rgba(0,0,0,0.35);
+  --shadow-lift:  0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+  --shadow-glow:  0 0 40px var(--accent-glow);
+
+  /* Transitions */
+  --ease-spring:  cubic-bezier(0.34,1.56,0.64,1);
+  --ease-smooth:  cubic-bezier(0.16,1,0.3,1);
+  --dur-fast:     150ms;
+  --dur-base:     250ms;
+  --dur-slow:     400ms;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SKIP TO CONTENT — Accessibility
+   ════════════════════════════════════════════════════════════════ */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 12px 24px;
+  background: var(--accent-solid);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 0 0 12px 12px;
+  text-decoration: none;
+  transition: top 0.2s ease;
+  white-space: nowrap;
+}
+.skip-link:focus { top: 0; outline: 3px solid #fff; outline-offset: 2px; }
+
+/* ════════════════════════════════════════════════════════════════
+   GLOBAL FOCUS RING — Unified across all elements
+   ════════════════════════════════════════════════════════════════ */
+:focus-visible {
+  outline: 2px solid var(--accent-from);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* Remove for mouse users */
+:focus:not(:focus-visible) { outline: none; }
+
+/* ════════════════════════════════════════════════════════════════
    BASE
    ════════════════════════════════════════════════════════════════ */
 html { scroll-behavior: smooth; }
@@ -892,3 +985,122 @@ input:focus, textarea:focus, select:focus, button:focus-visible {
   transition: left 0.5s ease;
 }
 .stat-shine:hover::after { left: 120%; }
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE NAV DRAWER
+   ════════════════════════════════════════════════════════════════ */
+@keyframes drawer-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mobile-drawer {
+  animation: drawer-in 0.22s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+
+/* Hamburger lines */
+.hamburger-bar {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+.hamburger-open .hamburger-bar:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.hamburger-open .hamburger-bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger-open .hamburger-bar:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+/* ════════════════════════════════════════════════════════════════
+   SCROLL PROGRESS BAR — Rendered in layout
+   ════════════════════════════════════════════════════════════════ */
+#scroll-progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  z-index: 9998;
+  background: linear-gradient(90deg, var(--accent-from), var(--accent-mid), var(--accent-to));
+  background-size: 200% 100%;
+  animation: shimmer-progress 3s linear infinite;
+  box-shadow: 0 0 10px rgba(99,102,241,0.5);
+  transition: width 0.1s linear;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   BLOG CARD ENHANCEMENTS
+   ════════════════════════════════════════════════════════════════ */
+.blog-card-accent::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent-from), var(--accent-to) 60%, transparent);
+  border-radius: 16px 0 0 16px;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+.blog-card-accent:hover::before { opacity: 1; }
+
+/* ════════════════════════════════════════════════════════════════
+   FOOTER ENHANCEMENTS
+   ════════════════════════════════════════════════════════════════ */
+.footer-link {
+  color: var(--text-faint);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: color var(--dur-base) ease;
+  text-decoration: none;
+}
+.footer-link:hover { color: var(--text-secondary); }
+
+.back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-subtle);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 6px 14px;
+  transition: all var(--dur-base) ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+.back-to-top:hover {
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   FORM ENHANCEMENTS
+   ════════════════════════════════════════════════════════════════ */
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  transition: border-color var(--dur-base) ease, box-shadow var(--dur-base) ease;
+}
+.form-input::placeholder { color: var(--text-faint); }
+.form-input:focus {
+  outline: none;
+  border-color: rgba(99,102,241,0.5);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+}
+.form-input:hover:not(:focus) { border-color: var(--border-hover); }
