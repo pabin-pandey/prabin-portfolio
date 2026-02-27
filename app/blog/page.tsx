@@ -54,23 +54,11 @@ export default function BlogPage() {
           {posts.map((post) => (
             <article
               key={post.slug}
-              className="blog-card-accent group relative rounded-2xl overflow-hidden transition-all duration-300"
+              className="blog-card-accent group relative rounded-2xl overflow-hidden"
               style={{
                 background: "rgba(17,24,39,0.85)",
                 border:     "1px solid rgba(255,255,255,0.06)",
                 boxShadow:  "0 2px 8px rgba(0,0,0,0.3)",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "rgba(255,255,255,0.12)";
-                el.style.transform   = "translateY(-4px)";
-                el.style.boxShadow   = `0 24px 60px rgba(0,0,0,0.4), 0 0 50px rgba(167,139,250,0.08)`;
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "rgba(255,255,255,0.06)";
-                el.style.transform   = "translateY(0)";
-                el.style.boxShadow   = "0 2px 8px rgba(0,0,0,0.3)";
               }}
             >
               {/* Top shimmer on hover */}

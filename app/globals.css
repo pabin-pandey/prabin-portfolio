@@ -1041,6 +1041,14 @@ input:focus, textarea:focus, select:focus, button:focus-visible {
   transition: opacity 0.3s ease;
 }
 .blog-card-accent:hover::before { opacity: 1; }
+.blog-card-accent {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.blog-card-accent:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.12) !important;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 50px rgba(167,139,250,0.08) !important;
+}
 
 /* ════════════════════════════════════════════════════════════════
    FOOTER ENHANCEMENTS
