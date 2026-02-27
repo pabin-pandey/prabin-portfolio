@@ -51,7 +51,24 @@ const DEFAULT_CONTENT = {
     { name: "Dr. John Soss", role: "Faculty, Fox School of Business", quote: "Prabin ranks among the very top graduates of our MS in Financial Analysis program, with a rare breadth spanning investment banking, investment management, and advanced AI applications in finance. He has the acclaimed talent, drive, and creativity to thrive in today's demanding financial landscape. #TempleProud" },
   ],
   contact: { email: "prabin.pandey@temple.edu", phone: "835-207-9312", location: "Philadelphia, PA", linkedin: "https://linkedin.com/in/prabin-pandey-1482362b7/", github: "https://github.com/pabin-pandey", msg: "I'd love to hear from you. Whether you have a question, opportunity, or just want to connect — drop me a message." },
-  resume: { label: "Download Resume", path: "/resume/Prabin_Pandey_Resume_2026.pdf" }
+  resume: { label: "Download Resume", path: "/resume/Prabin_Pandey_Resume_2026.pdf" },
+  theme: {
+    accentColor: "indigo",
+    heroNameSize: "clamp(3rem,7.5vw,5.8rem)",
+    heroDescSize: "1.05rem",
+    availabilityBadge: "Seeking Summer 2026 Finance / AI Analytics Opportunities",
+    heroTagline: "AI-Augmented Financial Analytics · Python · Investment Data Systems",
+  }
+};
+
+/* ─── Accent color presets ─── */
+const ACCENT_MAP: Record<string, { from: string; mid: string; to: string }> = {
+  indigo:  { from: "#818cf8", mid: "#a78bfa", to: "#c084fc" },
+  violet:  { from: "#a78bfa", mid: "#c084fc", to: "#e879f9" },
+  blue:    { from: "#60a5fa", mid: "#38bdf8", to: "#34d399" },
+  emerald: { from: "#34d399", mid: "#2dd4bf", to: "#60a5fa" },
+  rose:    { from: "#fb7185", mid: "#f472b6", to: "#e879f9" },
+  amber:   { from: "#fbbf24", mid: "#fb923c", to: "#f97316" },
 };
 
 // ─── Hooks ───
@@ -139,6 +156,14 @@ export default function App() {
   const [mobMenu, setMobMenu] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [admin, setAdmin] = useState(false);
+
+  // Apply accent color CSS variables whenever theme changes
+  useEffect(() => {
+    const ac = ACCENT_MAP[content.theme?.accentColor] || ACCENT_MAP.indigo;
+    document.documentElement.style.setProperty("--accent-from", ac.from);
+    document.documentElement.style.setProperty("--accent-mid",  ac.mid);
+    document.documentElement.style.setProperty("--accent-to",   ac.to);
+  }, [content.theme?.accentColor]);
 
   // Ref keeps the current page accessible inside event-handler closures
   const pageRef = useRef("home");
@@ -291,7 +316,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
           {/* Logo */}
           <a href="/" onClick={(e) => { e.preventDefault(); nav("home"); }} className="group flex items-center gap-0 text-[15px] font-bold tracking-tight">
-            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text" style={{ WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{content.site.name.split(" ")[0]}</span>
+            <span style={{ background: "linear-gradient(90deg, var(--accent-from), var(--accent-mid), var(--accent-to))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{content.site.name.split(" ")[0]}</span>
           </a>
 
           {/* Desktop Nav */}
@@ -308,7 +333,7 @@ export default function App() {
               >
                 {p}
                 {page === p && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full bg-gradient-to-r from-indigo-500 to-violet-500" />
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full" style={{ background: "linear-gradient(90deg, var(--accent-from), var(--accent-to))" }} />
                 )}
               </a>
             ))}
@@ -422,7 +447,7 @@ function useSectionReveal() {
 // HOME
 // ═══════════════════════════════════════════════════════════════
 function Home({ c, d, nav }) {
-  const { hero, projects, testimonials } = c;
+  const { hero, projects, testimonials, theme } = c;
   const [ri, setRi] = useState(0);
   const [ci, setCi] = useState(0);
   const [del, setDel] = useState(false);
@@ -473,18 +498,18 @@ function Home({ c, d, nav }) {
             <div className="animate-fadeUp-2 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border mb-6 text-xs font-semibold tracking-wide"
               style={{ background: d ? "rgba(16,185,129,0.07)" : "rgba(16,185,129,0.08)", borderColor: d ? "rgba(16,185,129,0.25)" : "rgba(16,185,129,0.3)", color: d ? "#34d399" : "#059669" }}>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" style={{ animation: "pulse 2s ease-in-out infinite" }} />
-              Seeking Summer 2026 Finance / AI Analytics Opportunities
+              {theme?.availabilityBadge || "Seeking Summer 2026 Finance / AI Analytics Opportunities"}
             </div>
 
             {/* Name */}
-            <h1 className="animate-fadeUp-2 text-[clamp(3rem,7.5vw,5.8rem)] font-black tracking-[-0.035em] leading-[1.02] mb-3">
+            <h1 className="animate-fadeUp-2 font-black tracking-[-0.035em] leading-[1.02] mb-3" style={{ fontSize: theme?.heroNameSize || "clamp(3rem,7.5vw,5.8rem)" }}>
               <span className="shimmer-text">{hero.name}</span>
             </h1>
 
             {/* Subtitle — specific positioning */}
             <p className="animate-fadeUp-2 text-sm sm:text-base font-bold tracking-[0.18em] uppercase mb-5"
               style={{ color: d ? "#818cf8" : "#6366f1" }}>
-              AI-Augmented Financial Analytics · Python · Investment Data Systems
+              {theme?.heroTagline || "AI-Augmented Financial Analytics · Python · Investment Data Systems"}
             </p>
 
             {/* Animated role */}
@@ -496,7 +521,7 @@ function Home({ c, d, nav }) {
             </div>
 
             {/* Description */}
-            <p className={`animate-fadeUp-4 text-[1.05rem] leading-[1.8] mb-10 max-w-[600px] ${d ? "text-gray-400" : "text-gray-600"}`}>
+            <p className={`animate-fadeUp-4 leading-[1.8] mb-10 max-w-[600px] ${d ? "text-gray-400" : "text-gray-600"}`} style={{ fontSize: theme?.heroDescSize || "1.05rem" }}>
               {hero.desc}
             </p>
 
@@ -505,7 +530,7 @@ function Home({ c, d, nav }) {
               <a
                 href="/projects"
                 onClick={(e) => { e.preventDefault(); nav("projects"); }}
-                className="btn-primary px-7 py-3.5 bg-gradient-to-r from-indigo-500 to-violet-500 text-white rounded-xl text-[13px] font-semibold flex items-center gap-2 cta-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                className="btn-primary px-7 py-3.5 text-white rounded-xl text-[13px] font-semibold flex items-center gap-2 cta-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400" style={{ background: "linear-gradient(135deg, var(--accent-from), var(--accent-to))" }}
               >
                 {hero.cta1} {icons.chevR}
               </a>
@@ -535,7 +560,7 @@ function Home({ c, d, nav }) {
                   key={i}
                   className={`stat-card relative p-5 rounded-2xl border text-center overflow-hidden transition-all duration-300 hover:-translate-y-1 cursor-default ${d ? "bg-white/[0.025] border-white/[0.08] hover:border-indigo-500/28 hover:bg-white/[0.04]" : "bg-white border-gray-200 hover:border-indigo-200 shadow-sm hover:shadow-md"}`}
                 >
-                  <div className="number-glow text-[1.8rem] font-black tracking-tight" style={{ background: "linear-gradient(135deg, #818cf8 0%, #c084fc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div className="number-glow text-[1.8rem] font-black tracking-tight" style={{ background: "linear-gradient(135deg, var(--accent-from) 0%, var(--accent-to) 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                     <Counter target={s.v} />
                   </div>
                   <div className={`text-[10px] font-bold tracking-[0.15em] uppercase mt-1 ${d ? "text-gray-600" : "text-gray-400"}`}>{s.l}</div>
@@ -2559,9 +2584,12 @@ function Contact({ c, d }) {
 // ═══════════════════════════════════════════════════════════════
 // ADMIN PANEL
 // ═══════════════════════════════════════════════════════════════
+const ADMIN_PASSCODE = "Palpa@Nepal2001";
+
 function Admin({ content, setContent, onClose }) {
   const [auth, setAuth] = useState(false);
   const [pass, setPass] = useState("");
+  const [passError, setPassError] = useState(false);
   const [tab, setTab] = useState("home");
   const [draft, setDraft] = useState(JSON.parse(JSON.stringify(content)));
   const [saved, setSaved] = useState(false);
@@ -2596,8 +2624,10 @@ function Admin({ content, setContent, onClose }) {
             <h1 className="text-2xl font-bold">Admin Panel</h1>
             <p className="text-sm text-gray-500 mt-2">Enter passcode to continue</p>
           </div>
-          <input type="password" value={pass} onChange={e => setPass(e.target.value)} onKeyDown={e => e.key === "Enter" && setAuth(true)} placeholder="Passcode" className="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-xl text-sm outline-none focus:border-blue-500 mb-4"/>
-          <button onClick={() => setAuth(true)} className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium">Enter</button>
+          <input type="password" value={pass} onChange={e => { setPass(e.target.value); setPassError(false); }} onKeyDown={e => { if (e.key === "Enter") { if (pass === ADMIN_PASSCODE) { setAuth(true); } else { setPassError(true); setPass(""); } } }} placeholder="Passcode" className={`w-full px-4 py-3 bg-gray-900 border rounded-xl text-sm outline-none mb-2 ${passError ? "border-red-500 focus:border-red-500" : "border-gray-800 focus:border-blue-500"}`}/>
+          {passError && <p className="text-red-400 text-xs mb-3 text-center">Incorrect passcode. Try again.</p>}
+          {!passError && <div className="mb-2"/>}
+          <button onClick={() => { if (pass === ADMIN_PASSCODE) { setAuth(true); } else { setPassError(true); setPass(""); } }} className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium">Enter</button>
           <button onClick={onClose} className="w-full py-3 mt-2 text-gray-500 text-sm hover:text-gray-300">← Back to Site</button>
         </div>
       </div>
@@ -2610,7 +2640,8 @@ function Admin({ content, setContent, onClose }) {
   const tabs = [
     { id: "home", l: "Home" }, { id: "about", l: "About" }, { id: "projects", l: "Projects" },
     { id: "blog", l: "Blog" }, { id: "testimonials", l: "Testimonials" },
-    { id: "contact", l: "Contact" }, { id: "seo", l: "SEO" }, { id: "resume", l: "Resume" }
+    { id: "contact", l: "Contact" }, { id: "seo", l: "SEO" }, { id: "resume", l: "Resume" },
+    { id: "design", l: "🎨 Design" }
   ];
 
   return (
@@ -2669,9 +2700,63 @@ function Admin({ content, setContent, onClose }) {
               <h2 className="text-xl font-bold mb-6">About Page</h2>
               <div className="space-y-4">
                 <div><label className={L}>Bio</label><textarea value={draft.about.bio} onChange={e => upd("about.bio", e.target.value)} className={`${I} h-32 resize-none`}/></div>
-                <div><label className={L}>"Now" Section</label><textarea value={draft.about.now} onChange={e => upd("about.now", e.target.value)} className={`${I} h-20 resize-none`}/></div>
+                <div><label className={L}>"Now / Seeking" Statement</label><textarea value={draft.about.now} onChange={e => upd("about.now", e.target.value)} className={`${I} h-20 resize-none`}/></div>
                 <div><label className={L}>Certifications (comma separated)</label><input value={draft.about.certs.join(", ")} onChange={e => upd("about.certs", e.target.value.split(",").map(s => s.trim()))} className={I}/></div>
-                <p className="text-xs text-gray-500 pt-2">Education, experience, and skills are also editable here. Export → edit JSON → import for bulk changes.</p>
+
+                <h3 className="text-sm font-semibold text-gray-300 pt-4 border-t border-gray-800">Experience</h3>
+                {draft.about.experience.map((ex, i) => (
+                  <div key={i} className="p-4 bg-gray-900 border border-gray-800 rounded-lg space-y-2">
+                    <div className="flex gap-2">
+                      <input value={ex.co} onChange={e => { const exp = [...draft.about.experience]; exp[i] = { ...exp[i], co: e.target.value }; upd("about.experience", exp); }} placeholder="Company" className={`${I} flex-1`}/>
+                      <button onClick={() => upd("about.experience", draft.about.experience.filter((_, j) => j !== i))} className="text-red-500 flex-shrink-0">{icons.trash}</button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input value={ex.role} onChange={e => { const exp = [...draft.about.experience]; exp[i] = { ...exp[i], role: e.target.value }; upd("about.experience", exp); }} placeholder="Role" className={I}/>
+                      <input value={ex.period} onChange={e => { const exp = [...draft.about.experience]; exp[i] = { ...exp[i], period: e.target.value }; upd("about.experience", exp); }} placeholder="Period" className={I}/>
+                    </div>
+                    {ex.pts.map((pt, j) => (
+                      <div key={j} className="flex gap-2">
+                        <textarea value={pt} onChange={e => { const exp = [...draft.about.experience]; exp[i] = { ...exp[i], pts: exp[i].pts.map((p, k) => k === j ? e.target.value : p) }; upd("about.experience", exp); }} className={`${I} h-14 resize-none flex-1`}/>
+                        <button onClick={() => { const exp = [...draft.about.experience]; exp[i] = { ...exp[i], pts: exp[i].pts.filter((_, k) => k !== j) }; upd("about.experience", exp); }} className="text-red-500 flex-shrink-0 self-start pt-2">{icons.trash}</button>
+                      </div>
+                    ))}
+                    <button onClick={() => { const exp = [...draft.about.experience]; exp[i] = { ...exp[i], pts: [...exp[i].pts, ""] }; upd("about.experience", exp); }} className="text-xs text-blue-400 hover:text-blue-300">+ Add bullet</button>
+                  </div>
+                ))}
+                <button onClick={() => upd("about.experience", [...draft.about.experience, { co: "", role: "", period: "", pts: [""] }])} className="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-sm flex items-center gap-1">{icons.plus} Add Experience</button>
+
+                <h3 className="text-sm font-semibold text-gray-300 pt-4 border-t border-gray-800">Education</h3>
+                {draft.about.education.map((ed, i) => (
+                  <div key={i} className="p-4 bg-gray-900 border border-gray-800 rounded-lg space-y-2">
+                    <div className="flex gap-2">
+                      <input value={ed.school} onChange={e => { const edu = [...draft.about.education]; edu[i] = { ...edu[i], school: e.target.value }; upd("about.education", edu); }} placeholder="School" className={`${I} flex-1`}/>
+                      <button onClick={() => upd("about.education", draft.about.education.filter((_, j) => j !== i))} className="text-red-500 flex-shrink-0">{icons.trash}</button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input value={ed.degree} onChange={e => { const edu = [...draft.about.education]; edu[i] = { ...edu[i], degree: e.target.value }; upd("about.education", edu); }} placeholder="Degree" className={I}/>
+                      <input value={ed.period} onChange={e => { const edu = [...draft.about.education]; edu[i] = { ...edu[i], period: e.target.value }; upd("about.education", edu); }} placeholder="Period" className={I}/>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input value={ed.gpa} onChange={e => { const edu = [...draft.about.education]; edu[i] = { ...edu[i], gpa: e.target.value }; upd("about.education", edu); }} placeholder="GPA" className={I}/>
+                      <input value={ed.badge} onChange={e => { const edu = [...draft.about.education]; edu[i] = { ...edu[i], badge: e.target.value }; upd("about.education", edu); }} placeholder="Badge (e.g. CFA Level I)" className={I}/>
+                    </div>
+                    <textarea value={ed.courses} onChange={e => { const edu = [...draft.about.education]; edu[i] = { ...edu[i], courses: e.target.value }; upd("about.education", edu); }} placeholder="Relevant courses" className={`${I} h-14 resize-none`}/>
+                  </div>
+                ))}
+                <button onClick={() => upd("about.education", [...draft.about.education, { school: "", degree: "", period: "", gpa: "", courses: "", badge: "" }])} className="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-sm flex items-center gap-1">{icons.plus} Add Education</button>
+
+                <h3 className="text-sm font-semibold text-gray-300 pt-4 border-t border-gray-800">Skills</h3>
+                {draft.about.skills.map((sk, i) => (
+                  <div key={i} className="flex gap-2 items-center">
+                    <input value={sk.n} onChange={e => { const s = [...draft.about.skills]; s[i] = { ...s[i], n: e.target.value }; upd("about.skills", s); }} placeholder="Skill name" className={`${I} w-1/3`}/>
+                    <select value={sk.cat} onChange={e => { const s = [...draft.about.skills]; s[i] = { ...s[i], cat: e.target.value }; upd("about.skills", s); }} className={`${I} w-1/4`}>
+                      {["Tools","Code","Viz","Finance"].map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                    <input type="number" min="0" max="100" value={sk.lv} onChange={e => { const s = [...draft.about.skills]; s[i] = { ...s[i], lv: +e.target.value }; upd("about.skills", s); }} placeholder="Level 0-100" className={`${I} w-1/4`}/>
+                    <button onClick={() => upd("about.skills", draft.about.skills.filter((_, j) => j !== i))} className="text-red-500">{icons.trash}</button>
+                  </div>
+                ))}
+                <button onClick={() => upd("about.skills", [...draft.about.skills, { n: "", cat: "Tools", lv: 80 }])} className="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-sm flex items-center gap-1">{icons.plus} Add Skill</button>
               </div>
             </>
           )}
@@ -2697,11 +2782,16 @@ function Admin({ content, setContent, onClose }) {
               {draft.blog.map((b, i) => (
                 <div key={b.id} className="p-4 bg-gray-900 border border-gray-800 rounded-lg mb-4 space-y-3">
                   <div className="flex items-center gap-2">
-                    <input value={b.title} onChange={e => { const bl = [...draft.blog]; bl[i] = { ...bl[i], title: e.target.value }; upd("blog", bl); }} className={`${I} flex-1`}/>
-                    <button onClick={() => { const bl = [...draft.blog]; bl[i] = { ...bl[i], published: !bl[i].published }; upd("blog", bl); }} className={b.published ? "text-green-400" : "text-gray-600"}>{b.published ? icons.eye : icons.eyeOff}</button>
+                    <input value={b.title} onChange={e => { const bl = [...draft.blog]; bl[i] = { ...bl[i], title: e.target.value }; upd("blog", bl); }} placeholder="Title" className={`${I} flex-1`}/>
+                    <button onClick={() => { const bl = [...draft.blog]; bl[i] = { ...bl[i], published: !bl[i].published }; upd("blog", bl); }} className={b.published ? "text-green-400" : "text-gray-600"} title={b.published ? "Published" : "Draft"}>{b.published ? icons.eye : icons.eyeOff}</button>
                     <button onClick={() => upd("blog", draft.blog.filter((_, j) => j !== i))} className="text-red-500">{icons.trash}</button>
                   </div>
-                  <textarea value={b.excerpt} onChange={e => { const bl = [...draft.blog]; bl[i] = { ...bl[i], excerpt: e.target.value }; upd("blog", bl); }} placeholder="Excerpt" className={`${I} h-16 resize-none`}/>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div><label className={L}>Date</label><input type="date" value={b.date} onChange={e => { const bl = [...draft.blog]; bl[i] = { ...bl[i], date: e.target.value }; upd("blog", bl); }} className={I}/></div>
+                    <div><label className={L}>Tags (comma)</label><input value={(b.tags||[]).join(", ")} onChange={e => { const bl = [...draft.blog]; bl[i] = { ...bl[i], tags: e.target.value.split(",").map(s=>s.trim()).filter(Boolean) }; upd("blog", bl); }} placeholder="AI, Finance" className={I}/></div>
+                  </div>
+                  <div><label className={L}>Excerpt (shown on blog list)</label><textarea value={b.excerpt} onChange={e => { const bl = [...draft.blog]; bl[i] = { ...bl[i], excerpt: e.target.value }; upd("blog", bl); }} placeholder="Short description…" className={`${I} h-16 resize-none`}/></div>
+                  <div><label className={L}>Full Content (Markdown-style — use ### Heading | paragraphs separated by |)</label><textarea value={b.content} onChange={e => { const bl = [...draft.blog]; bl[i] = { ...bl[i], content: e.target.value }; upd("blog", bl); }} placeholder="### Section Title|Paragraph text here|Another paragraph…" className={`${I} h-48 resize-y`}/></div>
                 </div>
               ))}
             </>
@@ -2760,6 +2850,81 @@ function Admin({ content, setContent, onClose }) {
                 <div><label className={L}>Button Label</label><input value={draft.resume.label} onChange={e => upd("resume.label", e.target.value)} className={I}/></div>
                 <div><label className={L}>File Path</label><input value={draft.resume.path} onChange={e => upd("resume.path", e.target.value)} className={I}/></div>
                 <p className="text-xs text-gray-500">Upload your PDF to <code className="text-blue-400">public/resume/</code> and update the path above.</p>
+              </div>
+            </>
+          )}
+
+          {tab === "design" && (
+            <>
+              <h2 className="text-xl font-bold mb-6">Design & Theme</h2>
+              <div className="space-y-6">
+
+                {/* Accent Color */}
+                <div>
+                  <label className={L}>Accent Color</label>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    {[
+                      { id: "indigo",  label: "Indigo",  swatch: "#818cf8" },
+                      { id: "violet",  label: "Violet",  swatch: "#a78bfa" },
+                      { id: "blue",    label: "Blue",    swatch: "#60a5fa" },
+                      { id: "emerald", label: "Emerald", swatch: "#34d399" },
+                      { id: "rose",    label: "Rose",    swatch: "#fb7185" },
+                      { id: "amber",   label: "Amber",   swatch: "#fbbf24" },
+                    ].map(ac => (
+                      <button
+                        key={ac.id}
+                        onClick={() => upd("theme.accentColor", ac.id)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border-2 transition-all ${draft.theme?.accentColor === ac.id ? "border-white/40 bg-white/10 text-white" : "border-gray-700 text-gray-400 hover:border-gray-500"}`}
+                      >
+                        <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: ac.swatch }}/>
+                        {ac.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Font Sizes */}
+                <div>
+                  <label className={L}>Hero Name Size — current: <code className="text-blue-400">{draft.theme?.heroNameSize}</code></label>
+                  <div className="flex gap-2 flex-wrap mt-1">
+                    {[
+                      { label: "Small",  val: "clamp(2.5rem,5vw,4rem)" },
+                      { label: "Medium", val: "clamp(3rem,7.5vw,5.8rem)" },
+                      { label: "Large",  val: "clamp(3.5rem,9vw,7rem)" },
+                      { label: "XL",     val: "clamp(4rem,11vw,8.5rem)" },
+                    ].map(sz => (
+                      <button key={sz.val} onClick={() => upd("theme.heroNameSize", sz.val)}
+                        className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${draft.theme?.heroNameSize === sz.val ? "border-blue-400 bg-blue-500/10 text-blue-300" : "border-gray-700 text-gray-400 hover:border-gray-500"}`}>
+                        {sz.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className={L}>Body / Description Font Size</label>
+                  <select value={draft.theme?.heroDescSize || "1.05rem"} onChange={e => upd("theme.heroDescSize", e.target.value)} className={I}>
+                    {["0.875rem","0.9rem","0.95rem","1rem","1.05rem","1.1rem","1.15rem","1.2rem"].map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Availability Badge */}
+                <div>
+                  <label className={L}>Availability Badge Text (top of hero)</label>
+                  <input value={draft.theme?.availabilityBadge || ""} onChange={e => upd("theme.availabilityBadge", e.target.value)} className={I}/>
+                </div>
+
+                {/* Hero Tagline */}
+                <div>
+                  <label className={L}>Hero Tagline (below name)</label>
+                  <input value={draft.theme?.heroTagline || ""} onChange={e => upd("theme.heroTagline", e.target.value)} className={I}/>
+                </div>
+
+                <div className="p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg text-xs text-blue-300">
+                  💡 Click <strong>Save & Preview</strong> to apply changes. Dark/Light mode toggle is in the main site nav.
+                </div>
               </div>
             </>
           )}
