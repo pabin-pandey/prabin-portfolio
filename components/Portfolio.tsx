@@ -423,7 +423,7 @@ function useSectionReveal() {
 // HOME
 // ═══════════════════════════════════════════════════════════════
 function Home({ c, d, nav }) {
-  const { hero, projects } = c;
+  const { hero, projects, testimonials } = c;
   const [ri, setRi] = useState(0);
   const [ci, setCi] = useState(0);
   const [del, setDel] = useState(false);
@@ -831,6 +831,31 @@ function Home({ c, d, nav }) {
             >
               View all projects {icons.chevR}
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ TESTIMONIALS ═══ */}
+      <section className={`py-24 border-t section-reveal ${d ? "border-white/[0.05] bg-gradient-to-b from-gray-900/60 to-gray-950" : "border-gray-100 bg-gradient-to-b from-white to-gray-50/80"}`}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-14 flex flex-col sm:flex-row sm:items-end gap-4">
+            <div>
+              <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>Testimonials</p>
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight">What People Say</h2>
+            </div>
+            <div className={`hidden sm:block flex-1 h-px mb-1.5 ${d ? "bg-gradient-to-r from-indigo-500/25 to-transparent" : "bg-gradient-to-r from-indigo-200 to-transparent"}`} />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {testimonials.map((t, i) => (
+              <div key={i} className={`p-6 rounded-2xl border hover-lift transition-all duration-200 ${d ? "bg-gray-900/60 border-white/[0.07] hover:border-indigo-500/18" : "bg-white border-gray-200 shadow-sm hover:shadow-md"}`}>
+                <div className={`text-2xl font-serif mb-3 ${d ? "text-indigo-500/40" : "text-indigo-200"}`}>&ldquo;</div>
+                <p className={`text-sm leading-relaxed mb-5 ${d ? "text-gray-300" : "text-gray-600"}`}>{t.quote}</p>
+                <div className={`pt-4 border-t ${d ? "border-white/[0.06]" : "border-gray-100"}`}>
+                  <p className={`font-bold text-sm ${d ? "text-gray-200" : "text-gray-900"}`}>{t.name}</p>
+                  <p className={`text-xs mt-0.5 ${d ? "text-gray-500" : "text-gray-400"}`}>{t.role}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
