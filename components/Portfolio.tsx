@@ -52,7 +52,7 @@ const DEFAULT_CONTENT = {
     { name: "Colleague Name", role: "Sethi Clarity Advisers", quote: "Prabin's ability to translate complex financial concepts into intuitive tools is remarkable." }
   ],
   contact: { email: "prabin.pandey@temple.edu", phone: "835-207-9312", location: "Philadelphia, PA", linkedin: "https://linkedin.com/in/prabin-pandey-1482362b7/", github: "https://github.com/pabin-pandey", msg: "I'd love to hear from you. Whether you have a question, opportunity, or just want to connect — drop me a message." },
-  resume: { label: "Download Resume", path: "/resume/Prabin_Pandey_Resume_2026.docx" }
+  resume: { label: "Download Resume", path: "/resume/Prabin_Pandey_Resume_2026.pdf" }
 };
 
 // ─── Hooks ───
@@ -511,8 +511,8 @@ function Home({ c, d, nav }) {
                 {hero.cta1} {icons.chevR}
               </a>
               <a
-                href="/resume/Prabin_Pandey_Resume_2026.docx"
-                download="Prabin_Pandey_Resume_2026.docx"
+                href="/resume/Prabin_Pandey_Resume_2026.pdf"
+                download="Prabin_Pandey_Resume_2026.pdf"
                 className={`px-7 py-3.5 rounded-xl text-[13px] font-semibold flex items-center gap-2 border transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${d ? "border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/18 hover:shadow-lg hover:shadow-black/20" : "border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 hover:shadow-md"}`}
               >
                 {icons.dl} {hero.cta2}
