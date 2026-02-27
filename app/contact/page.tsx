@@ -4,13 +4,13 @@ import SiteFooter from "@/components/SiteFooter";
 import ContactForm from "./ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact Prabin Pandey — Reach Out for Finance & AI Opportunities",
+  title: "Contact Prabin Pandey — Finance & AI Analytics",
   description:
-    "Contact Prabin Pandey — MS Financial Analysis candidate at Temple University. Open to Summer 2026 finance, investment analytics, and AI-augmented research roles.",
+    "Contact Prabin Pandey — MS Financial Analysis candidate at Temple University (Fox School of Business). Open to full-time opportunities in quantitative finance, data analytics, and AI-integrated financial research. Available May 2026.",
   alternates: { canonical: "https://www.prabinpandey.com/contact" },
   openGraph: {
     title: "Contact Prabin Pandey",
-    description: "Open to Summer 2026 opportunities in finance, investment analytics, and AI-augmented research.",
+    description: "Open to full-time opportunities in quantitative finance, data analytics, and AI-integrated financial research. Available May 2026.",
     url: "https://www.prabinpandey.com/contact",
   },
 };
@@ -85,7 +85,7 @@ export default function ContactPage() {
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="text-xs font-bold tracking-[0.15em] uppercase text-emerald-400">Available</span>
               </div>
-              <p className="text-sm text-gray-400">Seeking Summer 2026 roles in investment analytics, financial data engineering, and AI-augmented research. Available May 2026.</p>
+              <p className="text-sm text-gray-400">Bringing expertise in quantitative modeling, data analytics, and AI-integrated finance to roles at the intersection of financial analysis and technology. Available May 2026.</p>
             </div>
           </div>
 

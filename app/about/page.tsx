@@ -98,8 +98,8 @@ export default function AboutPage() {
             <Link href="/contact" className="inline-flex items-center gap-1.5 text-[13px] font-semibold border border-white/10 text-gray-300 px-5 py-2.5 rounded-xl hover:bg-white/5 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
               Get in Touch
             </Link>
-            <a href="/resume/Prabin_Pandey_Resume_2026.docx" download="Prabin_Pandey_Resume_2026.pdf" className="inline-flex items-center gap-1.5 text-[13px] font-semibold border border-white/10 text-gray-300 px-5 py-2.5 rounded-xl hover:bg-white/5 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
-              ↓ Resume (PDF)
+            <a href="/resume/Prabin_Pandey_Resume_2026.docx" download="Prabin_Pandey_Resume_2026.docx" className="inline-flex items-center gap-1.5 text-[13px] font-semibold border border-white/10 text-gray-300 px-5 py-2.5 rounded-xl hover:bg-white/5 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
+              ↓ Resume
             </a>
           </div>
         </div>

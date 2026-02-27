@@ -183,9 +183,8 @@ export default function ProjectsClient() {
         <h2 className="text-base font-bold text-white mb-4">More Projects by Category</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {[
-            { label: "Python / Quant Finance", href: "/projects/python", count: "6 projects" },
-            { label: "Excel Financial Models",  href: "/excel-projects",  count: "8 projects" },
-            { label: "R / Financial Analytics", href: "/r-projects",      count: "4 projects" },
+            { label: "Excel Financial Models",  href: "/excel-projects", count: "8 projects" },
+            { label: "R / Financial Analytics", href: "/r-projects",     count: "4 projects" },
           ].map(({ label, href, count }) => (
             <Link
               key={href}
