@@ -325,7 +325,6 @@ export default function App() {
               <a
                 key={p}
                 href={href}
-                onClick={(e) => { e.preventDefault(); nav(p); }}
                 className={`relative px-3.5 py-2 text-[13px] font-medium capitalize transition-all duration-200 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400
                   ${page === p
                     ? dark ? "text-white" : "text-gray-900"
@@ -352,7 +351,7 @@ export default function App() {
         {mobMenu && (
           <div className={`md:hidden border-t pb-2 ${dark ? "bg-gray-950/95 backdrop-blur-xl border-gray-800/60" : "bg-white/95 backdrop-blur-xl border-gray-200"}`}>
             {([["home","/"],["about","/about"],["projects","/projects"],["blog","/blog"],["contact","/contact"]] as [string,string][]).map(([p,href]) => (
-              <a key={p} href={href} onClick={(e) => { e.preventDefault(); nav(p); }} className={`block w-full text-left px-6 py-3 text-sm capitalize font-medium transition-colors ${page === p ? "text-indigo-400" : dark ? "text-gray-400" : "text-gray-600"}`}>{p}</a>
+              <a key={p} href={href} className={`block w-full text-left px-6 py-3 text-sm capitalize font-medium transition-colors ${page === p ? "text-indigo-400" : dark ? "text-gray-400" : "text-gray-600"}`}>{p}</a>
             ))}
           </div>
         )}
@@ -401,7 +400,7 @@ export default function App() {
               </div>
               <div className="flex items-center gap-1">
                 {([["home","/"],["about","/about"],["projects","/projects"],["contact","/contact"]] as [string,string][]).map(([p,href]) => (
-                  <a key={p} href={href} onClick={(e) => { e.preventDefault(); nav(p); }} className={`px-3 py-1.5 text-xs capitalize rounded-lg transition-colors ${dark ? "text-gray-600 hover:text-gray-300" : "text-gray-400 hover:text-gray-700"}`}>{p}</a>
+                  <a key={p} href={href} className={`px-3 py-1.5 text-xs capitalize rounded-lg transition-colors ${dark ? "text-gray-600 hover:text-gray-300" : "text-gray-400 hover:text-gray-700"}`}>{p}</a>
                 ))}
               </div>
               <div className="flex items-center gap-3">
@@ -494,12 +493,6 @@ function Home({ c, d, nav }) {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-24 w-full">
           <div className="max-w-4xl">
 
-            {/* Version tag — confirms latest deployment; remove after cache confirmed */}
-            <div className="animate-fadeUp-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md mb-3 text-[10px] font-bold tracking-widest uppercase"
-              style={{ background: "rgba(167,139,250,0.12)", border: "1px solid rgba(167,139,250,0.3)", color: "#a78bfa" }}>
-              ✦ v2026.02.28 — Latest
-            </div>
-
             {/* Availability badge */}
             <div className="animate-fadeUp-2 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border mb-6 text-xs font-semibold tracking-wide"
               style={{ background: d ? "rgba(16,185,129,0.07)" : "rgba(16,185,129,0.08)", borderColor: d ? "rgba(16,185,129,0.25)" : "rgba(16,185,129,0.3)", color: d ? "#34d399" : "#059669" }}>
@@ -535,7 +528,6 @@ function Home({ c, d, nav }) {
             <div className="animate-fadeUp-5 flex flex-wrap gap-3 mb-14">
               <a
                 href="/projects"
-                onClick={(e) => { e.preventDefault(); nav("projects"); }}
                 className="btn-primary px-7 py-3.5 text-white rounded-xl text-[13px] font-semibold flex items-center gap-2 cta-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400" style={{ background: "linear-gradient(135deg, var(--accent-from), var(--accent-to))" }}
               >
                 {hero.cta1} {icons.chevR}
@@ -856,7 +848,6 @@ function Home({ c, d, nav }) {
           <div className="flex justify-center mt-10">
             <a
               href="/projects"
-              onClick={(e) => { e.preventDefault(); nav("projects"); }}
               className={`inline-flex items-center gap-2 text-[13px] font-semibold border px-5 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${d ? "border-white/10 text-gray-400 hover:text-gray-200 hover:bg-white/5" : "border-gray-200 text-gray-600 hover:bg-gray-50"}`}
             >
               View all projects {icons.chevR}
