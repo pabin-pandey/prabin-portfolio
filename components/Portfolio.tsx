@@ -494,6 +494,12 @@ function Home({ c, d, nav }) {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-24 w-full">
           <div className="max-w-4xl">
 
+            {/* Version tag — confirms latest deployment; remove after cache confirmed */}
+            <div className="animate-fadeUp-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md mb-3 text-[10px] font-bold tracking-widest uppercase"
+              style={{ background: "rgba(167,139,250,0.12)", border: "1px solid rgba(167,139,250,0.3)", color: "#a78bfa" }}>
+              ✦ v2026.02.28 — Latest
+            </div>
+
             {/* Availability badge */}
             <div className="animate-fadeUp-2 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border mb-6 text-xs font-semibold tracking-wide"
               style={{ background: d ? "rgba(16,185,129,0.07)" : "rgba(16,185,129,0.08)", borderColor: d ? "rgba(16,185,129,0.25)" : "rgba(16,185,129,0.3)", color: d ? "#34d399" : "#059669" }}>
