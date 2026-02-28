@@ -137,11 +137,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>
-        {/* Skip to main content — keyboard/screen-reader accessibility */}
-        <a href="#main-content" className="skip-link">Skip to main content</a>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
