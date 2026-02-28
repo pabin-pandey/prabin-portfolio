@@ -52,9 +52,10 @@ const experience = [
     role:   "Associate Financial Consultant",
     period: "Sep 2025 – Dec 2025",
     pts: [
-      "Engineered AI-driven financial planning models simulating retirement income trajectories and multi-scenario contribution strategies.",
-      "Developed AI-based analytical tools to evaluate investment allocations and optimize portfolio construction.",
-      "Designed and built an internal financial planning website integrating AI-driven models.",
+      "Engineered AI-driven financial planning models simulating retirement income trajectories, net worth accumulation, and multi-scenario contribution strategies for client portfolios.",
+      "Developed AI-based analytical tools to evaluate investment allocations, optimize portfolio construction, and monitor client performance against benchmarks.",
+      "Maintained client investment data in portfolio management software, ensuring accurate performance reporting and audit-ready financial records.",
+      "Designed and developed an internal financial planning website, integrating AI-driven models into a user-friendly interface to streamline data input and advisory analysis.",
     ],
   },
   {
@@ -62,7 +63,7 @@ const experience = [
     role:   "IT Consultant",
     period: "Jan 2025 – Present",
     pts: [
-      "Developed a Power BI dashboard analyzing visitor traffic patterns and resource utilization across campus facilities, supporting operational decision-making and financial reporting.",
+      "Developed Power BI dashboard analyzing visitor traffic patterns and resource utilization across campus facilities, supporting operational decision-making and financial reporting.",
     ],
   },
   {
@@ -70,6 +71,7 @@ const experience = [
     role:   "Customer Relations Intern",
     period: "Mar – May 2023",
     pts: [
+      "Organized and maintained client documentation, tax records, and collateral files, supporting audit readiness.",
       "Prepared financial reports and cost summaries to inform management decisions on lending terms, product pricing, and operational planning.",
       "Counseled clients on banking products, insurance, and wealth management strategies.",
     ],

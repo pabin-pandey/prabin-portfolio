@@ -14,49 +14,128 @@ const FILTER_CHIPS = [
 ];
 
 const PROJECTS = [
+  // ── Excel / Financial Modeling ──────────────────────────────────────────────
   {
-    id:       "pe-debt-covenant-model",
-    title:    "Private Equity Transaction & Debt Covenant Model",
-    subtitle: "Pharma Brands Inc. — Special Dividend Recapitalization",
-    cat:      "Financial Modeling",
-    yr:       "2024",
-    summary:  "Fully integrated 6-sheet Excel model: 3-statement financials, debt schedule with term loan + revolver, and dual covenant compliance testing over a 5-year horizon.",
-    tags:     ["Financial Modeling", "LBO", "Debt Covenants", "Excel", "Sensitivity Analysis"],
-    metrics:  ["6-sheet integrated model", "All covenants pass (5 years)", "Debt/EBITDA 2.46x → 0.0x"],
-    href:     "/projects/pe-debt-covenant-model",
+    id:      "pe-debt-covenant-model",
+    title:   "Private Equity Transaction & Debt Covenant Model",
+    sub:     "Pharma Brands Inc. — Special Dividend Recapitalization",
+    cat:     "Financial Modeling",
+    yr:      "2024",
+    summary: "Fully integrated 6-sheet Excel model: 3-statement financials, debt schedule with term loan + revolver, and dual covenant compliance testing over a 5-year horizon.",
+    href:    "/projects/pe-debt-covenant-model",
+  },
+  // ── Power BI ─────────────────────────────────────────────────────────────────
+  {
+    id:      "campus-operations-analytics",
+    title:   "Campus Operations Analytics Dashboard",
+    sub:     "Temple University — FP&A BI Implementation",
+    cat:     "Power BI",
+    yr:      "2025",
+    summary: "Enterprise Power BI dashboard analyzing visitor traffic, seasonal trends, and resource utilization to support data-driven budget allocation — applying FP&A principles used at Fortune 500 companies.",
+    href:    "/projects/campus-operations-analytics",
+  },
+  // ── Tableau ──────────────────────────────────────────────────────────────────
+  {
+    id:      "global-macro-dashboard",
+    title:   "Global Macroeconomic Intelligence Dashboard",
+    sub:     "4 Economies · 5 Indicators · 34 Years of World Bank Data",
+    cat:     "Tableau",
+    yr:      "2025",
+    summary: "Executive-grade Tableau dashboard benchmarking China, India, Russia, and the USA across five macroeconomic indicators with dynamic parameter controls, LOD-calculated volatility metrics, and interactive cross-filter actions.",
+    href:    "/projects/global-macro-dashboard",
+  },
+  // ── GenAI Finance ────────────────────────────────────────────────────────────
+  {
+    id:      "genai-finance-system",
+    title:   "GenAI in Finance — AI-Augmented Financial Analytics",
+    sub:     "Portfolio Intelligence & SEC Document Intelligence System",
+    cat:     "GenAI Finance",
+    yr:      "2025",
+    summary: "Integrated system applying generative AI across quantitative modeling, market risk analytics, SEC document intelligence, and Streamlit dashboards — with a documented AI governance framework throughout.",
+    href:    "/projects/genai-finance-system",
+  },
+  // ── Python ───────────────────────────────────────────────────────────────────
+  {
+    id:      "black-scholes-options-pricing",
+    title:   "Black-Scholes Options Pricing Engine",
+    sub:     "European Call & Put Pricing · Dividend Extension",
+    cat:     "Python",
+    yr:      "2024",
+    summary: "Built a complete European options pricing calculator from the Black-Scholes closed-form solution, pricing both calls and puts across 101 stock-price scenarios and incorporating continuous dividend yields.",
+    href:    "/projects/black-scholes-options-pricing",
   },
   {
-    id:       "campus-operations-analytics",
-    title:    "Campus Operations Analytics Dashboard",
-    subtitle: "Temple University — FP&A BI Implementation",
-    cat:      "Power BI",
-    yr:       "2025",
-    summary:  "Enterprise Power BI dashboard analyzing visitor traffic, seasonal trends, and resource utilization to support data-driven budget allocation — applying FP&A principles used at Fortune 500 companies.",
-    tags:     ["Power BI", "DAX", "Business Intelligence", "FP&A Analytics", "Operational KPIs"],
-    metrics:  ["60% reduction in manual reporting", "3 executive-ready dashboard pages", "YoY trend analysis"],
-    href:     "/projects/campus-operations-analytics",
+    id:      "black-scholes-greeks-implied-vol",
+    title:   "Black-Scholes Greeks, Term Structure & Implied Volatility",
+    sub:     "All 5 Greeks · Nelson-Siegel Yield Curve · AAPL IV Calibration",
+    cat:     "Python",
+    yr:      "2024",
+    summary: "Extended Black-Scholes to compute all five option Greeks, modeled the yield curve with a Nelson-Siegel term structure, and calibrated AAPL implied volatility via the bisection method.",
+    href:    "/projects/black-scholes-greeks-implied-vol",
   },
   {
-    id:       "global-macro-dashboard",
-    title:    "Global Macroeconomic Intelligence Dashboard",
-    subtitle: "4 Economies · 5 Indicators · 34 Years of World Bank Data",
-    cat:      "Tableau",
-    yr:       "2025",
-    summary:  "Executive-grade Tableau dashboard benchmarking China, India, Russia, and the USA across five macroeconomic indicators. Features dynamic parameter controls, LOD-calculated volatility metrics, and interactive cross-filter actions.",
-    tags:     ["Tableau", "Macroeconomic Analysis", "LOD Expressions", "Data Visualization"],
-    metrics:  ["4 countries benchmarked", "34 years of data", "9 interactive worksheets"],
-    href:     "/projects/global-macro-dashboard",
+    id:      "monte-carlo-gbm-simulation",
+    title:   "Monte Carlo Stock Price Simulation — Geometric Brownian Motion",
+    sub:     "1,000 Trials · Ford (F) · 250 Trading Days",
+    cat:     "Python",
+    yr:      "2024",
+    summary: "Progressively built a GBM stock price simulator across five model iterations, running 1,000 Monte Carlo trials of Ford (F) over 250 trading days and analyzing the resulting return distribution.",
+    href:    "/projects/monte-carlo-gbm-simulation",
   },
   {
-    id:       "genai-finance-system",
-    title:    "GenAI in Finance — AI-Augmented Financial Analytics",
-    subtitle: "Portfolio Intelligence & SEC Document System",
-    cat:      "GenAI Finance",
-    yr:       "2025",
-    summary:  "Integrated system applying generative AI across quantitative modeling, market risk analytics, SEC document intelligence, and Streamlit dashboards — with a documented AI governance framework throughout.",
-    tags:     ["Generative AI", "Python", "Streamlit", "WACC", "CAPM", "SEC Filings", "AI Governance"],
-    metrics:  ["5 Python analytics systems", "3 Streamlit dashboard versions", "9 LLMs benchmarked"],
-    href:     "/projects/genai-finance-system",
+    id:      "crr-binomial-tree-pricing",
+    title:   "Cox-Ross-Rubinstein Binomial Tree Option Pricing",
+    sub:     "Monte Carlo CRR · Ford & Tesla Validation · Black-Scholes Convergence",
+    cat:     "Python",
+    yr:      "2024",
+    summary: "Priced European options using a CRR binomial tree Monte Carlo simulation and demonstrated convergence to Black-Scholes as steps and trials increase — validated on both Ford (F) and Tesla (TSLA) options.",
+    href:    "/projects/crr-binomial-tree-pricing",
+  },
+  {
+    id:      "sp100-equity-analytics",
+    title:   "S&P 100 Equity Return Analytics & Correlation Study",
+    sub:     "99 Stocks · 5 Years · Log Returns · Correlation Matrix",
+    cat:     "Python",
+    yr:      "2024",
+    summary: "Processed 5 years of daily price data for 99 S&P 100 component stocks to compute log returns, rank performance, measure volatility, and construct a 99×99 cross-sectional correlation matrix with heatmap.",
+    href:    "/projects/sp100-equity-analytics",
+  },
+  {
+    id:      "black-scholes-dividend-extension",
+    title:   "Black-Scholes Pricing: Payoff Curves & Dividend Sensitivity",
+    sub:     "101-Scenario Analysis · Dividend Yield Impact",
+    cat:     "Python",
+    yr:      "2024",
+    summary: "Implemented a full Black-Scholes pricing function with call/put support, generated option price vs. payoff overlay charts across 101 scenarios, and quantified how continuous dividend yields suppress call-option value.",
+    href:    "/projects/black-scholes-dividend-extension",
+  },
+  // ── Financial Analytics (R) ──────────────────────────────────────────────────
+  {
+    id:      "time-series-ar-forecasting",
+    title:   "AR(1) Time Series Modeling & Commodity Price Forecasting",
+    sub:     "Box-Jenkins Methodology · 8-Month Forecast · ADF Test",
+    cat:     "Financial Analytics (R)",
+    yr:      "2024",
+    summary: "Identifies, estimates, and validates an AR(1) model on 98 months of commodity price data, producing an 8-month forward forecast with 80% and 95% confidence intervals — a core workflow in quantitative trading and macro research.",
+    href:    "/r-projects/time-series-ar-forecasting",
+  },
+  {
+    id:      "capm-beta-regression",
+    title:   "CAPM Beta Estimation & Systematic Risk Analysis",
+    sub:     "OLS in R · Jensen's Alpha · Market Risk Decomposition",
+    cat:     "Financial Analytics (R)",
+    yr:      "2024",
+    summary: "Estimates the market beta of an equity using the CAPM market regression, quantifying systematic risk exposure relative to the S&P 500 and interpreting Jensen's alpha as an abnormal return measure.",
+    href:    "/r-projects/capm-beta-regression",
+  },
+  {
+    id:      "hypothesis-testing-financial",
+    title:   "Statistical Inference & Hypothesis Testing for Financial Data",
+    sub:     "t-Tests · Chi-Squared · OLS Regression · R",
+    cat:     "Financial Analytics (R)",
+    yr:      "2024",
+    summary: "Applies parametric statistical tests — t-tests, chi-squared variance tests, confidence intervals, and OLS regression — to equity earnings and price data, demonstrating the inferential toolkit used in quantitative research.",
+    href:    "/r-projects/hypothesis-testing-financial",
   },
 ];
 
@@ -70,49 +149,22 @@ const CAT_COLOR: Record<string, string> = {
 };
 
 export default function ProjectsClient() {
-  const [query, setQuery]   = useState("");
   const [filter, setFilter] = useState("All");
 
-  const visible = useMemo(() => {
-    return PROJECTS.filter((p) => {
-      const matchFilter =
-        filter === "All" ||
-        p.cat === filter ||
-        p.tags.some((t) => t.toLowerCase().includes(filter.toLowerCase()));
-      const q = query.toLowerCase().trim();
-      const matchQuery =
-        !q ||
-        p.title.toLowerCase().includes(q) ||
-        p.subtitle.toLowerCase().includes(q) ||
-        p.tags.some((t) => t.toLowerCase().includes(q)) ||
-        p.summary.toLowerCase().includes(q);
-      return matchFilter && matchQuery;
-    });
-  }, [query, filter]);
+  const visible = useMemo(() =>
+    PROJECTS.filter((p) => filter === "All" || p.cat === filter),
+    [filter]
+  );
 
   return (
     <>
-      {/* Search */}
-      <div className="relative mb-4">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </span>
-        <input
-          type="search"
-          placeholder="Search projects, tools, or topics…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-900 border border-white/[0.08] text-gray-200 placeholder-gray-600 text-sm focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/30 transition-all"
-        />
-      </div>
-
       {/* Filter chips */}
-      <div className="flex flex-wrap gap-2 mb-8" role="group" aria-label="Filter projects by category">
+      <div className="flex flex-wrap gap-2 mb-8">
         {FILTER_CHIPS.map((chip) => (
           <button
             key={chip}
             onClick={() => setFilter(chip)}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 border
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all border
               ${filter === chip
                 ? "bg-indigo-500 border-indigo-500 text-white"
                 : "border-white/[0.08] text-gray-400 hover:text-gray-200 hover:border-white/20 bg-gray-900"
@@ -123,79 +175,37 @@ export default function ProjectsClient() {
         ))}
       </div>
 
-      {/* Results count */}
-      <p className="text-xs text-gray-600 mb-6">
-        {visible.length === PROJECTS.length
-          ? `${PROJECTS.length} projects`
-          : `${visible.length} of ${PROJECTS.length} projects`}
-      </p>
+      <p className="text-xs text-gray-600 mb-6">{visible.length} project{visible.length !== 1 ? "s" : ""}</p>
 
       {/* Project cards */}
-      {visible.length === 0 ? (
-        <div className="text-center py-20 text-gray-600">
-          <p className="text-lg font-semibold mb-2">No projects match</p>
-          <button onClick={() => { setQuery(""); setFilter("All"); }} className="text-sm text-indigo-400 hover:text-indigo-300 underline">Clear filters</button>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          {visible.map((p) => (
-            <article key={p.id} className="group bg-gray-900 border border-white/[0.06] rounded-2xl p-6 hover:border-indigo-500/25 transition-colors">
-              <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className={`text-xs px-2 py-0.5 rounded border font-medium ${CAT_COLOR[p.cat] ?? "text-gray-400 bg-gray-800 border-gray-700"}`}>{p.cat}</span>
-                    <span className="text-xs text-gray-600">{p.yr}</span>
-                  </div>
-                  <h2 className="text-lg font-bold text-white group-hover:text-indigo-200 transition-colors">{p.title}</h2>
-                  <p className="text-sm text-gray-500 mt-0.5">{p.subtitle}</p>
-                </div>
+      <div className="space-y-4">
+        {visible.map((p) => (
+          <Link
+            key={p.id}
+            href={p.href}
+            className="group block bg-gray-900 border border-white/[0.06] rounded-2xl p-6 hover:border-indigo-500/30 hover:bg-gray-900/80 transition-all"
+          >
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <span className={`text-xs px-2 py-0.5 rounded border font-medium ${CAT_COLOR[p.cat] ?? "text-gray-400 bg-gray-800 border-gray-700"}`}>
+                {p.cat}
+              </span>
+              <span className="text-xs text-gray-600">{p.yr}</span>
+            </div>
+
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <h2 className="text-base font-bold text-white group-hover:text-indigo-200 transition-colors leading-snug mb-1">
+                  {p.title}
+                </h2>
+                <p className="text-xs text-gray-500 mb-3">{p.sub}</p>
+                <p className="text-sm text-gray-400 leading-relaxed">{p.summary}</p>
               </div>
-
-              <p className="text-sm text-gray-400 leading-relaxed mb-4">{p.summary}</p>
-
-              {/* Metrics */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                {p.metrics.map((m) => (
-                  <span key={m} className="text-xs px-2.5 py-1 rounded-lg bg-gray-800 border border-white/[0.06] text-gray-400">{m}</span>
-                ))}
-              </div>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5 mb-5">
-                {p.tags.map((t) => (
-                  <span key={t} className="text-xs px-2 py-0.5 rounded text-gray-600 bg-gray-800">{t}</span>
-                ))}
-              </div>
-
-              <Link
-                href={p.href}
-                className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-indigo-400 hover:text-indigo-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded"
-              >
-                View case study →
-              </Link>
-            </article>
-          ))}
-        </div>
-      )}
-
-      {/* More projects */}
-      <div className="mt-12 pt-8 border-t border-white/[0.06]">
-        <h2 className="text-base font-bold text-white mb-4">More Projects by Category</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {[
-            { label: "Excel Financial Models",  href: "/excel-projects", count: "8 projects" },
-            { label: "R / Financial Analytics", href: "/r-projects",     count: "4 projects" },
-          ].map(({ label, href, count }) => (
-            <Link
-              key={href}
-              href={href}
-              className="p-4 bg-gray-900 border border-white/[0.06] rounded-xl hover:border-indigo-500/25 transition-colors group"
-            >
-              <p className="text-sm font-semibold text-gray-300 group-hover:text-white transition-colors">{label}</p>
-              <p className="text-xs text-gray-600 mt-1">{count}</p>
-            </Link>
-          ))}
-        </div>
+              <span className="shrink-0 mt-1 text-indigo-400 group-hover:text-indigo-300 text-sm font-semibold flex items-center gap-1 transition-all group-hover:gap-2 whitespace-nowrap">
+                View →
+              </span>
+            </div>
+          </Link>
+        ))}
       </div>
     </>
   );
