@@ -78,13 +78,71 @@ export default function CampusAnalyticsPage() {
           <p className="text-lg text-yellow-300/80 font-medium">Temple University — FP&A BI Implementation</p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
           {metrics.map((m) => (
             <div key={m.label} className="bg-gray-900 border border-white/[0.06] rounded-xl p-3 text-center">
               <p className="text-lg font-black text-white">{m.value}</p>
               <p className="text-xs text-gray-500 mt-0.5">{m.label}</p>
             </div>
           ))}
+        </div>
+
+        {/* ── Power BI Dashboard Preview ── */}
+        <div className="mb-10 rounded-xl overflow-hidden border border-yellow-500/20">
+          {/* Header bar */}
+          <div className="flex items-center justify-between px-4 py-3 bg-yellow-950/30 border-b border-yellow-500/20">
+            <div className="flex items-center gap-2">
+              {/* Power BI bar-chart icon */}
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="text-yellow-400"
+                aria-hidden="true"
+              >
+                <rect x="2"  y="10" width="4" height="12" rx="1" />
+                <rect x="9"  y="5"  width="4" height="17" rx="1" />
+                <rect x="16" y="1"  width="4" height="21" rx="1" />
+              </svg>
+              <span className="text-sm font-semibold text-yellow-300">Dashboard Preview · Power BI</span>
+            </div>
+            <span className="text-[11px] text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded-full">
+              Org Access Required
+            </span>
+          </div>
+
+          {/* Screenshot + gradient overlay */}
+          <div className="relative bg-gray-900" style={{ maxHeight: 420, overflow: "hidden" }}>
+            <img
+              src="/images/powerbi-ambler-dashboard.png"
+              alt="Campus Operations Analytics — Power BI dashboard screenshot"
+              className="w-full object-cover object-top"
+              style={{ maxHeight: 420, display: "block" }}
+            />
+
+            {/* Bottom fade */}
+            <div
+              className="absolute inset-x-0 bottom-0 pointer-events-none"
+              style={{
+                height: "45%",
+                background: "linear-gradient(to top, rgba(3,7,18,0.97) 0%, rgba(3,7,18,0.5) 60%, transparent 100%)",
+              }}
+            />
+
+            {/* CTA row over fade */}
+            <div className="absolute bottom-5 left-0 right-0 flex flex-col items-center gap-2">
+              <a
+                href="mailto:prabin.pandey@temple.edu?subject=Power%20BI%20Dashboard%20Access%20Request"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-5 py-2 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/20 transition-colors"
+              >
+                Request Dashboard Access ↗
+              </a>
+              <p className="text-[11px] text-gray-500">
+                Live embed requires organisational Power BI licence
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-8">

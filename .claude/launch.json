@@ -3,9 +3,15 @@
   "configurations": [
     {
       "name": "prabin-portfolio",
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/c", "C:\\Users\\prabi\\OneDrive - Temple University\\Desktop\\Generative AI\\Start using Claude Code\\claude_portfolio\\prabin-portfolio\\start-portfolio.bat"],
+      "port": 3007
+    },
+    {
+      "name": "dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "start", "--", "--port", "3002"],
-      "port": 3002
+      "runtimeArgs": ["run", "dev", "--", "-p", "3006"],
+      "port": 3006
     }
   ]
 }

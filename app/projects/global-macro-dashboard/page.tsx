@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import TableauEmbed from "./TableauEmbed";
 
 export const metadata: Metadata = {
   title: "Global Macroeconomic Intelligence Dashboard — Tableau | Prabin Pandey",
@@ -87,18 +88,8 @@ export default function GlobalMacroDashboardPage() {
           ))}
         </div>
 
-        {/* Live embed link */}
-        <div className="mb-8 p-4 bg-blue-950/30 border border-blue-500/20 rounded-xl flex items-center justify-between gap-4">
-          <p className="text-sm text-blue-300/80">Live dashboard available on Tableau Public</p>
-          <a
-            href="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=yes"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-semibold text-blue-400 hover:text-blue-300 border border-blue-500/30 px-3 py-1.5 rounded-lg transition-colors shrink-0"
-          >
-            View on Tableau Public →
-          </a>
-        </div>
+        {/* Live Tableau embed */}
+        <TableauEmbed />
 
         <div className="space-y-8">
           {sections.map((s) => (
