@@ -34,7 +34,20 @@ const education = [
     period:  "Expected May 2026",
     gpa:     "3.98",
     badge:   "CFA Level I Candidate",
-    courses: "Corporate Value Management · Asset Pricing · ML in Finance · Financial Time Series · Derivative Valuation · AI in Portfolio Management",
+    courses: [
+      "Corporate Value Management",
+      "Asset Pricing",
+      "Machine Learning in Finance",
+      "Financial Time Series",
+      "Data Science in Finance",
+      "Derivative Valuation",
+      "AI in Portfolio Management",
+      "Gen AI in Finance",
+      "Financial Econometrics",
+      "M&A Modeling",
+      "Private Equity and Credit",
+      "Investment Management",
+    ],
   },
   {
     school:  "Tribhuvan University",
@@ -42,7 +55,7 @@ const education = [
     period:  "Dec 2023",
     gpa:     "3.81",
     badge:   "Valedictorian",
-    courses: "Business Administration — Finance focus",
+    courses: ["Business Administration — Finance focus"],
   },
 ];
 
@@ -123,7 +136,23 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <span className="inline-block text-xs px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-medium mb-3">{e.badge}</span>
-                <p className="text-xs text-gray-500 leading-relaxed">{e.courses}</p>
+                {/* Course chips */}
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {e.courses.map((course) => (
+                    <span
+                      key={course}
+                      className="inline-block text-[11px] px-2.5 py-1 rounded-lg font-medium"
+                      style={{
+                        background:   "rgba(255,255,255,0.04)",
+                        border:       "1px solid rgba(255,255,255,0.08)",
+                        color:        "#9ca3af",
+                        letterSpacing: "0.01em",
+                      }}
+                    >
+                      {course}
+                    </span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

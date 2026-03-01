@@ -857,23 +857,104 @@ function Home({ c, d, nav }) {
       </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
-      <section className={`py-24 border-t section-reveal ${d ? "border-white/[0.05] bg-gradient-to-b from-gray-900/60 to-gray-950" : "border-gray-100 bg-gradient-to-b from-white to-gray-50/80"}`}>
+      <section
+        className="py-24 border-t section-reveal"
+        style={
+          d
+            ? { borderColor: "rgba(255,255,255,0.05)", background: "linear-gradient(180deg,rgba(17,24,39,0.55) 0%,rgba(3,7,18,1) 100%)" }
+            : { borderColor: "#f3f4f6", background: "linear-gradient(180deg,#fff 0%,#f9fafb 100%)" }
+        }
+      >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-14 flex flex-col sm:flex-row sm:items-end gap-4">
+          {/* Section header */}
+          <div className="mb-12 flex flex-col sm:flex-row sm:items-end gap-4">
             <div>
-              <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>Testimonials</p>
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight">What People Say</h2>
+              <p className={`text-[11px] font-bold tracking-[0.22em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>
+                Testimonials
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight">
+                What People Say
+              </h2>
             </div>
-            <div className={`hidden sm:block flex-1 h-px mb-1.5 ${d ? "bg-gradient-to-r from-indigo-500/25 to-transparent" : "bg-gradient-to-r from-indigo-200 to-transparent"}`} />
+            <div className={`hidden sm:block flex-1 h-px mb-2 ${d ? "bg-gradient-to-r from-indigo-500/20 to-transparent" : "bg-gradient-to-r from-indigo-200 to-transparent"}`} />
           </div>
+
+          {/* Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {testimonials.map((t, i) => (
-              <div key={i} className={`p-6 rounded-2xl border hover-lift transition-all duration-200 ${d ? "bg-gray-900/60 border-white/[0.07] hover:border-indigo-500/18" : "bg-white border-gray-200 shadow-sm hover:shadow-md"}`}>
-                <div className={`text-2xl font-serif mb-3 ${d ? "text-indigo-500/40" : "text-indigo-200"}`}>&ldquo;</div>
-                <p className={`text-sm leading-relaxed mb-5 ${d ? "text-gray-300" : "text-gray-600"}`}>{t.quote}</p>
-                <div className={`pt-4 border-t ${d ? "border-white/[0.06]" : "border-gray-100"}`}>
-                  <p className={`font-bold text-sm ${d ? "text-gray-200" : "text-gray-900"}`}>{t.name}</p>
-                  <p className={`text-xs mt-0.5 ${d ? "text-gray-500" : "text-gray-400"}`}>{t.role}</p>
+              <div
+                key={i}
+                className="relative rounded-2xl transition-all duration-200 hover-lift overflow-hidden"
+                style={
+                  d
+                    ? {
+                        background: "linear-gradient(135deg,rgba(99,102,241,0.055) 0%,rgba(17,24,39,0.85) 60%)",
+                        border:     "1px solid rgba(255,255,255,0.07)",
+                      }
+                    : {
+                        background: "#fff",
+                        border:     "1px solid #e5e7eb",
+                        boxShadow:  "0 2px 12px rgba(0,0,0,0.04)",
+                      }
+                }
+              >
+                {/* Left indigo accent stripe */}
+                <div
+                  className="absolute top-0 left-0 w-[3px] h-full rounded-l-2xl"
+                  style={{ background: "linear-gradient(to bottom, #6366f1, #8b5cf6, rgba(139,92,246,0))" }}
+                />
+
+                <div className="pl-7 pr-6 py-6">
+                  {/* Large decorative quote mark */}
+                  <div
+                    className="font-black select-none mb-1"
+                    style={{
+                      fontSize: "72px",
+                      lineHeight: "0.75",
+                      marginTop: "-4px",
+                      background: d
+                        ? "linear-gradient(135deg,rgba(99,102,241,0.55),rgba(139,92,246,0.22))"
+                        : "linear-gradient(135deg,rgba(99,102,241,0.35),rgba(139,92,246,0.12))",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    &ldquo;
+                  </div>
+
+                  {/* Quote body */}
+                  <p
+                    className="leading-[1.85] mb-6"
+                    style={{
+                      fontSize:  "0.9375rem",
+                      color:     d ? "#d1d5db" : "#374151",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {t.quote}
+                  </p>
+
+                  {/* Attribution */}
+                  <div
+                    className="flex items-center gap-3 pt-4"
+                    style={{ borderTop: d ? "1px solid rgba(255,255,255,0.06)" : "1px solid #f3f4f6" }}
+                  >
+                    <div
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0"
+                      style={{ background: "linear-gradient(135deg,#6366f1,#8b5cf6)", color: "#fff" }}
+                    >
+                      {t.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm leading-tight" style={{ color: d ? "#f3f4f6" : "#111827" }}>
+                        {t.name}
+                      </p>
+                      <p className="text-[12px] mt-0.5" style={{ color: d ? "#6b7280" : "#9ca3af" }}>
+                        {t.role}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -2559,16 +2640,76 @@ function Contact({ c, d }) {
       </div>
 
       <section className="mt-20">
-        <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>Testimonials</p>
+        <p className={`text-[11px] font-bold tracking-[0.22em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>
+          Testimonials
+        </p>
         <h2 className="text-2xl font-bold tracking-tight mb-8">What People Say</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {testimonials.map((t, i) => (
-            <div key={i} className={`p-6 rounded-2xl border hover-lift transition-all duration-200 ${d ? "bg-gray-900/60 border-white/[0.07] hover:border-indigo-500/18" : "bg-white border-gray-200 shadow-sm hover:shadow-md"}`}>
-              <div className={`text-2xl font-serif mb-3 ${d ? "text-indigo-500/40" : "text-indigo-200"}`}>"</div>
-              <p className={`text-sm leading-relaxed mb-5 ${d ? "text-gray-300" : "text-gray-600"}`}>{t.quote}</p>
-              <div className={`pt-4 border-t ${d ? "border-white/[0.06]" : "border-gray-100"}`}>
-                <p className={`font-bold text-sm ${d ? "text-gray-200" : "text-gray-900"}`}>{t.name}</p>
-                <p className={`text-xs mt-0.5 ${d ? "text-gray-500" : "text-gray-400"}`}>{t.role}</p>
+            <div
+              key={i}
+              className="relative rounded-2xl transition-all duration-200 hover-lift overflow-hidden"
+              style={
+                d
+                  ? {
+                      background: "linear-gradient(135deg,rgba(99,102,241,0.055) 0%,rgba(17,24,39,0.85) 60%)",
+                      border:     "1px solid rgba(255,255,255,0.07)",
+                    }
+                  : {
+                      background: "#fff",
+                      border:     "1px solid #e5e7eb",
+                      boxShadow:  "0 2px 12px rgba(0,0,0,0.04)",
+                    }
+              }
+            >
+              {/* Left indigo accent stripe */}
+              <div
+                className="absolute top-0 left-0 w-[3px] h-full rounded-l-2xl"
+                style={{ background: "linear-gradient(to bottom, #6366f1, #8b5cf6, rgba(139,92,246,0))" }}
+              />
+              <div className="pl-7 pr-6 py-6">
+                {/* Large decorative quote mark */}
+                <div
+                  className="font-black select-none mb-1"
+                  style={{
+                    fontSize: "72px",
+                    lineHeight: "0.75",
+                    marginTop: "-4px",
+                    background: d
+                      ? "linear-gradient(135deg,rgba(99,102,241,0.55),rgba(139,92,246,0.22))"
+                      : "linear-gradient(135deg,rgba(99,102,241,0.35),rgba(139,92,246,0.12))",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  &ldquo;
+                </div>
+                <p
+                  className="leading-[1.85] mb-6"
+                  style={{ fontSize: "0.9375rem", color: d ? "#d1d5db" : "#374151", fontStyle: "italic" }}
+                >
+                  {t.quote}
+                </p>
+                <div
+                  className="flex items-center gap-3 pt-4"
+                  style={{ borderTop: d ? "1px solid rgba(255,255,255,0.06)" : "1px solid #f3f4f6" }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0"
+                    style={{ background: "linear-gradient(135deg,#6366f1,#8b5cf6)", color: "#fff" }}
+                  >
+                    {t.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm leading-tight" style={{ color: d ? "#f3f4f6" : "#111827" }}>
+                      {t.name}
+                    </p>
+                    <p className="text-[12px] mt-0.5" style={{ color: d ? "#6b7280" : "#9ca3af" }}>
+                      {t.role}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
