@@ -37,7 +37,6 @@ interface Project {
 
 type ModalState = {
   project: Project;
-  tab: "overview" | "code" | "outputs";
 } | null;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -96,8 +95,8 @@ const PC: Record<PlatformType, PlatformCfg> = {
     timeoutMs:      0,
   },
   r_analysis: {
-    label:          "R Analysis",
-    btnText:        "View Analysis",
+    label:          "Code & Output",
+    btnText:        "View Code & Output",
     accentRgb:      "251,146,60",
     badgeCls:       "text-orange-400 bg-orange-400/[0.07] border-orange-400/20",
     stripeGradient: "linear-gradient(to bottom,#fb923c,#f97316,rgba(249,115,22,0))",
@@ -1009,6 +1008,143 @@ function PreviewOutputs({ p, cfg }: { p: Project; cfg: PlatformCfg }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// PreviewUnified — single scrollable view replacing tab system
+// ─────────────────────────────────────────────────────────────────────────────
+function PreviewUnified({ p, cfg }: { p: Project; cfg: PlatformCfg }) {
+  const lang: "python" | "r" = p.platformType === "r_analysis" ? "r" : "python";
+  const langLabel = p.platformType === "r_analysis" ? "R Script" : "Python";
+
+  return (
+    <div className="overflow-y-auto h-full">
+      <div className="p-5 space-y-7">
+
+        {/* ── 1. Case Study Summary ── */}
+        {p.summary && (
+          <div>
+            <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-2">Case Study</p>
+            <p className="text-[13px] text-gray-300 leading-relaxed">{p.summary}</p>
+          </div>
+        )}
+
+        {/* ── 2. Key Metrics ── */}
+        {p.keyMetrics && p.keyMetrics.length > 0 && (
+          <div>
+            <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-2">Key Metrics</p>
+            <div className="grid grid-cols-3 gap-3">
+              {p.keyMetrics.map((m) => (
+                <div
+                  key={m.label}
+                  className="rounded-xl p-3 text-center border border-white/[0.06]"
+                  style={{ background: "rgba(255,255,255,0.03)" }}
+                >
+                  <p className="text-base font-black leading-tight" style={{ color: `rgb(${cfg.accentRgb})` }}>
+                    {m.value}
+                  </p>
+                  <p className="text-[10px] text-gray-500 mt-1">{m.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── 3. Tech Stack ── */}
+        {p.techStack && p.techStack.length > 0 && (
+          <div>
+            <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-2">Technology Stack</p>
+            <div className="flex flex-wrap gap-1.5">
+              {p.techStack.map((t) => (
+                <span
+                  key={t}
+                  className="text-[11px] px-2.5 py-1 rounded-lg font-medium text-gray-400"
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── 4. Code Block ── */}
+        {p.codePreview && (
+          <div>
+            <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-2">
+              {langLabel} · Key Implementation
+            </p>
+            <div className="rounded-xl overflow-hidden border border-white/[0.06]">
+              {/* Fake title bar */}
+              <div
+                className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]"
+                style={{ background: "rgba(255,255,255,0.03)" }}
+              >
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(239,68,68,0.6)" }} />
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(234,179,8,0.6)" }} />
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(34,197,94,0.6)" }} />
+                </div>
+                <span className="text-[10px] text-gray-600">{langLabel}</span>
+              </div>
+              <pre
+                className="p-4 text-[12px] leading-relaxed overflow-x-auto"
+                style={{
+                  background:  "#0d1117",
+                  fontFamily:  "'JetBrains Mono','Fira Code','Cascadia Code',monospace",
+                }}
+              >
+                <code
+                  dangerouslySetInnerHTML={{ __html: hiCode(p.codePreview, lang) }}
+                />
+              </pre>
+            </div>
+          </div>
+        )}
+
+        {/* ── 5. Deliverables / Outputs ── */}
+        {p.deliverables && p.deliverables.length > 0 && (
+          <div>
+            <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-2">Outputs &amp; Deliverables</p>
+            <div className="grid grid-cols-3 gap-2">
+              {p.deliverables.map((d) => (
+                <div
+                  key={d}
+                  className="flex flex-col items-center gap-2 py-3 rounded-xl border border-white/[0.06]"
+                  style={{ background: "rgba(255,255,255,0.02)" }}
+                >
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{ background: `rgba(${cfg.accentRgb},0.1)` }}
+                  >
+                    <DeliverableIcon name={d} sz={16} />
+                  </div>
+                  <p className="text-[11px] font-semibold text-gray-300 text-center px-1">{d}</p>
+                  <p className="text-[10px] text-gray-600 text-center px-1">{DELIVERABLE_DESC[d] ?? d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── 6. Full Case Study link ── */}
+        <div className="pb-2">
+          <Link
+            href={p.href}
+            className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all"
+            style={{
+              background: `rgba(${cfg.accentRgb},0.08)`,
+              border:     `1px solid rgba(${cfg.accentRgb},0.2)`,
+              color:      `rgb(${cfg.accentRgb})`,
+            }}
+          >
+            View Full Case Study →
+          </Link>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ModelViewerModal — Unified
 // ─────────────────────────────────────────────────────────────────────────────
 function ModelViewerModal({
@@ -1041,7 +1177,7 @@ function ModelViewerModal({
   }, [modal, onClose]);
 
   if (!modal) return null;
-  const { project: p, tab } = modal;
+  const { project: p } = modal;
   const cfg = PC[p.platformType];
   const isPreview = cfg.modalType === "preview_panel";
 
@@ -1061,8 +1197,8 @@ function ModelViewerModal({
           background:  "rgb(15,20,30)",
           border:      "1px solid rgba(255,255,255,0.08)",
           boxShadow:   `0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(${cfg.accentRgb},0.08)`,
-          maxHeight:   "min(90vh, 740px)",
-          height:      "min(90vh, 740px)",
+          maxHeight:   isPreview ? "min(92vh, 860px)" : "min(90vh, 740px)",
+          height:      isPreview ? "min(92vh, 860px)" : "min(90vh, 740px)",
         }}
       >
         {/* ── Header ── */}
@@ -1106,40 +1242,6 @@ function ModelViewerModal({
             </button>
           </div>
         </div>
-
-        {/* ── Tab bar (preview_panel only) ── */}
-        {isPreview && (
-          <div
-            className="flex items-center gap-0.5 px-5 py-2 shrink-0"
-            style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}
-          >
-            {(["overview", "code", "outputs"] as const).map((t) => {
-              const labels: Record<string, string> = {
-                overview: "Overview",
-                code:     p.platformType === "r_analysis" ? "R Code" : "Python Code",
-                outputs:  "Outputs",
-              };
-              const active = tab === t;
-              return (
-                <button
-                  key={t}
-                  onClick={() => {
-                    // This sets tab — handled in parent
-                  }}
-                  data-tab={t}
-                  className="px-3 py-1.5 rounded-md text-[12px] font-semibold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-                  style={
-                    active
-                      ? { background: `rgba(${cfg.accentRgb},0.12)`, color: `rgb(${cfg.accentRgb})` }
-                      : { color: "#6b7280" }
-                  }
-                >
-                  {labels[t]}
-                </button>
-              );
-            })}
-          </div>
-        )}
 
         {/* ── Body ── */}
         <div className="flex-1 min-h-0 overflow-hidden">
@@ -1229,14 +1331,8 @@ function ModelViewerModal({
             </div>
           )}
 
-          {/* PREVIEW PANEL (Python, R) */}
-          {isPreview && (
-            <>
-              {tab === "overview" && <PreviewOverview p={p} cfg={cfg} />}
-              {tab === "code"     && <PreviewCode    p={p} cfg={cfg} />}
-              {tab === "outputs"  && <PreviewOutputs p={p} cfg={cfg} />}
-            </>
-          )}
+          {/* PREVIEW PANEL (Python, R) — unified scrollable view */}
+          {isPreview && <PreviewUnified p={p} cfg={cfg} />}
         </div>
 
         {/* ── Footer ── */}
@@ -1273,16 +1369,16 @@ export default function ProjectsClient() {
   const handlePrimary = useCallback(
     (p: Project) => {
       if (p.embedUrl) {
-        setModal({ project: p, tab: "overview" });
+        setModal({ project: p });
         return;
       }
       const cfg = PC[p.platformType];
       if (cfg.modalType === "screenshot") {
-        setModal({ project: p, tab: "overview" });
+        setModal({ project: p });
         return;
       }
       if (cfg.modalType === "preview_panel") {
-        setModal({ project: p, tab: "overview" });
+        setModal({ project: p });
         return;
       }
       // No embed + not screenshot/preview → navigate
@@ -1294,23 +1390,6 @@ export default function ProjectsClient() {
     },
     [router]
   );
-
-  const setTab = useCallback((tab: "overview" | "code" | "outputs") => {
-    setModal((m) => m ? { ...m, tab } : null);
-  }, []);
-
-  // Patch tab button clicks inside the modal (event delegation approach)
-  useEffect(() => {
-    if (!modal) return;
-    const handler = (e: MouseEvent) => {
-      const btn = (e.target as HTMLElement).closest("[data-tab]");
-      if (!btn) return;
-      const tab = (btn as HTMLElement).dataset.tab as "overview" | "code" | "outputs";
-      if (tab) setTab(tab);
-    };
-    document.addEventListener("click", handler);
-    return () => document.removeEventListener("click", handler);
-  }, [modal, setTab]);
 
   return (
     <>

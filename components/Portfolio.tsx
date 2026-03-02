@@ -986,10 +986,8 @@ print(f"Call option price: $\{price:.4f\}")`,
                 iconBg: d ? "bg-emerald-500/10 text-emerald-400" : "bg-emerald-50 text-emerald-600",
                 tagBg: d ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15" : "bg-emerald-50 text-emerald-700 border border-emerald-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(16,185,129,0.12)]" : "",
-                btnLabel: "View Model", btnHref: "/projects/pe-debt-covenant-model",
                 platform: "Excel · Python · Claude AI",
                 platformColor: d ? "text-emerald-400" : "text-emerald-600",
-                modalData: { type: "excel", project: { id: "amazon-valuation-model", title: "Amazon DCF Valuation", sum: "Built a full discounted cash flow model for Amazon.com, projecting free cash flows across its three business segments (AWS, Advertising, Retail), calibrating WACC from first principles, and computing an implied intrinsic value per share.", tags: ["DCF", "Valuation", "Excel", "Amazon", "WACC"], embedUrl: "https://1drv.ms/x/c/c0e2a8c7fee10a46/IQRFGMQwX84nSKp_hYrSx0_PAQkx65u_FGrqyi5SSbltLJw?em=2&wdHideGridlines=True&wdInConfigurator=True&wdInConfigurator=True" } },
               },
               {
                 icon: icons.bar,
@@ -1001,10 +999,8 @@ print(f"Call option price: $\{price:.4f\}")`,
                 iconBg: d ? "bg-violet-500/10 text-violet-400" : "bg-violet-50 text-violet-600",
                 tagBg: d ? "bg-violet-500/10 text-violet-400 border border-violet-500/15" : "bg-violet-50 text-violet-700 border border-violet-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(139,92,246,0.12)]" : "",
-                btnLabel: "View Code & Output", btnHref: "/projects/sp100-equity-analytics",
                 platform: "Python · yfinance · Pandas",
                 platformColor: d ? "text-violet-400" : "text-violet-600",
-                modalData: { type: "python", project: { id: "sp100-equity-analytics", title: "S&P 100 Equity Analytics", sum: "35-year fund analytics engine computing Sharpe ratio, max drawdown, alpha, beta, skewness, and Carhart 4-factor attribution. Live market data integration via yfinance API.", tags: ["Python", "yfinance", "Pandas", "NumPy", "Factor Models"] } },
               },
               {
                 icon: icons.trend,
@@ -1016,10 +1012,8 @@ print(f"Call option price: $\{price:.4f\}")`,
                 iconBg: d ? "bg-blue-500/10 text-blue-400" : "bg-blue-50 text-blue-600",
                 tagBg: d ? "bg-blue-500/10 text-blue-400 border border-blue-500/15" : "bg-blue-50 text-blue-700 border border-blue-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(59,130,246,0.12)]" : "",
-                btnLabel: "View Code & Output", btnHref: "/projects/black-scholes-options-pricing",
                 platform: "Python · NumPy · SciPy",
                 platformColor: d ? "text-blue-400" : "text-blue-600",
-                modalData: { type: "python", project: { id: "black-scholes-options-pricing", title: "Black-Scholes Options Pricing", sum: "Black-Scholes with full Greeks (Δ, Γ, Θ, ν, ρ), Monte Carlo GBM simulation (1,000 trials), CRR binomial trees (5,000× convergence analysis), and implied volatility calibration via bisection.", tags: ["Python", "NumPy", "SciPy", "Black-Scholes", "Monte Carlo"] } },
               },
               {
                 icon: icons.db,
@@ -1031,10 +1025,8 @@ print(f"Call option price: $\{price:.4f\}")`,
                 iconBg: d ? "bg-amber-500/10 text-amber-400" : "bg-amber-50 text-amber-600",
                 tagBg: d ? "bg-amber-500/10 text-amber-400 border border-amber-500/15" : "bg-amber-50 text-amber-700 border border-amber-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(245,158,11,0.12)]" : "",
-                btnLabel: "View Code & Output", btnHref: "/projects/black-scholes-greeks-implied-vol",
                 platform: "Python · BeautifulSoup · SEC",
                 platformColor: d ? "text-amber-400" : "text-amber-600",
-                modalData: { type: "python", project: { id: "black-scholes-greeks-implied-vol", title: "Financial Data Engineering", sum: "Multi-asset data alignment pipelines for NVDA, MSFT, SPY, and risk-free rate. SEC 10-K MD&A extraction from HTML filings (GOOGL, META, NFLX) using BeautifulSoup with regex parsing.", tags: ["Python", "BeautifulSoup", "Pandas", "SEC Filings", "APIs"] } },
               },
               {
                 icon: icons.zap,
@@ -1046,10 +1038,8 @@ print(f"Call option price: $\{price:.4f\}")`,
                 iconBg: d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600",
                 tagBg: d ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/15" : "bg-indigo-50 text-indigo-700 border border-indigo-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(99,102,241,0.14)]" : "",
-                btnLabel: "View System", btnHref: "/projects/genai-finance-system",
                 platform: "Streamlit · Power BI · Tableau",
                 platformColor: d ? "text-indigo-400" : "text-indigo-600",
-                modalData: { type: "streamlit", project: { id: "genai-finance-system", title: "GenAI Finance System", sum: "Three Streamlit dashboard versions with rolling factor analytics, returns histograms, multi-security scatter, and CSV export. Power BI FP&A dashboards and Tableau macroeconomic intelligence platforms.", tags: ["Streamlit", "Power BI", "Tableau", "DAX", "Plotly"] } },
               },
               {
                 icon: icons.shield,
@@ -1061,10 +1051,8 @@ print(f"Call option price: $\{price:.4f\}")`,
                 iconBg: d ? "bg-rose-500/10 text-rose-400" : "bg-rose-50 text-rose-600",
                 tagBg: d ? "bg-rose-500/10 text-rose-400 border border-rose-500/15" : "bg-rose-50 text-rose-700 border border-rose-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(244,63,94,0.12)]" : "",
-                btnLabel: "View Research", btnHref: "/projects/genai-finance-system",
                 platform: "Python · ECE Analysis · Claude AI",
                 platformColor: d ? "text-rose-400" : "text-rose-600",
-                modalData: { type: "streamlit", project: { id: "genai-finance-system", title: "AI Governance & Model Risk", sum: "Benchmarked 9 LLMs: 84% exhibited systematic overconfidence; nominal 99% CIs covered only 65% of outcomes. Documented dual-validation framework — no AI output enters a financial deliverable without human sign-off.", tags: ["Python", "ECE Analysis", "Statistical Testing", "LLM Calibration"] } },
               },
             ].map((cap, i) => (
               <div key={i} className={`cap-card card-premium group relative rounded-2xl border p-6 overflow-hidden flex flex-col ${cap.glow} ${d ? `bg-gray-900/60 ${cap.accent}` : `bg-white ${cap.accent} shadow-sm hover:shadow-xl`}`} style={{ animationDelay: `${i * 0.07}s` }}>
@@ -1089,24 +1077,6 @@ print(f"Call option price: $\{price:.4f\}")`,
                     <span key={t} className={`text-[11px] font-medium px-2 py-0.5 rounded-md ${cap.tagBg}`}>{t}</span>
                   ))}
                 </div>
-                {/* View Model button */}
-                {cap.modalData ? (
-                  <button
-                    onClick={() => setActiveModal(cap.modalData as { type: string; project: Record<string, unknown> })}
-                    className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3.5 py-2 rounded-lg border transition-all duration-200 w-fit group-hover:gap-2 ${d ? `bg-gradient-to-r ${cap.gradBar} bg-opacity-10 border-white/10 text-white hover:border-white/20` : `border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50`}`}
-                    style={d ? { background: `linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))` } : {}}
-                  >
-                    {cap.btnLabel} <span className="transition-transform duration-200 translate-x-0 group-hover:translate-x-0.5 inline-block">{icons.chevR}</span>
-                  </button>
-                ) : (
-                  <a
-                    href={cap.btnHref}
-                    className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3.5 py-2 rounded-lg border transition-all duration-200 w-fit group-hover:gap-2 ${d ? `bg-gradient-to-r ${cap.gradBar} bg-opacity-10 border-white/10 text-white hover:border-white/20` : `border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50`}`}
-                    style={d ? { background: `linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))` } : {}}
-                  >
-                    {cap.btnLabel} <span className="transition-transform duration-200 translate-x-0 group-hover:translate-x-0.5 inline-block">{icons.chevR}</span>
-                  </a>
-                )}
               </div>
             ))}
           </div>
@@ -3021,7 +2991,6 @@ function Contact({ c, d }) {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const copyEmail = () => {
@@ -3044,33 +3013,11 @@ function Contact({ c, d }) {
     setErrors(e); return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    setSubmitting(true);
-    try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          access_key: "0f12b7bc-45cb-4a6a-9e06-88bb81affdbc",
-          name: form.name,
-          email: form.email,
-          subject: form.subject || `Portfolio contact from ${form.name}`,
-          message: form.message,
-        }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setSent(true);
-      } else {
-        setErrors({ submit: "Failed to send. Please email me directly at prabin.pandey@temple.edu" });
-      }
-    } catch {
-      setErrors({ submit: "Failed to send. Please email me directly at prabin.pandey@temple.edu" });
-    } finally {
-      setSubmitting(false);
-    }
+    window.location.href = `mailto:${contact.email}`;
+    setSent(true);
   };
 
   const cb = d ? "bg-gray-900/70 border-white/[0.07]" : "bg-white border-gray-200 shadow-sm";
@@ -3146,8 +3093,8 @@ function Contact({ c, d }) {
               <input value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} placeholder="Subject (optional)" className={inp}/>
               <div><textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder="Your message..." rows={5} className={`${inp} resize-none ${errors.message ? "border-red-500" : ""}`}/>{errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}</div>
               {errors.submit && <p className="text-red-500 text-xs text-center py-1">{errors.submit}</p>}
-              <button type="submit" disabled={submitting} className="btn-primary w-full px-6 py-3.5 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white rounded-xl text-[13px] font-semibold transition-all duration-200 cta-glow flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
-                {icons.mail} {submitting ? "Sending…" : "Send Message"}
+              <button type="submit" className="btn-primary w-full px-6 py-3.5 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white rounded-xl text-[13px] font-semibold transition-all duration-200 cta-glow flex items-center justify-center gap-2">
+                {icons.mail} Send Message
               </button>
             </form>
           )}
