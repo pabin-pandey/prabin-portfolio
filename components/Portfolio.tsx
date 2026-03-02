@@ -383,10 +383,22 @@ export default function App() {
                   </div>
                   <h3 className={`text-2xl sm:text-3xl font-black tracking-tight mb-2 ${dark ? "text-white" : "text-gray-900"}`}>Seeking Summer 2026 Opportunities</h3>
                   <p className={`text-sm leading-relaxed ${dark ? "text-gray-400" : "text-gray-600"}`}>Investment analytics, financial data engineering, AI-augmented research, and quantitative finance roles. Available May 2026.</p>
+                  {/* Role type chips */}
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {["Quantitative Finance", "Financial Data Engineering", "AI Analytics", "Portfolio Analytics"].map(role => (
+                      <span key={role} className={`text-[11px] font-semibold px-3 py-1 rounded-full border ${dark ? "bg-indigo-500/10 border-indigo-500/20 text-indigo-400" : "bg-indigo-50 border-indigo-100 text-indigo-600"}`}>{role}</span>
+                    ))}
+                  </div>
                 </div>
                 <div className="flex gap-3 flex-shrink-0">
                   <a href={`mailto:${content.contact.email}`} className="btn-primary px-6 py-3 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white rounded-xl text-[13px] font-semibold transition-all duration-200 cta-glow flex items-center gap-2">{icons.mail} Get in touch</a>
-                  <a href={content.contact.linkedin} target="_blank" rel="noopener noreferrer" className={`px-6 py-3 rounded-xl text-[13px] font-semibold transition-all duration-200 border flex items-center gap-2 hover:-translate-y-0.5 ${dark ? "border-white/10 text-gray-300 hover:bg-white/6 hover:border-white/15" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}>{icons.linkedin} LinkedIn</a>
+                  <a href={content.contact.linkedin} target="_blank" rel="noopener noreferrer" className={`px-6 py-3 rounded-xl text-[13px] font-semibold transition-all duration-200 border flex items-center gap-2 hover:-translate-y-0.5 ${dark ? "border-white/10 text-gray-300 hover:bg-white/6 hover:border-white/15" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}>
+                    {icons.linkedin}
+                    <span className="flex flex-col items-start leading-none gap-0.5">
+                      <span>LinkedIn</span>
+                      <span className="text-[10px] font-normal opacity-50">@prabin-pandey</span>
+                    </span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -450,7 +462,7 @@ function Home({ c, d, nav }) {
   const [ri, setRi] = useState(0);
   const [ci, setCi] = useState(0);
   const [del, setDel] = useState(false);
-  const [carIdx, setCarIdx] = useState(0);
+  const [featTab, setFeatTab] = useState("All");
   useSectionReveal();
 
   useEffect(() => {
@@ -777,80 +789,121 @@ function Home({ c, d, nav }) {
         </div>
       </section>
 
-      {/* ═══ FEATURED CAROUSEL ═══ */}
+      {/* ═══ FEATURED SYSTEMS GRID ═══ */}
       <section className={`py-28 section-reveal ${d ? "bg-gradient-to-b from-gray-950/0 via-gray-900/40 to-gray-950/0" : "bg-gradient-to-b from-white/0 via-gray-50/90 to-white/0"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>Applied Analytical Work</p>
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight">Featured Systems</h2>
-            </div>
-            <div className="flex gap-2 items-center">
-              <button
-                onClick={() => setCarIdx(Math.max(0, carIdx - 1))}
-                disabled={carIdx === 0}
-                className={`p-2.5 rounded-xl border transition-all duration-200 disabled:opacity-20 hover:-translate-y-0.5 ${d ? "border-white/10 hover:bg-white/6 text-gray-400 hover:text-gray-200" : "border-gray-200 hover:bg-gray-50 text-gray-600"}`}
-              >{icons.chevL}</button>
-              <span className={`text-xs tabular-nums font-mono px-2 ${d ? "text-gray-600" : "text-gray-400"}`}>{String(carIdx + 1).padStart(2,"0")} / {String(featured.length).padStart(2,"0")}</span>
-              <button
-                onClick={() => setCarIdx(Math.min(featured.length - 1, carIdx + 1))}
-                disabled={carIdx >= featured.length - 1}
-                className={`p-2.5 rounded-xl border transition-all duration-200 disabled:opacity-20 hover:-translate-y-0.5 ${d ? "border-white/10 hover:bg-white/6 text-gray-400 hover:text-gray-200" : "border-gray-200 hover:bg-gray-50 text-gray-600"}`}
-              >{icons.chevR}</button>
-            </div>
-          </div>
 
-          <div className="overflow-hidden">
-            <div className="flex gap-5 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" style={{ transform: `translateX(-${carIdx * 364}px)` }}>
-              {featured.map(p => {
-                const grad = CAT_COLORS[p.cat] || "from-indigo-500 to-violet-500";
+          {/* Section header + filter tabs */}
+          <div className="mb-10">
+            <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>Applied Analytical Work</p>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-7">
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight">Featured Systems</h2>
+              <a
+                href="/projects"
+                className={`inline-flex items-center gap-1.5 text-[12px] font-semibold transition-all duration-200 hover:gap-2.5 ${d ? "text-gray-500 hover:text-indigo-400" : "text-gray-400 hover:text-indigo-600"}`}
+              >
+                View all 21 projects <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">{icons.chevR}</span>
+              </a>
+            </div>
+            {/* Category Filter Tabs */}
+            <div className="flex flex-wrap gap-2">
+              {(["All", "Financial Modeling (Excel)", "Power BI", "Tableau", "GenAI Finance"] as const).map(tab => {
+                const isActive = featTab === tab;
+                const activeStyle =
+                  tab === "Financial Modeling (Excel)" ? (d ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-300" : "bg-emerald-50 border-emerald-300 text-emerald-700") :
+                  tab === "Power BI"                   ? (d ? "bg-amber-500/15  border-amber-500/40  text-amber-300"  : "bg-amber-50  border-amber-300  text-amber-700")  :
+                  tab === "Tableau"                    ? (d ? "bg-blue-500/15   border-blue-500/40   text-blue-300"   : "bg-blue-50   border-blue-300   text-blue-700")   :
+                  tab === "GenAI Finance"              ? (d ? "bg-violet-500/15 border-violet-500/40 text-violet-300" : "bg-violet-50 border-violet-300 text-violet-700") :
+                  (d ? "bg-indigo-500/15 border-indigo-500/40 text-indigo-300" : "bg-indigo-50 border-indigo-300 text-indigo-700");
+                const inactiveStyle = d
+                  ? "border-white/[0.08] text-gray-500 hover:border-white/15 hover:text-gray-300"
+                  : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700";
                 return (
-                  <div key={p.id} className={`flex-shrink-0 w-[348px] rounded-2xl border overflow-hidden card-premium cursor-pointer group transition-all duration-300 hover:-translate-y-1 ${d ? "bg-gray-900/75 border-white/[0.08] hover:border-indigo-500/40 hover:shadow-[0_16px_48px_rgba(99,102,241,0.15)]" : "bg-white border-gray-200 hover:border-indigo-200 shadow-sm hover:shadow-xl"}`}>
-                    {/* Gradient top accent — grows on hover */}
-                    <div className={`h-[3px] w-full bg-gradient-to-r ${grad} transition-all duration-300`} style={{ boxShadow: `0 0 12px rgba(99,102,241,0.3)` }} />
-                    <div className="p-6">
-                      <div className="flex items-center gap-2.5 mb-4">
-                        <div className={`p-2 rounded-xl transition-transform duration-300 group-hover:scale-110`} style={{ background: "rgba(99,102,241,0.1)" }}>
-                          <span className="text-indigo-400">{catIcon[p.cat] || icons.code}</span>
-                        </div>
-                        <span className={`text-[11px] font-bold px-2.5 py-1 rounded-lg tracking-wide ${d ? "bg-white/[0.06] text-gray-400" : "bg-gray-100 text-gray-500"}`}>{p.cat}</span>
-                        {p.featured && <span className="ml-auto text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.4)]">{icons.star}</span>}
-                      </div>
-                      <h3 className={`text-[15px] font-semibold leading-snug mb-2.5 ${d ? "text-gray-100 group-hover:text-white" : "text-gray-900"} transition-colors`}>{p.title}</h3>
-                      <p className={`text-[13px] leading-relaxed mb-4 line-clamp-3 ${d ? "text-gray-500" : "text-gray-500"}`}>{p.sum}</p>
-                      <div className="flex flex-wrap gap-1.5 mb-5">
-                        {p.tags.slice(0, 3).map(t => (
-                          <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-white/[0.04] text-gray-500 border border-white/[0.07]" : "bg-gray-50 text-gray-400 border border-gray-200"}`}>{t}</span>
-                        ))}
-                      </div>
-                      <div className={`flex items-center gap-1.5 text-[12px] font-semibold text-indigo-400 group-hover:text-indigo-300 group-hover:gap-2 transition-all duration-200`}>
-                        View project {icons.chevR}
-                      </div>
-                    </div>
-                  </div>
+                  <button
+                    key={tab}
+                    onClick={() => setFeatTab(tab)}
+                    className={`cat-tab text-[11px] font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-200 ${isActive ? activeStyle : inactiveStyle}`}
+                  >
+                    {tab === "Financial Modeling (Excel)" ? "Excel" : tab}
+                  </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Scroll dots */}
-          <div className="flex gap-1.5 justify-center mt-10">
-            {featured.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCarIdx(i)}
-                className={`h-[3px] rounded-full transition-all duration-400 ${i === carIdx ? "w-7 bg-indigo-500" : `w-2 ${d ? "bg-white/15" : "bg-gray-300"}`}`}
-              />
-            ))}
+          {/* Featured Cards Grid — key on featTab so card-enter animation re-fires on tab change */}
+          <div key={featTab} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {featured
+              .filter(p => featTab === "All" || p.cat === featTab)
+              .map((p, idx) => {
+                const accentMap: Record<string, { stripe: string; glow: string; badge: string; hoverBorder: string }> = {
+                  "Financial Modeling (Excel)": { stripe: "from-emerald-500 to-teal-400",  glow: "rgba(16,185,129,0.22)",  badge: d ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/25"  : "bg-emerald-50 text-emerald-700 border-emerald-200",  hoverBorder: d ? "hover:border-emerald-500/35" : "hover:border-emerald-300" },
+                  "Power BI":                   { stripe: "from-amber-400 to-orange-400",   glow: "rgba(245,158,11,0.22)",  badge: d ? "bg-amber-500/10 text-amber-400 border-amber-500/25"      : "bg-amber-50 text-amber-700 border-amber-200",      hoverBorder: d ? "hover:border-amber-500/35"   : "hover:border-amber-300"   },
+                  "Tableau":                    { stripe: "from-blue-400 to-cyan-400",      glow: "rgba(59,130,246,0.22)",  badge: d ? "bg-blue-500/10 text-blue-400 border-blue-500/25"        : "bg-blue-50 text-blue-700 border-blue-200",        hoverBorder: d ? "hover:border-blue-500/35"    : "hover:border-blue-300"    },
+                  "GenAI Finance":              { stripe: "from-violet-500 to-purple-400",  glow: "rgba(139,92,246,0.22)", badge: d ? "bg-violet-500/10 text-violet-400 border-violet-500/25"  : "bg-violet-50 text-violet-700 border-violet-200",  hoverBorder: d ? "hover:border-violet-500/35"  : "hover:border-violet-300"  },
+                };
+                const ac = accentMap[p.cat] || { stripe: "from-indigo-500 to-violet-500", glow: "rgba(99,102,241,0.22)", badge: d ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/25" : "bg-indigo-50 text-indigo-700 border-indigo-200", hoverBorder: d ? "hover:border-indigo-500/40" : "hover:border-indigo-300" };
+
+                const featHref: Record<string, string> = {
+                  "pe":               "/projects/pe-debt-covenant-model",
+                  "pbi":              "/projects/campus-operations-analytics",
+                  "tab1":             "/projects/global-macro-dashboard",
+                  "genai-in-finance": "/projects/genai-finance-system",
+                };
+
+                return (
+                  <a
+                    key={p.id}
+                    href={featHref[p.id] || "/projects"}
+                    className={`featured-card relative rounded-2xl border overflow-hidden group flex flex-col ${d ? `bg-gray-900/75 border-white/[0.08] ${ac.hoverBorder}` : `bg-white border-gray-200 shadow-sm ${ac.hoverBorder}`}`}
+                    style={{ animationDelay: `${idx * 0.08}s`, "--hover-glow": ac.glow } as React.CSSProperties}
+                  >
+                    {/* Left platform accent stripe */}
+                    <div className={`absolute top-0 left-0 w-[3px] h-full bg-gradient-to-b ${ac.stripe} opacity-55 group-hover:opacity-100 transition-opacity duration-300`} />
+
+                    <div className="pl-7 pr-6 py-6 flex flex-col flex-1">
+                      {/* Platform badge row */}
+                      <div className="flex items-center gap-2.5 mb-4">
+                        <div className="p-2 rounded-xl transition-transform duration-300 group-hover:scale-110" style={{ background: "rgba(99,102,241,0.1)" }}>
+                          <span className="text-indigo-400">{catIcon[p.cat] || icons.code}</span>
+                        </div>
+                        <span className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border tracking-wide ${ac.badge}`}>
+                          {p.cat === "Financial Modeling (Excel)" ? "Excel Model" : p.cat}
+                        </span>
+                        {p.featured && <span className="ml-auto text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.4)]">{icons.star}</span>}
+                      </div>
+
+                      {/* Title */}
+                      <h3 className={`text-[15px] font-bold leading-snug mb-2.5 ${d ? "text-gray-100 group-hover:text-white" : "text-gray-900"} transition-colors`}>{p.title}</h3>
+
+                      {/* Summary */}
+                      <p className={`text-[13px] leading-relaxed mb-4 flex-1 line-clamp-3 ${d ? "text-gray-500" : "text-gray-500"}`}>{p.sum}</p>
+
+                      {/* Tag chips */}
+                      <div className="flex flex-wrap gap-1.5 mb-5">
+                        {p.tags.slice(0, 3).map(t => (
+                          <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-white/[0.04] text-gray-500 border border-white/[0.07]" : "bg-gray-50 text-gray-400 border border-gray-200"}`}>{t}</span>
+                        ))}
+                      </div>
+
+                      {/* CTA row */}
+                      <div className="flex items-center gap-1.5 text-[12px] font-semibold text-indigo-400 group-hover:text-indigo-300 transition-colors duration-200">
+                        Case Study
+                        <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">{icons.chevR}</span>
+                      </div>
+                    </div>
+                  </a>
+                );
+              })}
           </div>
 
-          {/* CTA to full projects */}
+          {/* Bottom CTA */}
           <div className="flex justify-center mt-10">
             <a
               href="/projects"
               className={`inline-flex items-center gap-2 text-[13px] font-semibold border px-5 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${d ? "border-white/10 text-gray-400 hover:text-gray-200 hover:bg-white/5" : "border-gray-200 text-gray-600 hover:bg-gray-50"}`}
             >
-              View all projects {icons.chevR}
+              View all 21 projects {icons.chevR}
             </a>
           </div>
         </div>
