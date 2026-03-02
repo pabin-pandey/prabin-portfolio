@@ -337,6 +337,19 @@ export default function App() {
               </a>
             ))}
             <div className={`w-px h-4 mx-2 ${dark ? "bg-white/10" : "bg-black/10"}`} />
+            {/* Social icons */}
+            <a href={content.contact.github} target="_blank" rel="noopener noreferrer" className={`p-2 rounded-lg transition-colors duration-200 ${dark ? "text-gray-500 hover:text-gray-200 hover:bg-white/8" : "text-gray-400 hover:text-gray-700 hover:bg-black/5"}`} title="GitHub">{icons.github}</a>
+            <a href={content.contact.linkedin} target="_blank" rel="noopener noreferrer" className={`p-2 rounded-lg transition-colors duration-200 ${dark ? "text-gray-500 hover:text-blue-400 hover:bg-white/8" : "text-gray-400 hover:text-blue-600 hover:bg-black/5"}`} title="LinkedIn">{icons.linkedin}</a>
+            <div className={`w-px h-4 mx-1 ${dark ? "bg-white/10" : "bg-black/10"}`} />
+            {/* Resume download */}
+            <a
+              href={content.resume.path}
+              download
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all duration-200 border ${dark ? "border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/10 hover:border-indigo-400/50" : "border-indigo-300 text-indigo-600 hover:bg-indigo-50"}`}
+            >
+              {icons.dl} Resume
+            </a>
+            <div className={`w-px h-4 mx-1 ${dark ? "bg-white/10" : "bg-black/10"}`} />
             <button onClick={() => setDark(!dark)} className={`p-2 rounded-lg transition-colors duration-200 ${dark ? "text-gray-500 hover:text-gray-200 hover:bg-white/8" : "text-gray-400 hover:text-gray-700 hover:bg-black/5"}`}>{dark ? icons.sun : icons.moon}</button>
             <button onClick={() => setAdmin(true)} className={`p-2 rounded-lg transition-colors duration-200 ${dark ? "text-gray-700 hover:text-gray-400 hover:bg-white/8" : "text-gray-300 hover:text-gray-500 hover:bg-black/5"}`} title="Admin">{icons.settings}</button>
           </div>
@@ -353,6 +366,12 @@ export default function App() {
             {([["home","/"],["about","/about"],["projects","/projects"],["blog","/blog"],["contact","/contact"]] as [string,string][]).map(([p,href]) => (
               <a key={p} href={href} className={`block w-full text-left px-6 py-3 text-sm capitalize font-medium transition-colors ${page === p ? "text-indigo-400" : dark ? "text-gray-400" : "text-gray-600"}`}>{p}</a>
             ))}
+            {/* Mobile Resume + Social */}
+            <div className={`mx-4 mt-2 pt-2 border-t flex items-center gap-3 ${dark ? "border-white/[0.06]" : "border-gray-100"}`}>
+              <a href={content.resume.path} download className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-semibold border ${dark ? "border-indigo-500/30 text-indigo-400" : "border-indigo-300 text-indigo-600"}`}>{icons.dl} Resume</a>
+              <a href={content.contact.github} target="_blank" rel="noopener noreferrer" className={`p-2 rounded-lg ${dark ? "text-gray-500" : "text-gray-400"}`}>{icons.github}</a>
+              <a href={content.contact.linkedin} target="_blank" rel="noopener noreferrer" className={`p-2 rounded-lg ${dark ? "text-gray-500 hover:text-blue-400" : "text-gray-400 hover:text-blue-600"}`}>{icons.linkedin}</a>
+            </div>
           </div>
         )}
       </nav>
@@ -463,6 +482,7 @@ function Home({ c, d, nav }) {
   const [ci, setCi] = useState(0);
   const [del, setDel] = useState(false);
   const [featTab, setFeatTab] = useState("Financial Modeling (Excel)");
+  const [wfRef, wfVis] = useInView(0.2);
   useSectionReveal();
 
   useEffect(() => {
@@ -740,9 +760,11 @@ function Home({ c, d, nav }) {
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(244,63,94,0.12)]" : "",
               },
             ].map((cap, i) => (
-              <div key={i} className={`cap-card card-premium group relative rounded-2xl border p-6 overflow-hidden flex flex-col ${cap.glow} ${d ? `bg-gray-900/60 ${cap.accent}` : `bg-white ${cap.accent} shadow-sm hover:shadow-xl`}`}>
+              <div key={i} className={`cap-card card-premium group relative rounded-2xl border p-6 overflow-hidden flex flex-col ${cap.glow} ${d ? `bg-gray-900/60 ${cap.accent}` : `bg-white ${cap.accent} shadow-sm hover:shadow-xl`}`} style={{ animationDelay: `${i * 0.07}s` }}>
                 {/* Gradient top accent bar */}
                 <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${cap.gradBar} opacity-40 group-hover:opacity-100 transition-opacity duration-500`} />
+                {/* Left accent stripe (matches featured card language) */}
+                <div className={`absolute top-0 left-0 w-[3px] h-full bg-gradient-to-b ${cap.gradBar} opacity-30 group-hover:opacity-80 transition-opacity duration-300`} />
                 {/* Number watermark */}
                 <span className={`absolute top-3.5 right-4 text-[28px] font-black tabular-nums leading-none pointer-events-none select-none ${d ? "text-white/[0.04] group-hover:text-white/[0.08]" : "text-black/[0.04] group-hover:text-black/[0.07]"} transition-colors duration-300`}>
                   {String(i + 1).padStart(2, '0')}
@@ -763,7 +785,10 @@ function Home({ c, d, nav }) {
           </div>
 
           {/* AI Workflow Strip */}
-          <div className={`mt-12 rounded-2xl border overflow-hidden relative ${d ? "border-white/[0.06] bg-gradient-to-br from-indigo-950/50 via-gray-900/60 to-violet-950/30" : "border-indigo-100 bg-gradient-to-br from-indigo-50/70 via-white to-violet-50/40"}`}>
+          <div
+            ref={wfRef}
+            className={`mt-12 rounded-2xl border overflow-hidden relative transition-all duration-700 ${wfVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"} ${d ? "border-white/[0.06] bg-gradient-to-br from-indigo-950/50 via-gray-900/60 to-violet-950/30" : "border-indigo-100 bg-gradient-to-br from-indigo-50/70 via-white to-violet-50/40"}`}
+          >
             {/* Subtle glow orb */}
             <div className="absolute inset-0 pointer-events-none">
               <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-16 blur-3xl rounded-full ${d ? "bg-indigo-500/8" : "bg-indigo-100/60"}`} />
@@ -779,8 +804,11 @@ function Home({ c, d, nav }) {
                   { step: "03", label: "Human Validation", sub: "Cross-check · Source verify", icon: icons.shield, color: d ? "bg-emerald-500/20 text-emerald-400" : "bg-emerald-50 text-emerald-600" },
                   { step: "04", label: "Financial Output", sub: "Reports · Dashboards · Models", icon: icons.bar, color: d ? "bg-indigo-500/15 text-indigo-400" : "bg-indigo-50 text-indigo-600" },
                 ].map((step, i, arr) => (
-                  <div key={i} className="flex items-center">
-                    <div className={`group flex flex-col items-center text-center px-6 py-3 rounded-2xl cursor-default transition-all duration-200 ${d ? "hover:bg-white/[0.04]" : "hover:bg-white"}`}>
+                  <div key={i} className="flex flex-col sm:flex-row items-center">
+                    <div
+                      className={`group flex flex-col items-center text-center px-6 py-3 rounded-2xl cursor-default transition-all duration-500 ${d ? "hover:bg-white/[0.04]" : "hover:bg-white"}`}
+                      style={{ opacity: wfVis ? 1 : 0, transform: wfVis ? "translateY(0)" : "translateY(12px)", transitionDelay: `${i * 0.1}s` }}
+                    >
                       <div className={`w-11 h-11 rounded-2xl flex items-center justify-center mb-3 ${step.color} transition-transform duration-300 group-hover:scale-110 ${i === 2 ? (d ? "shadow-[0_0_18px_rgba(16,185,129,0.2)]" : "") : ""}`}>
                         {step.icon}
                       </div>
@@ -789,9 +817,16 @@ function Home({ c, d, nav }) {
                       <span className={`text-[10px] mt-0.5 ${d ? "text-gray-600" : "text-gray-400"}`}>{step.sub}</span>
                     </div>
                     {i < arr.length - 1 && (
-                      <div className="hidden sm:flex items-center mx-0.5">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`${d ? "text-indigo-700/50" : "text-indigo-200"}`} style={{ animation: "pulse 2.5s ease-in-out infinite" }}><polyline points="9 18 15 12 9 6"/></svg>
-                      </div>
+                      <>
+                        {/* Desktop: right arrow */}
+                        <div className="hidden sm:flex items-center mx-0.5">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`${d ? "text-indigo-700/50" : "text-indigo-200"}`} style={{ animation: "pulse 2.5s ease-in-out infinite", animationDelay: `${i * 0.4}s` }}><polyline points="9 18 15 12 9 6"/></svg>
+                        </div>
+                        {/* Mobile: down arrow */}
+                        <div className={`sm:hidden flex items-center my-1 ${d ? "text-indigo-700/50" : "text-indigo-200"}`}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: "pulse 2.5s ease-in-out infinite", animationDelay: `${i * 0.4}s` }}><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                      </>
                     )}
                   </div>
                 ))}
@@ -873,10 +908,27 @@ function Home({ c, d, nav }) {
                   "black-scholes-dividend-extension":`/projects/black-scholes-dividend-extension`,
                 };
 
+                // Platform-specific primary CTA label
+                const ctaLabel: Record<string, string> = {
+                  "Financial Modeling (Excel)": "View Model",
+                  "Power BI": "View Dashboard",
+                  "Tableau": "View Dashboard",
+                  "Python": "View Notebook",
+                  "GenAI Finance": "View System",
+                };
+                // Python code teasers for featured cards
+                const pyTeaser: Record<string, string> = {
+                  "black-scholes-options-pricing":   "def black_scholes(S, K, r, T, sigma, option='call'):",
+                  "monte-carlo-gbm-simulation":      "def monte_carlo_gbm(S0, mu, sigma, T, dt, n_sims):",
+                  "black-scholes-greeks-implied-vol": "def compute_greeks(S, K, r, T, sigma):",
+                  "crr-binomial-tree-pricing":        "def crr_binomial(S, K, r, T, sigma, N, option):",
+                  "sp100-equity-analytics":           "def fetch_sp100_data(tickers, start, end):",
+                  "black-scholes-dividend-extension": "def bs_dividend(S, K, r, q, T, sigma, option):",
+                };
+                const projectHref = featHref[p.id] || "/projects";
                 return (
-                  <a
+                  <div
                     key={p.id}
-                    href={featHref[p.id] || "/projects"}
                     className={`featured-card relative rounded-2xl border overflow-hidden group flex flex-col ${d ? `bg-gray-900/75 border-white/[0.08] ${ac.hoverBorder}` : `bg-white border-gray-200 shadow-sm ${ac.hoverBorder}`}`}
                     style={{ animationDelay: `${idx * 0.08}s`, "--hover-glow": ac.glow } as React.CSSProperties}
                   >
@@ -898,6 +950,13 @@ function Home({ c, d, nav }) {
                       {/* Title */}
                       <h3 className={`text-[15px] font-bold leading-snug mb-2.5 ${d ? "text-gray-100 group-hover:text-white" : "text-gray-900"} transition-colors`}>{p.title}</h3>
 
+                      {/* Python code teaser */}
+                      {p.cat === "Python" && pyTeaser[p.id] && (
+                        <div className={`mb-3 px-3 py-2 rounded-lg font-mono text-[11px] truncate ${d ? "bg-gray-950/80 text-cyan-400 border border-cyan-500/15" : "bg-gray-50 text-cyan-700 border border-cyan-200"}`}>
+                          {pyTeaser[p.id]}
+                        </div>
+                      )}
+
                       {/* Summary */}
                       <p className={`text-[13px] leading-relaxed mb-4 flex-1 line-clamp-3 ${d ? "text-gray-500" : "text-gray-500"}`}>{p.sum}</p>
 
@@ -908,13 +967,26 @@ function Home({ c, d, nav }) {
                         ))}
                       </div>
 
-                      {/* CTA row */}
-                      <div className="flex items-center gap-1.5 text-[12px] font-semibold text-indigo-400 group-hover:text-indigo-300 transition-colors duration-200">
-                        View Project
-                        <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">{icons.chevR}</span>
+                      {/* Dual CTA row */}
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={projectHref}
+                          onClick={(e) => e.stopPropagation()}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold border transition-all duration-200 ${d ? `border-${ac.stripe.split('-')[1]}-500/30 text-${ac.stripe.split('-')[1]}-400 hover:bg-${ac.stripe.split('-')[1]}-500/10` : "border-indigo-200 text-indigo-600 hover:bg-indigo-50"}`}
+                          style={{ borderColor: `rgba(${ac.glow.replace("rgba(","").replace(")","").split(",").slice(0,3).join(",")},0.3)`, color: d ? `rgba(${ac.glow.replace("rgba(","").replace(")","").split(",").slice(0,3).join(",")},0.9)` : undefined }}
+                        >
+                          {ctaLabel[p.cat] || "View Project"} {icons.chevR}
+                        </a>
+                        <a
+                          href={projectHref}
+                          onClick={(e) => e.stopPropagation()}
+                          className={`inline-flex items-center gap-1 text-[12px] font-medium transition-colors duration-200 ${d ? "text-gray-600 hover:text-gray-300" : "text-gray-400 hover:text-gray-700"}`}
+                        >
+                          Case Study →
+                        </a>
                       </div>
                     </div>
-                  </a>
+                  </div>
                 );
               })}
           </div>
@@ -2630,6 +2702,19 @@ function Contact({ c, d }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText(contact.email).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  // Extract LinkedIn handle from URL
+  const linkedinHandle = contact.linkedin
+    ? "@" + (contact.linkedin.split("/in/")[1] || "").replace(/\/$/, "").split("-").slice(0, 2).join("-")
+    : "@prabin-pandey";
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -2679,15 +2764,50 @@ function Contact({ c, d }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
         <div className="lg:col-span-2 space-y-4">
-          {[{ i: icons.mail, l: "Email", v: contact.email, h: `mailto:${contact.email}` }, { i: icons.phone, l: "Phone", v: contact.phone, h: `tel:${contact.phone}` }, { i: icons.pin, l: "Location", v: contact.location }, { i: icons.linkedin, l: "LinkedIn", v: "Connect", h: contact.linkedin }, { i: icons.github, l: "GitHub", v: "Follow", h: contact.github }].map(item => (
-            <div key={item.l} className={`flex items-center gap-4 p-4 rounded-xl border hover-lift transition-all duration-200 ${cb}`}>
-              <div className={`p-2.5 rounded-xl ${d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600"}`}>{item.i}</div>
-              <div>
-                <p className={`text-xs ${d ? "text-gray-500" : "text-gray-400"}`}>{item.l}</p>
-                {item.h ? <a href={item.h} target="_blank" rel="noopener noreferrer" className={`text-sm font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-500"} transition-colors`}>{item.v}</a> : <p className={`text-sm font-semibold ${d ? "text-gray-200" : "text-gray-800"}`}>{item.v}</p>}
-              </div>
+          {/* Email — click to copy */}
+          <button
+            onClick={copyEmail}
+            className={`w-full flex items-center gap-4 p-4 rounded-xl border hover-lift transition-all duration-200 text-left ${cb} ${copied ? (d ? "border-emerald-500/40" : "border-emerald-400") : ""}`}
+            title="Click to copy email"
+          >
+            <div className={`p-2.5 rounded-xl shrink-0 ${copied ? (d ? "bg-emerald-500/15 text-emerald-400" : "bg-emerald-50 text-emerald-600") : (d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600")} transition-colors duration-300`}>{icons.mail}</div>
+            <div className="min-w-0">
+              <p className={`text-xs ${d ? "text-gray-500" : "text-gray-400"}`}>Email <span className={`ml-1.5 text-[10px] ${copied ? (d ? "text-emerald-400" : "text-emerald-600") : (d ? "text-gray-700" : "text-gray-300")} transition-colors`}>{copied ? "✓ Copied!" : "· click to copy"}</span></p>
+              <p className={`text-sm font-semibold truncate ${d ? "text-gray-200" : "text-gray-800"}`}>{contact.email}</p>
             </div>
-          ))}
+          </button>
+          {/* Phone */}
+          <div className={`flex items-center gap-4 p-4 rounded-xl border hover-lift transition-all duration-200 ${cb}`}>
+            <div className={`p-2.5 rounded-xl shrink-0 ${d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600"}`}>{icons.phone}</div>
+            <div>
+              <p className={`text-xs ${d ? "text-gray-500" : "text-gray-400"}`}>Phone</p>
+              <a href={`tel:${contact.phone}`} className={`text-sm font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-500"} transition-colors`}>{contact.phone}</a>
+            </div>
+          </div>
+          {/* Location */}
+          <div className={`flex items-center gap-4 p-4 rounded-xl border hover-lift transition-all duration-200 ${cb}`}>
+            <div className={`p-2.5 rounded-xl shrink-0 ${d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600"}`}>{icons.pin}</div>
+            <div>
+              <p className={`text-xs ${d ? "text-gray-500" : "text-gray-400"}`}>Location</p>
+              <p className={`text-sm font-semibold ${d ? "text-gray-200" : "text-gray-800"}`}>{contact.location}</p>
+            </div>
+          </div>
+          {/* LinkedIn — shows @handle */}
+          <div className={`flex items-center gap-4 p-4 rounded-xl border hover-lift transition-all duration-200 ${cb}`}>
+            <div className={`p-2.5 rounded-xl shrink-0 ${d ? "bg-blue-500/10 text-blue-400" : "bg-blue-50 text-blue-600"}`}>{icons.linkedin}</div>
+            <div className="min-w-0">
+              <p className={`text-xs ${d ? "text-gray-500" : "text-gray-400"}`}>LinkedIn</p>
+              <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" className={`text-sm font-semibold ${d ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-500"} transition-colors`}>{linkedinHandle}</a>
+            </div>
+          </div>
+          {/* GitHub */}
+          <div className={`flex items-center gap-4 p-4 rounded-xl border hover-lift transition-all duration-200 ${cb}`}>
+            <div className={`p-2.5 rounded-xl shrink-0 ${d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600"}`}>{icons.github}</div>
+            <div className="min-w-0">
+              <p className={`text-xs ${d ? "text-gray-500" : "text-gray-400"}`}>GitHub</p>
+              <a href={contact.github} target="_blank" rel="noopener noreferrer" className={`text-sm font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-500"} transition-colors`}>pabin-pandey ↗</a>
+            </div>
+          </div>
         </div>
 
         <div className="lg:col-span-3">
