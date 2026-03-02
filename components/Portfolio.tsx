@@ -506,6 +506,8 @@ function Home({ c, d, nav }) {
       sum: amazonDcf.summary || "DCF valuation and segment revenue analysis for Amazon.com using a multi-year projection model. Includes WACC estimation, terminal value, segment breakdown, and equity value per share.",
       featured: true,
       tags: ["DCF", "Valuation", "Excel", "Amazon", "WACC"],
+      embedUrl: (amazonDcf as unknown as { embedUrl: string }).embedUrl ?? null,
+      modelUrl: (amazonDcf as unknown as { modelUrl: string }).modelUrl ?? "",
     }] : []),
     ...projects.filter(p => p.featured),
     // S&P 100 Equity Analytics Python project
@@ -608,8 +610,8 @@ print(f"Call option price: $\{price:.4f\}")`,
           {/* Modal header */}
           <div className={`sticky top-0 flex items-start justify-between gap-4 p-6 border-b ${d ? "bg-gray-950/95 border-white/[0.07]" : "bg-white border-gray-100"}`} style={{ backdropFilter: "blur(12px)" }}>
             <div>
-              <p className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-1 ${activeModal.type === "tableau" ? (d ? "text-blue-400" : "text-blue-600") : activeModal.type === "streamlit" ? (d ? "text-violet-400" : "text-violet-600") : (d ? "text-cyan-400" : "text-cyan-600")}`}>
-                {activeModal.type === "tableau" ? "Live Tableau Dashboard" : activeModal.type === "streamlit" ? "Streamlit App" : "Python Code & Output"}
+              <p className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-1 ${activeModal.type === "tableau" ? (d ? "text-blue-400" : "text-blue-600") : activeModal.type === "streamlit" ? (d ? "text-violet-400" : "text-violet-600") : activeModal.type === "excel" ? (d ? "text-emerald-400" : "text-emerald-600") : activeModal.type === "powerbi" ? (d ? "text-yellow-400" : "text-yellow-600") : (d ? "text-cyan-400" : "text-cyan-600")}`}>
+                {activeModal.type === "tableau" ? "Live Tableau Dashboard" : activeModal.type === "streamlit" ? "Streamlit App" : activeModal.type === "excel" ? "Live Excel Model" : activeModal.type === "powerbi" ? "Dashboard Preview · Power BI" : "Python Code & Output"}
               </p>
               <h3 className={`text-[17px] font-bold leading-snug ${d ? "text-white" : "text-gray-900"}`}>{projTitle}</h3>
             </div>
@@ -643,7 +645,7 @@ print(f"Call option price: $\{price:.4f\}")`,
             {/* STREAMLIT — Embedded live app */}
             {activeModal.type === "streamlit" && (
               <div className="space-y-4">
-                <div className={`rounded-xl overflow-hidden border ${d ? "border-violet-500/20" : "border-violet-200"}`} style={{ height: 480 }}>
+                <div className={`rounded-xl overflow-hidden border relative ${d ? "border-violet-500/20" : "border-violet-200"}`} style={{ height: 480 }}>
                   <iframe
                     src="https://prabin-genai-finance.streamlit.app/?embedded=true"
                     className="w-full h-full"
@@ -652,9 +654,25 @@ print(f"Call option price: $\{price:.4f\}")`,
                     allowFullScreen
                   />
                 </div>
-                <p className={`text-[12px] ${d ? "text-gray-500" : "text-gray-500"}`}>
-                  Live Streamlit app — if the app shows a "sleeping" screen, click "Yes, get this app back up!" to wake it. The app loads within ~15 seconds.
-                </p>
+                {/* Open externally + wake-up hint */}
+                <div className={`flex items-start justify-between gap-3 rounded-xl p-3.5 border ${d ? "bg-violet-500/5 border-violet-500/15" : "bg-violet-50 border-violet-200"}`}>
+                  <div className="flex items-start gap-2.5 flex-1 min-w-0">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={d ? "#a78bfa" : "#7c3aed"} strokeWidth="2" strokeLinecap="round" className="shrink-0 mt-0.5">
+                      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <p className={`text-[11px] leading-relaxed ${d ? "text-gray-500" : "text-gray-600"}`}>
+                      If the app shows a sign-in or sleeping screen, click <strong className={d ? "text-violet-400" : "text-violet-700"}>"Yes, get this app back up!"</strong> to wake it (~15 s), or open it directly in a new tab.
+                    </p>
+                  </div>
+                  <a
+                    href="https://prabin-genai-finance.streamlit.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-colors ${d ? "border-violet-500/30 text-violet-400 hover:bg-violet-500/10 hover:border-violet-400/50" : "border-violet-300 text-violet-700 hover:bg-violet-100"}`}
+                  >
+                    Open app <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  </a>
+                </div>
                 <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {projTags.slice(0, 5).map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-violet-500/10 text-violet-400 border border-violet-500/20" : "bg-violet-50 text-violet-700 border border-violet-200"}`}>{t}</span>)}
@@ -695,6 +713,85 @@ print(f"Call option price: $\{price:.4f\}")`,
                 </div>
                 <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
                 <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study & notebook {icons.chevR}</a>
+              </div>
+            )}
+
+            {/* EXCEL — Live OneDrive iframe, or inline case study if no embed URL */}
+            {activeModal.type === "excel" && (() => {
+              const embedUrl = (proj.embedUrl as string) || ((proj.embed as Record<string, unknown>)?.url as string) || "";
+              const cs = proj.cs as Record<string, string> | undefined;
+              if (embedUrl) {
+                return (
+                  <div className="space-y-4">
+                    <div className="rounded-xl overflow-hidden border" style={{ height: 420, borderColor: d ? "rgba(52,211,153,0.25)" : "#a7f3d0" }}>
+                      <iframe
+                        src={embedUrl}
+                        className="w-full h-full border-0"
+                        title={projTitle}
+                        loading="lazy"
+                        allowFullScreen
+                        allow="fullscreen"
+                      />
+                    </div>
+                    <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {projTags.map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-emerald-50 text-emerald-700 border border-emerald-200"}`}>{t}</span>)}
+                    </div>
+                    <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study {icons.chevR}</a>
+                  </div>
+                );
+              }
+              // No live embed — show inline case study preview
+              const csEntries: Array<[string, string]> = cs ? [
+                ["Problem", cs.problem],
+                ["Approach", cs.approach],
+                ["Results", cs.results],
+              ].filter(([, v]) => !!v) as Array<[string, string]> : [];
+              return (
+                <div className="space-y-4">
+                  {csEntries.map(([label, body]) => (
+                    <div key={label}>
+                      <p className={`text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5 ${d ? "text-emerald-400/70" : "text-emerald-600/70"}`}>{label}</p>
+                      <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{body}</p>
+                    </div>
+                  ))}
+                  {!csEntries.length && <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>}
+                  <div className="flex flex-wrap gap-1.5">
+                    {projTags.map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-emerald-50 text-emerald-700 border border-emerald-200"}`}>{t}</span>)}
+                  </div>
+                  <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study {icons.chevR}</a>
+                </div>
+              );
+            })()}
+
+            {/* POWER BI — Screenshot preview + auth notice */}
+            {activeModal.type === "powerbi" && (
+              <div className="space-y-4">
+                <div className="rounded-xl overflow-hidden border relative" style={{ borderColor: d ? "rgba(250,204,21,0.25)" : "#fde68a" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/powerbi-ambler-dashboard.png"
+                    alt={`${projTitle} preview`}
+                    className="w-full object-cover object-top"
+                    style={{ maxHeight: 340 }}
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                  />
+                  <div className="absolute bottom-0 inset-x-0 h-16" style={{ background: d ? "linear-gradient(to top,rgba(3,7,18,0.95),transparent)" : "linear-gradient(to top,rgba(255,255,255,0.95),transparent)" }} />
+                </div>
+                <div className={`rounded-xl p-4 border border-yellow-500/20 flex items-start gap-3`} style={{ background: "rgba(245,158,11,0.05)" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" className="shrink-0 mt-0.5">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+                  <div>
+                    <p className="text-[12px] font-semibold text-yellow-300 mb-0.5">Organizational access required</p>
+                    <p className="text-[11px] text-gray-500 leading-relaxed">Live embedding requires Temple University Power BI authentication. The full case study covers methodology, DAX measures, and results.</p>
+                  </div>
+                </div>
+                <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {projTags.map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20" : "bg-yellow-50 text-yellow-700 border border-yellow-200"}`}>{t}</span>)}
+                </div>
+                <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study {icons.chevR}</a>
               </div>
             )}
           </div>
@@ -892,6 +989,7 @@ print(f"Call option price: $\{price:.4f\}")`,
                 btnLabel: "View Model", btnHref: "/projects/pe-debt-covenant-model",
                 platform: "Excel · Python · Claude AI",
                 platformColor: d ? "text-emerald-400" : "text-emerald-600",
+                modalData: { type: "excel", project: { id: "amazon-valuation-model", title: "Amazon DCF Valuation", sum: "Built a full discounted cash flow model for Amazon.com, projecting free cash flows across its three business segments (AWS, Advertising, Retail), calibrating WACC from first principles, and computing an implied intrinsic value per share.", tags: ["DCF", "Valuation", "Excel", "Amazon", "WACC"], embedUrl: "https://1drv.ms/x/c/c0e2a8c7fee10a46/IQRFGMQwX84nSKp_hYrSx0_PAQkx65u_FGrqyi5SSbltLJw?em=2&wdHideGridlines=True&wdInConfigurator=True&wdInConfigurator=True" } },
               },
               {
                 icon: icons.bar,
@@ -906,6 +1004,7 @@ print(f"Call option price: $\{price:.4f\}")`,
                 btnLabel: "View Code & Output", btnHref: "/projects/sp100-equity-analytics",
                 platform: "Python · yfinance · Pandas",
                 platformColor: d ? "text-violet-400" : "text-violet-600",
+                modalData: { type: "python", project: { id: "sp100-equity-analytics", title: "S&P 100 Equity Analytics", sum: "35-year fund analytics engine computing Sharpe ratio, max drawdown, alpha, beta, skewness, and Carhart 4-factor attribution. Live market data integration via yfinance API.", tags: ["Python", "yfinance", "Pandas", "NumPy", "Factor Models"] } },
               },
               {
                 icon: icons.trend,
@@ -920,6 +1019,7 @@ print(f"Call option price: $\{price:.4f\}")`,
                 btnLabel: "View Code & Output", btnHref: "/projects/black-scholes-options-pricing",
                 platform: "Python · NumPy · SciPy",
                 platformColor: d ? "text-blue-400" : "text-blue-600",
+                modalData: { type: "python", project: { id: "black-scholes-options-pricing", title: "Black-Scholes Options Pricing", sum: "Black-Scholes with full Greeks (Δ, Γ, Θ, ν, ρ), Monte Carlo GBM simulation (1,000 trials), CRR binomial trees (5,000× convergence analysis), and implied volatility calibration via bisection.", tags: ["Python", "NumPy", "SciPy", "Black-Scholes", "Monte Carlo"] } },
               },
               {
                 icon: icons.db,
@@ -934,6 +1034,7 @@ print(f"Call option price: $\{price:.4f\}")`,
                 btnLabel: "View Code & Output", btnHref: "/projects/black-scholes-greeks-implied-vol",
                 platform: "Python · BeautifulSoup · SEC",
                 platformColor: d ? "text-amber-400" : "text-amber-600",
+                modalData: { type: "python", project: { id: "black-scholes-greeks-implied-vol", title: "Financial Data Engineering", sum: "Multi-asset data alignment pipelines for NVDA, MSFT, SPY, and risk-free rate. SEC 10-K MD&A extraction from HTML filings (GOOGL, META, NFLX) using BeautifulSoup with regex parsing.", tags: ["Python", "BeautifulSoup", "Pandas", "SEC Filings", "APIs"] } },
               },
               {
                 icon: icons.zap,
@@ -948,6 +1049,7 @@ print(f"Call option price: $\{price:.4f\}")`,
                 btnLabel: "View System", btnHref: "/projects/genai-finance-system",
                 platform: "Streamlit · Power BI · Tableau",
                 platformColor: d ? "text-indigo-400" : "text-indigo-600",
+                modalData: { type: "streamlit", project: { id: "genai-finance-system", title: "GenAI Finance System", sum: "Three Streamlit dashboard versions with rolling factor analytics, returns histograms, multi-security scatter, and CSV export. Power BI FP&A dashboards and Tableau macroeconomic intelligence platforms.", tags: ["Streamlit", "Power BI", "Tableau", "DAX", "Plotly"] } },
               },
               {
                 icon: icons.shield,
@@ -962,6 +1064,7 @@ print(f"Call option price: $\{price:.4f\}")`,
                 btnLabel: "View Research", btnHref: "/projects/genai-finance-system",
                 platform: "Python · ECE Analysis · Claude AI",
                 platformColor: d ? "text-rose-400" : "text-rose-600",
+                modalData: { type: "streamlit", project: { id: "genai-finance-system", title: "AI Governance & Model Risk", sum: "Benchmarked 9 LLMs: 84% exhibited systematic overconfidence; nominal 99% CIs covered only 65% of outcomes. Documented dual-validation framework — no AI output enters a financial deliverable without human sign-off.", tags: ["Python", "ECE Analysis", "Statistical Testing", "LLM Calibration"] } },
               },
             ].map((cap, i) => (
               <div key={i} className={`cap-card card-premium group relative rounded-2xl border p-6 overflow-hidden flex flex-col ${cap.glow} ${d ? `bg-gray-900/60 ${cap.accent}` : `bg-white ${cap.accent} shadow-sm hover:shadow-xl`}`} style={{ animationDelay: `${i * 0.07}s` }}>
@@ -987,13 +1090,23 @@ print(f"Call option price: $\{price:.4f\}")`,
                   ))}
                 </div>
                 {/* View Model button */}
-                <a
-                  href={cap.btnHref}
-                  className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3.5 py-2 rounded-lg border transition-all duration-200 w-fit group-hover:gap-2 ${d ? `bg-gradient-to-r ${cap.gradBar} bg-opacity-10 border-white/10 text-white hover:border-white/20` : `border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50`}`}
-                  style={d ? { background: `linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))` } : {}}
-                >
-                  {cap.btnLabel} <span className="transition-transform duration-200 translate-x-0 group-hover:translate-x-0.5 inline-block">{icons.chevR}</span>
-                </a>
+                {cap.modalData ? (
+                  <button
+                    onClick={() => setActiveModal(cap.modalData as { type: string; project: Record<string, unknown> })}
+                    className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3.5 py-2 rounded-lg border transition-all duration-200 w-fit group-hover:gap-2 ${d ? `bg-gradient-to-r ${cap.gradBar} bg-opacity-10 border-white/10 text-white hover:border-white/20` : `border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50`}`}
+                    style={d ? { background: `linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))` } : {}}
+                  >
+                    {cap.btnLabel} <span className="transition-transform duration-200 translate-x-0 group-hover:translate-x-0.5 inline-block">{icons.chevR}</span>
+                  </button>
+                ) : (
+                  <a
+                    href={cap.btnHref}
+                    className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3.5 py-2 rounded-lg border transition-all duration-200 w-fit group-hover:gap-2 ${d ? `bg-gradient-to-r ${cap.gradBar} bg-opacity-10 border-white/10 text-white hover:border-white/20` : `border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50`}`}
+                    style={d ? { background: `linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))` } : {}}
+                  >
+                    {cap.btnLabel} <span className="transition-transform duration-200 translate-x-0 group-hover:translate-x-0.5 inline-block">{icons.chevR}</span>
+                  </a>
+                )}
               </div>
             ))}
           </div>
@@ -1051,9 +1164,11 @@ print(f"Call option price: $\{price:.4f\}")`,
 
                 // Modal type — determines whether clicking primary CTA opens a modal or navigates
                 const modalType: Record<string, string> = {
-                  "Tableau": "tableau",
-                  "GenAI Finance": "streamlit",
-                  "Python": "python",
+                  "Tableau":                    "tableau",
+                  "GenAI Finance":              "streamlit",
+                  "Python":                     "python",
+                  "Financial Modeling (Excel)": "excel",
+                  "Power BI":                   "powerbi",
                 };
 
                 // Platform-specific primary CTA label
