@@ -1362,104 +1362,102 @@ export default function ProjectsClient() {
           return (
             <article
               key={p.id}
-              className="group relative rounded-2xl border overflow-hidden transition-all duration-200"
-              style={{ background: "rgba(17,24,39,0.7)", borderColor: "rgba(255,255,255,0.06)" }}
+              className="proj-card group relative rounded-2xl border overflow-hidden"
+              style={{
+                background:  "rgba(17,24,39,0.72)",
+                borderColor: "rgba(255,255,255,0.07)",
+                "--proj-glow": `rgba(${cfg.accentRgb},0.12)`,
+              } as React.CSSProperties}
               onMouseEnter={(e) => {
                 const el = e.currentTarget;
-                el.style.borderColor = `rgba(${cfg.accentRgb},0.22)`;
-                el.style.background  = "rgba(17,24,39,0.92)";
-                el.style.boxShadow   = `0 0 28px rgba(${cfg.accentRgb},0.10)`;
+                el.style.borderColor = `rgba(${cfg.accentRgb},0.28)`;
+                el.style.background  = "rgba(17,24,39,0.94)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget;
-                el.style.borderColor = "rgba(255,255,255,0.06)";
-                el.style.background  = "rgba(17,24,39,0.7)";
-                el.style.boxShadow   = "none";
+                el.style.borderColor = "rgba(255,255,255,0.07)";
+                el.style.background  = "rgba(17,24,39,0.72)";
               }}
             >
-              {/* Left accent stripe — ALL projects */}
+              {/* Left accent stripe */}
               <div
-                className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full"
+                className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-300"
                 style={{ background: cfg.stripeGradient }}
               />
 
-              <div className="pl-5 pr-4 py-4">
+              <div className="pl-6 pr-5 py-5">
                 {/* Row 1: Badges */}
-                <div className="flex flex-wrap items-center gap-2 mb-2.5">
-                  <span
-                    className={`text-[11px] px-2 py-0.5 rounded border font-semibold ${
-                      CAT_COLOR[p.cat] ?? "text-gray-400 bg-gray-800 border-gray-700"
-                    }`}
-                  >
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  <span className={`text-[11px] px-2.5 py-0.5 rounded-lg border font-semibold ${CAT_COLOR[p.cat] ?? "text-gray-400 bg-gray-800 border-gray-700"}`}>
                     {p.cat}
                   </span>
-                  <span
-                    className={`text-[10px] px-2 py-0.5 rounded border font-semibold flex items-center gap-1 ${cfg.badgeCls}`}
-                  >
+                  <span className={`text-[10px] px-2 py-0.5 rounded-lg border font-semibold flex items-center gap-1 ${cfg.badgeCls}`}>
                     <PlatformIcon t={p.platformType} sz={9} />
                     {badgeLabel}
                   </span>
-                  <span className="text-[11px] text-gray-600">{p.yr}</span>
+                  <span className="text-[11px] text-gray-600 ml-auto">{p.yr}</span>
                 </div>
 
                 {/* Row 2: Title + actions */}
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-[14px] font-bold text-white leading-snug mb-1 group-hover:text-indigo-100 transition-colors">
+                    <h2 className="text-[15px] font-[760] text-white leading-snug mb-1.5 group-hover:text-indigo-100 transition-colors duration-200">
                       {p.title}
                     </h2>
-                    <p className="text-[11px] text-gray-500 mb-2">{p.sub}</p>
+                    <p className="text-[11px] text-gray-500 mb-2.5 font-medium">{p.sub}</p>
                     <p className="text-[13px] text-gray-400 leading-relaxed">{p.summary}</p>
                   </div>
 
                   {/* Action buttons */}
-                  <div className="flex flex-col items-end gap-2 shrink-0 pt-0.5">
+                  <div className="flex flex-col items-end gap-2.5 shrink-0 pt-0.5">
                     <button
                       onClick={() => handlePrimary(p)}
                       aria-label={`${cfg.btnText} for ${p.title}`}
-                      className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-all focus:outline-none focus-visible:ring-2 whitespace-nowrap"
+                      className="flex items-center gap-1.5 text-[12px] font-semibold px-3.5 py-2 rounded-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 whitespace-nowrap"
                       style={{
-                        color:       `rgb(${cfg.accentRgb})`,
-                        background:  `rgba(${cfg.accentRgb},0.08)`,
-                        border:      `1px solid rgba(${cfg.accentRgb},0.2)`,
-                        focusRingColor: `rgb(${cfg.accentRgb})`,
+                        color:      `rgb(${cfg.accentRgb})`,
+                        background: `rgba(${cfg.accentRgb},0.08)`,
+                        border:     `1px solid rgba(${cfg.accentRgb},0.22)`,
                       } as React.CSSProperties}
                       onMouseEnter={(e) => {
                         const el = e.currentTarget;
-                        el.style.background  = `rgba(${cfg.accentRgb},0.15)`;
-                        el.style.borderColor = `rgba(${cfg.accentRgb},0.38)`;
+                        el.style.background  = `rgba(${cfg.accentRgb},0.16)`;
+                        el.style.borderColor = `rgba(${cfg.accentRgb},0.42)`;
+                        el.style.transform   = "translateY(-1px)";
                       }}
                       onMouseLeave={(e) => {
                         const el = e.currentTarget;
                         el.style.background  = `rgba(${cfg.accentRgb},0.08)`;
-                        el.style.borderColor = `rgba(${cfg.accentRgb},0.2)`;
+                        el.style.borderColor = `rgba(${cfg.accentRgb},0.22)`;
+                        el.style.transform   = "translateY(0)";
                       }}
                     >
-                      <PlatformIcon t={p.platformType} sz={11} />
+                      <PlatformIcon t={p.platformType} sz={12} />
                       {cfg.btnText}
                     </button>
                     <Link
                       href={p.href}
                       aria-label={`View case study for ${p.title}`}
-                      className="flex items-center gap-1 text-[12px] font-semibold text-indigo-400 hover:text-indigo-300 transition-all whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded"
+                      className="flex items-center gap-1 text-[12px] font-semibold text-indigo-400 hover:text-indigo-300 transition-colors duration-200 whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded"
                     >
                       Case Study →
                     </Link>
                   </div>
                 </div>
 
-                {/* Row 3: Tech stack + deliverables */}
-                <div
-                  className="mt-3 pt-3 space-y-2"
-                  style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
-                >
-                  {/* Tech chips */}
+                {/* Row 3: Tech chips + deliverables */}
+                <div className="mt-4 pt-3.5 space-y-2.5" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+                  {/* Tinted tech chips */}
                   <div className="flex flex-wrap gap-1.5">
-                    {p.techStack.map((t) => (
+                    {p.techStack.map((t, ti) => (
                       <span
                         key={t}
-                        className="text-[10px] px-2 py-0.5 rounded-md font-medium text-gray-500"
-                        style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}
+                        className="text-[10px] px-2.5 py-0.5 rounded-md font-medium"
+                        style={{
+                          background:  ti === 0 ? `rgba(${cfg.accentRgb},0.10)` : "rgba(255,255,255,0.04)",
+                          border:      `1px solid ${ti === 0 ? `rgba(${cfg.accentRgb},0.25)` : "rgba(255,255,255,0.07)"}`,
+                          color:       ti === 0 ? `rgb(${cfg.accentRgb})` : "#6b7280",
+                        }}
                       >
                         {t}
                       </span>
@@ -1469,10 +1467,7 @@ export default function ProjectsClient() {
                   {/* Deliverables strip */}
                   <div className="flex items-center gap-3 flex-wrap">
                     {p.deliverables.map((d) => (
-                      <span
-                        key={d}
-                        className="flex items-center gap-1 text-[10px] text-gray-600 font-medium"
-                      >
+                      <span key={d} className="flex items-center gap-1 text-[10px] text-gray-600 font-medium">
                         <DeliverableIcon name={d} sz={9} />
                         {d}
                       </span>

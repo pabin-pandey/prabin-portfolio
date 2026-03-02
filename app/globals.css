@@ -1118,6 +1118,7 @@ input:focus, textarea:focus, select:focus, button:focus-visible {
    ════════════════════════════════════════════════════════════════ */
 .featured-card {
   animation: card-enter 0.45s cubic-bezier(0.16,1,0.3,1) both;
+  will-change: transform, box-shadow;
   transition:
     transform 0.35s cubic-bezier(0.34,1.56,0.64,1),
     box-shadow 0.35s ease,
@@ -1126,7 +1127,35 @@ input:focus, textarea:focus, select:focus, button:focus-visible {
 }
 .featured-card:hover {
   transform: scale(1.015) translateY(-3px);
-  box-shadow: 0 20px 52px rgba(0,0,0,0.32), 0 0 0 0 transparent;
+  /* Platform-colored glow via --hover-glow CSS variable set inline on each card */
+  box-shadow: 0 20px 52px rgba(0,0,0,0.32), 0 0 36px var(--hover-glow, rgba(99,102,241,0.18));
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PROJECTS PAGE CARD — .proj-card: CSS-driven hover (GPU composited)
+   ════════════════════════════════════════════════════════════════ */
+.proj-card {
+  will-change: transform, box-shadow;
+  transition:
+    transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow 0.28s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
+}
+.proj-card:hover {
+  transform: scale(1.007) translateY(-2px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.28), 0 0 20px var(--proj-glow, rgba(99,102,241,0.10));
+}
+.proj-card:active {
+  transform: scale(0.998) translateY(0);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CAP-CARD STAGGER — fire card-enter when section-reveal is visible
+   ════════════════════════════════════════════════════════════════ */
+.section-reveal.visible .cap-card {
+  animation: card-enter 0.52s cubic-bezier(0.16,1,0.3,1) both;
+  /* animationDelay is set via inline style on each cap-card */
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -1163,6 +1192,14 @@ input:focus, textarea:focus, select:focus, button:focus-visible {
   .cap-card:hover {
     transition: none !important;
     transform: none !important;
+    animation: none !important;
+  }
+  .proj-card,
+  .proj-card:hover,
+  .proj-card:active {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
   }
   .featured-card,
   .featured-card:hover {

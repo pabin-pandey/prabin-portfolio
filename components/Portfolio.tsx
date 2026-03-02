@@ -935,7 +935,7 @@ function Home({ c, d, nav }) {
                     {/* Left platform accent stripe */}
                     <div className={`absolute top-0 left-0 w-[3px] h-full bg-gradient-to-b ${ac.stripe} opacity-55 group-hover:opacity-100 transition-opacity duration-300`} />
 
-                    <div className="pl-7 pr-6 py-6 flex flex-col flex-1">
+                    <div className="pl-8 pr-7 py-7 flex flex-col flex-1">
                       {/* Platform badge row */}
                       <div className="flex items-center gap-2.5 mb-4">
                         <div className="p-2 rounded-xl transition-transform duration-300 group-hover:scale-110" style={{ background: "rgba(99,102,241,0.1)" }}>
@@ -948,12 +948,15 @@ function Home({ c, d, nav }) {
                       </div>
 
                       {/* Title */}
-                      <h3 className={`text-[15px] font-bold leading-snug mb-2.5 ${d ? "text-gray-100 group-hover:text-white" : "text-gray-900"} transition-colors`}>{p.title}</h3>
+                      <h3 className={`text-[17px] font-[760] leading-snug mb-3 ${d ? "text-gray-100 group-hover:text-white" : "text-gray-900"} transition-colors`}>{p.title}</h3>
 
                       {/* Python code teaser */}
                       {p.cat === "Python" && pyTeaser[p.id] && (
-                        <div className={`mb-3 px-3 py-2 rounded-lg font-mono text-[11px] truncate ${d ? "bg-gray-950/80 text-cyan-400 border border-cyan-500/15" : "bg-gray-50 text-cyan-700 border border-cyan-200"}`}>
-                          {pyTeaser[p.id]}
+                        <div className="mb-3.5">
+                          <p className={`text-[9px] font-bold tracking-[0.15em] uppercase mb-1.5 ${d ? "text-cyan-500/70" : "text-cyan-600/70"}`}>Python Preview</p>
+                          <div className={`px-3 py-2 rounded-lg font-mono text-[11px] truncate ${d ? "bg-gray-950/80 text-cyan-400 border border-cyan-500/15" : "bg-gray-50 text-cyan-700 border border-cyan-200"}`}>
+                            {pyTeaser[p.id]}
+                          </div>
                         </div>
                       )}
 
@@ -967,24 +970,42 @@ function Home({ c, d, nav }) {
                         ))}
                       </div>
 
-                      {/* Dual CTA row */}
-                      <div className="flex items-center gap-2">
-                        <a
-                          href={projectHref}
-                          onClick={(e) => e.stopPropagation()}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold border transition-all duration-200 ${d ? `border-${ac.stripe.split('-')[1]}-500/30 text-${ac.stripe.split('-')[1]}-400 hover:bg-${ac.stripe.split('-')[1]}-500/10` : "border-indigo-200 text-indigo-600 hover:bg-indigo-50"}`}
-                          style={{ borderColor: `rgba(${ac.glow.replace("rgba(","").replace(")","").split(",").slice(0,3).join(",")},0.3)`, color: d ? `rgba(${ac.glow.replace("rgba(","").replace(")","").split(",").slice(0,3).join(",")},0.9)` : undefined }}
-                        >
-                          {ctaLabel[p.cat] || "View Project"} {icons.chevR}
-                        </a>
-                        <a
-                          href={projectHref}
-                          onClick={(e) => e.stopPropagation()}
-                          className={`inline-flex items-center gap-1 text-[12px] font-medium transition-colors duration-200 ${d ? "text-gray-600 hover:text-gray-300" : "text-gray-400 hover:text-gray-700"}`}
-                        >
-                          Case Study →
-                        </a>
-                      </div>
+                      {/* Dual CTA row — uses inline styles only (no dynamic Tailwind class) */}
+                      {(() => {
+                        // Extract RGB from glow string "rgba(r,g,b,a)" → "r,g,b"
+                        const rgb = ac.glow.replace("rgba(","").split(",").slice(0,3).join(",");
+                        return (
+                          <div className="flex items-center gap-2">
+                            <a
+                              href={projectHref}
+                              onClick={(e) => e.stopPropagation()}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold border transition-all duration-200"
+                              style={{
+                                borderColor: `rgba(${rgb},0.32)`,
+                                color:       d ? `rgba(${rgb},0.95)` : `rgba(${rgb},0.85)`,
+                                background:  `rgba(${rgb},0.06)`,
+                              }}
+                              onMouseEnter={(e) => {
+                                (e.currentTarget as HTMLAnchorElement).style.background = `rgba(${rgb},0.12)`;
+                                (e.currentTarget as HTMLAnchorElement).style.borderColor = `rgba(${rgb},0.5)`;
+                              }}
+                              onMouseLeave={(e) => {
+                                (e.currentTarget as HTMLAnchorElement).style.background = `rgba(${rgb},0.06)`;
+                                (e.currentTarget as HTMLAnchorElement).style.borderColor = `rgba(${rgb},0.32)`;
+                              }}
+                            >
+                              {ctaLabel[p.cat] || "View Project"} {icons.chevR}
+                            </a>
+                            <a
+                              href={projectHref}
+                              onClick={(e) => e.stopPropagation()}
+                              className={`inline-flex items-center gap-1 text-[12px] font-medium transition-colors duration-200 ${d ? "text-gray-600 hover:text-gray-300" : "text-gray-400 hover:text-gray-700"}`}
+                            >
+                              Case Study →
+                            </a>
+                          </div>
+                        );
+                      })()}
                     </div>
                   </div>
                 );
