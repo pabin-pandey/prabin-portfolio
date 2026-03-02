@@ -462,7 +462,7 @@ function Home({ c, d, nav }) {
   const [ri, setRi] = useState(0);
   const [ci, setCi] = useState(0);
   const [del, setDel] = useState(false);
-  const [featTab, setFeatTab] = useState("All");
+  const [featTab, setFeatTab] = useState("Financial Modeling (Excel)");
   useSectionReveal();
 
   useEffect(() => {
@@ -474,7 +474,19 @@ function Home({ c, d, nav }) {
     return () => clearTimeout(t);
   }, [ci, del, ri, hero.roles]);
 
-  const featured = projects.filter(p => p.featured);
+  const featured = [
+    ...projects.filter(p => p.featured),
+    // Feature top 2 Python projects so the Python tab is always populated
+    ...pythonProjects.slice(0, 2).map(p => ({
+      id: p.id,
+      title: p.title,
+      cat: "Python" as const,
+      yr: "2025",
+      sum: p.summary,
+      featured: true,
+      tags: p.tags.map((t: { name: string }) => t.name),
+    })),
+  ];
   const cb = d ? "bg-gray-900 border-gray-800" : "bg-gray-50 border-gray-200";
   const ch = d ? "hover:border-gray-700 hover:bg-gray-800/50" : "hover:border-gray-300 hover:bg-white";
 
@@ -805,26 +817,29 @@ function Home({ c, d, nav }) {
                 View all 21 projects <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">{icons.chevR}</span>
               </a>
             </div>
-            {/* Category Filter Tabs */}
+            {/* Category Filter Tabs — All at end */}
             <div className="flex flex-wrap gap-2">
-              {(["All", "Financial Modeling (Excel)", "Power BI", "Tableau", "GenAI Finance"] as const).map(tab => {
+              {(["Financial Modeling (Excel)", "Power BI", "Tableau", "Python", "GenAI Finance", "All"] as const).map(tab => {
                 const isActive = featTab === tab;
                 const activeStyle =
                   tab === "Financial Modeling (Excel)" ? (d ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-300" : "bg-emerald-50 border-emerald-300 text-emerald-700") :
                   tab === "Power BI"                   ? (d ? "bg-amber-500/15  border-amber-500/40  text-amber-300"  : "bg-amber-50  border-amber-300  text-amber-700")  :
                   tab === "Tableau"                    ? (d ? "bg-blue-500/15   border-blue-500/40   text-blue-300"   : "bg-blue-50   border-blue-300   text-blue-700")   :
+                  tab === "Python"                     ? (d ? "bg-cyan-500/15   border-cyan-500/40   text-cyan-300"   : "bg-cyan-50   border-cyan-300   text-cyan-700")   :
                   tab === "GenAI Finance"              ? (d ? "bg-violet-500/15 border-violet-500/40 text-violet-300" : "bg-violet-50 border-violet-300 text-violet-700") :
-                  (d ? "bg-indigo-500/15 border-indigo-500/40 text-indigo-300" : "bg-indigo-50 border-indigo-300 text-indigo-700");
+                  /* All */                              (d ? "bg-white/[0.06]  border-white/20       text-gray-200"   : "bg-gray-100  border-gray-300   text-gray-700");
                 const inactiveStyle = d
                   ? "border-white/[0.08] text-gray-500 hover:border-white/15 hover:text-gray-300"
                   : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700";
+                const label =
+                  tab === "Financial Modeling (Excel)" ? "Financial Modeling" : tab;
                 return (
                   <button
                     key={tab}
                     onClick={() => setFeatTab(tab)}
                     className={`cat-tab text-[11px] font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-200 ${isActive ? activeStyle : inactiveStyle}`}
                   >
-                    {tab === "Financial Modeling (Excel)" ? "Excel" : tab}
+                    {label}
                   </button>
                 );
               })}
@@ -836,19 +851,26 @@ function Home({ c, d, nav }) {
             {featured
               .filter(p => featTab === "All" || p.cat === featTab)
               .map((p, idx) => {
-                const accentMap: Record<string, { stripe: string; glow: string; badge: string; hoverBorder: string }> = {
-                  "Financial Modeling (Excel)": { stripe: "from-emerald-500 to-teal-400",  glow: "rgba(16,185,129,0.22)",  badge: d ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/25"  : "bg-emerald-50 text-emerald-700 border-emerald-200",  hoverBorder: d ? "hover:border-emerald-500/35" : "hover:border-emerald-300" },
-                  "Power BI":                   { stripe: "from-amber-400 to-orange-400",   glow: "rgba(245,158,11,0.22)",  badge: d ? "bg-amber-500/10 text-amber-400 border-amber-500/25"      : "bg-amber-50 text-amber-700 border-amber-200",      hoverBorder: d ? "hover:border-amber-500/35"   : "hover:border-amber-300"   },
-                  "Tableau":                    { stripe: "from-blue-400 to-cyan-400",      glow: "rgba(59,130,246,0.22)",  badge: d ? "bg-blue-500/10 text-blue-400 border-blue-500/25"        : "bg-blue-50 text-blue-700 border-blue-200",        hoverBorder: d ? "hover:border-blue-500/35"    : "hover:border-blue-300"    },
-                  "GenAI Finance":              { stripe: "from-violet-500 to-purple-400",  glow: "rgba(139,92,246,0.22)", badge: d ? "bg-violet-500/10 text-violet-400 border-violet-500/25"  : "bg-violet-50 text-violet-700 border-violet-200",  hoverBorder: d ? "hover:border-violet-500/35"  : "hover:border-violet-300"  },
+                const accentMap: Record<string, { stripe: string; glow: string; badge: string; hoverBorder: string; badgeLabel: string }> = {
+                  "Financial Modeling (Excel)": { stripe: "from-emerald-500 to-teal-400",  glow: "rgba(16,185,129,0.22)",  badge: d ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/25"  : "bg-emerald-50 text-emerald-700 border-emerald-200",  hoverBorder: d ? "hover:border-emerald-500/35" : "hover:border-emerald-300", badgeLabel: "Financial Modeling" },
+                  "Power BI":                   { stripe: "from-amber-400 to-orange-400",   glow: "rgba(245,158,11,0.22)",  badge: d ? "bg-amber-500/10 text-amber-400 border-amber-500/25"      : "bg-amber-50 text-amber-700 border-amber-200",      hoverBorder: d ? "hover:border-amber-500/35"   : "hover:border-amber-300",   badgeLabel: "Power BI" },
+                  "Tableau":                    { stripe: "from-blue-400 to-cyan-400",      glow: "rgba(59,130,246,0.22)",  badge: d ? "bg-blue-500/10 text-blue-400 border-blue-500/25"        : "bg-blue-50 text-blue-700 border-blue-200",        hoverBorder: d ? "hover:border-blue-500/35"    : "hover:border-blue-300",    badgeLabel: "Tableau" },
+                  "Python":                     { stripe: "from-cyan-400 to-blue-500",      glow: "rgba(34,211,238,0.22)",  badge: d ? "bg-cyan-500/10 text-cyan-400 border-cyan-500/25"        : "bg-cyan-50 text-cyan-700 border-cyan-200",        hoverBorder: d ? "hover:border-cyan-500/35"    : "hover:border-cyan-300",    badgeLabel: "Python" },
+                  "GenAI Finance":              { stripe: "from-violet-500 to-purple-400",  glow: "rgba(139,92,246,0.22)", badge: d ? "bg-violet-500/10 text-violet-400 border-violet-500/25"  : "bg-violet-50 text-violet-700 border-violet-200",  hoverBorder: d ? "hover:border-violet-500/35"  : "hover:border-violet-300",  badgeLabel: "GenAI Finance" },
                 };
-                const ac = accentMap[p.cat] || { stripe: "from-indigo-500 to-violet-500", glow: "rgba(99,102,241,0.22)", badge: d ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/25" : "bg-indigo-50 text-indigo-700 border-indigo-200", hoverBorder: d ? "hover:border-indigo-500/40" : "hover:border-indigo-300" };
+                const ac = accentMap[p.cat] || { stripe: "from-indigo-500 to-violet-500", glow: "rgba(99,102,241,0.22)", badge: d ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/25" : "bg-indigo-50 text-indigo-700 border-indigo-200", hoverBorder: d ? "hover:border-indigo-500/40" : "hover:border-indigo-300", badgeLabel: p.cat };
 
                 const featHref: Record<string, string> = {
-                  "pe":               "/projects/pe-debt-covenant-model",
-                  "pbi":              "/projects/campus-operations-analytics",
-                  "tab1":             "/projects/global-macro-dashboard",
-                  "genai-in-finance": "/projects/genai-finance-system",
+                  "pe":                              "/projects/pe-debt-covenant-model",
+                  "pbi":                             "/projects/campus-operations-analytics",
+                  "tab1":                            "/projects/global-macro-dashboard",
+                  "genai-in-finance":                "/projects/genai-finance-system",
+                  "black-scholes-options-pricing":   `/projects/black-scholes-options-pricing`,
+                  "monte-carlo-gbm-simulation":      `/projects/monte-carlo-gbm-simulation`,
+                  "black-scholes-greeks-implied-vol":`/projects/black-scholes-greeks-implied-vol`,
+                  "crr-binomial-tree-pricing":       `/projects/crr-binomial-tree-pricing`,
+                  "sp100-equity-analytics":          `/projects/sp100-equity-analytics`,
+                  "black-scholes-dividend-extension":`/projects/black-scholes-dividend-extension`,
                 };
 
                 return (
@@ -868,7 +890,7 @@ function Home({ c, d, nav }) {
                           <span className="text-indigo-400">{catIcon[p.cat] || icons.code}</span>
                         </div>
                         <span className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border tracking-wide ${ac.badge}`}>
-                          {p.cat === "Financial Modeling (Excel)" ? "Excel Model" : p.cat}
+                          {ac.badgeLabel}
                         </span>
                         {p.featured && <span className="ml-auto text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.4)]">{icons.star}</span>}
                       </div>
@@ -888,7 +910,7 @@ function Home({ c, d, nav }) {
 
                       {/* CTA row */}
                       <div className="flex items-center gap-1.5 text-[12px] font-semibold text-indigo-400 group-hover:text-indigo-300 transition-colors duration-200">
-                        Case Study
+                        View Project
                         <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">{icons.chevR}</span>
                       </div>
                     </div>
