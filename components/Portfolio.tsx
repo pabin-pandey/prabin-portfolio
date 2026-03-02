@@ -50,7 +50,7 @@ const DEFAULT_CONTENT = {
   testimonials: [
     { name: "Dr. John Soss", role: "Faculty, Fox School of Business", quote: "Prabin ranks among the very top graduates of our MS in Financial Analysis program, with a rare breadth spanning investment banking, investment management, and advanced AI applications in finance. He has the acclaimed talent, drive, and creativity to thrive in today's demanding financial landscape. #TempleProud" },
   ],
-  contact: { email: "prabin.pandey@temple.edu", phone: "835-207-9312", location: "Philadelphia, PA", linkedin: "https://linkedin.com/in/prabin-pandey-1482362b7/", github: "https://github.com/pabin-pandey", msg: "I'd love to hear from you. Whether you have a question, opportunity, or just want to connect — drop me a message." },
+  contact: { email: "prabin.pandey@temple.edu", phone: "835-207-9312", location: "Philadelphia, PA", linkedin: "https://linkedin.com/in/prabin-pandey", github: "https://github.com/pabin-pandey", msg: "I'd love to hear from you. Whether you have a question, opportunity, or just want to connect — drop me a message." },
   resume: { label: "Download Resume", path: "/resume/Prabin_Pandey_Resume_2026.pdf" },
   theme: {
     accentColor: "indigo",
@@ -410,8 +410,8 @@ export default function App() {
                   </div>
                 </div>
                 <div className="flex gap-3 flex-shrink-0">
-                  <a href={`mailto:${content.contact.email}`} className="btn-primary px-6 py-3 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white rounded-xl text-[13px] font-semibold transition-all duration-200 cta-glow flex items-center gap-2">{icons.mail} Get in touch</a>
-                  <a href={content.contact.linkedin} target="_blank" rel="noopener noreferrer" className={`px-6 py-3 rounded-xl text-[13px] font-semibold transition-all duration-200 border flex items-center gap-2 hover:-translate-y-0.5 ${dark ? "border-white/10 text-gray-300 hover:bg-white/6 hover:border-white/15" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}>
+                  <a href="/contact" className="btn-primary px-6 py-3 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white rounded-xl text-[13px] font-semibold transition-all duration-200 cta-glow flex items-center gap-2">{icons.mail} Get in touch</a>
+                  <a href="https://linkedin.com/in/prabin-pandey" target="_blank" rel="noopener noreferrer" className={`px-6 py-3 rounded-xl text-[13px] font-semibold transition-all duration-200 border flex items-center gap-2 hover:-translate-y-0.5 ${dark ? "border-white/10 text-gray-300 hover:bg-white/6 hover:border-white/15" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}>
                     {icons.linkedin}
                     <span className="flex flex-col items-start leading-none gap-0.5">
                       <span>LinkedIn</span>
@@ -481,8 +481,8 @@ function Home({ c, d, nav }) {
   const [ri, setRi] = useState(0);
   const [ci, setCi] = useState(0);
   const [del, setDel] = useState(false);
-  const [featTab, setFeatTab] = useState("Financial Modeling (Excel)");
-  const [wfRef, wfVis] = useInView(0.2);
+  const [featTab, setFeatTab] = useState("All");
+  const [activeModal, setActiveModal] = useState<{ type: string; project: Record<string, unknown> } | null>(null);
   useSectionReveal();
 
   useEffect(() => {
@@ -494,10 +494,32 @@ function Home({ c, d, nav }) {
     return () => clearTimeout(t);
   }, [ci, del, ri, hero.roles]);
 
+  // Amazon DCF from excelProjects
+  const amazonDcf = excelProjects.find(p => p.id === "amazon-valuation-model");
   const featured = [
+    // Amazon DCF Valuation — Excel model
+    ...(amazonDcf ? [{
+      id: amazonDcf.id,
+      title: amazonDcf.title,
+      cat: "Financial Modeling (Excel)" as const,
+      yr: "2025",
+      sum: amazonDcf.summary || "DCF valuation and segment revenue analysis for Amazon.com using a multi-year projection model. Includes WACC estimation, terminal value, segment breakdown, and equity value per share.",
+      featured: true,
+      tags: ["DCF", "Valuation", "Excel", "Amazon", "WACC"],
+    }] : []),
     ...projects.filter(p => p.featured),
-    // Feature top 2 Python projects so the Python tab is always populated
-    ...pythonProjects.slice(0, 2).map(p => ({
+    // S&P 100 Equity Analytics Python project
+    ...pythonProjects.filter(p => p.id === "sp100-equity-analytics").map(p => ({
+      id: p.id,
+      title: p.title,
+      cat: "Python" as const,
+      yr: "2025",
+      sum: p.summary,
+      featured: true,
+      tags: p.tags.map((t: { name: string }) => t.name),
+    })),
+    // Black-Scholes Python project
+    ...pythonProjects.filter(p => p.id === "black-scholes-options-pricing").map(p => ({
       id: p.id,
       title: p.title,
       cat: "Python" as const,
@@ -519,7 +541,171 @@ function Home({ c, d, nav }) {
     "Financial Analytics (R)":   "from-sky-400 to-blue-400",
   };
 
+  /* ═══ Python code snippets for modal previews ═══ */
+  const pythonCodeSnippets: Record<string, string> = {
+    "sp100-equity-analytics": `import yfinance as yf
+import pandas as pd
+import numpy as np
+
+# S&P 100 tickers
+tickers = ["AAPL","MSFT","AMZN","GOOGL","META","NVDA","JPM","JNJ","UNH","V"]
+
+def fetch_sp100_data(tickers: list, start: str, end: str) -> pd.DataFrame:
+    """Fetch adjusted close prices for S&P 100 constituents."""
+    data = yf.download(tickers, start=start, end=end, auto_adjust=True)["Close"]
+    return data.dropna(how="all", axis=1)
+
+# Compute returns & correlation matrix
+prices = fetch_sp100_data(tickers, "2019-01-01", "2024-12-31")
+returns = prices.pct_change().dropna()
+corr_matrix = returns.corr()
+
+# Annualised Sharpe ratio per stock
+sharpe = (returns.mean() * 252) / (returns.std() * np.sqrt(252))
+print(sharpe.sort_values(ascending=False).head(10))`,
+    "black-scholes-options-pricing": `import numpy as np
+from scipy.stats import norm
+
+def black_scholes(S: float, K: float, r: float, T: float,
+                  sigma: float, option: str = "call") -> float:
+    """
+    Black-Scholes option pricing model.
+    S=spot, K=strike, r=risk-free rate, T=time to expiry,
+    sigma=implied volatility, option='call'|'put'.
+    """
+    d1 = (np.log(S / K) + (r + 0.5 * sigma**2) * T) / (sigma * np.sqrt(T))
+    d2 = d1 - sigma * np.sqrt(T)
+    if option == "call":
+        return S * norm.cdf(d1) - K * np.exp(-r * T) * norm.cdf(d2)
+    return K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
+
+# Example: AAPL call — S=$180, K=$185, r=5.3%, T=30 days, σ=28%
+price = black_scholes(180, 185, 0.053, 30/365, 0.28)
+print(f"Call option price: $\{price:.4f\}")`,
+  };
+
+  /* ═══ Modal Component (inline) ═══ */
+  const Modal = activeModal ? (() => {
+    const proj = activeModal.project as Record<string, unknown>;
+    const projId = proj.id as string;
+    const projTitle = proj.title as string;
+    const projSum = proj.sum as string;
+    const projTags = (proj.tags as string[]) || [];
+    const projHref = `/projects/${projId}`;
+    const code = pythonCodeSnippets[projId] || `# ${projTitle}\n# Code available on GitHub\n# View full project for complete implementation`;
+
+    return (
+      <div
+        className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+        style={{ background: "rgba(0,0,0,0.82)", backdropFilter: "blur(8px)" }}
+        onClick={() => setActiveModal(null)}
+      >
+        <div
+          className={`relative w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-2xl border shadow-2xl ${d ? "bg-gray-950 border-white/10" : "bg-white border-gray-200"}`}
+          onClick={(e) => e.stopPropagation()}
+          style={{ animation: "fadeInScale 0.22s cubic-bezier(0.16,1,0.3,1)" }}
+        >
+          {/* Modal header */}
+          <div className={`sticky top-0 flex items-start justify-between gap-4 p-6 border-b ${d ? "bg-gray-950/95 border-white/[0.07]" : "bg-white border-gray-100"}`} style={{ backdropFilter: "blur(12px)" }}>
+            <div>
+              <p className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-1 ${activeModal.type === "tableau" ? (d ? "text-blue-400" : "text-blue-600") : activeModal.type === "streamlit" ? (d ? "text-violet-400" : "text-violet-600") : (d ? "text-cyan-400" : "text-cyan-600")}`}>
+                {activeModal.type === "tableau" ? "Live Tableau Dashboard" : activeModal.type === "streamlit" ? "Streamlit App" : "Python Code & Output"}
+              </p>
+              <h3 className={`text-[17px] font-bold leading-snug ${d ? "text-white" : "text-gray-900"}`}>{projTitle}</h3>
+            </div>
+            <button onClick={() => setActiveModal(null)} className={`flex-shrink-0 p-2 rounded-lg transition-colors ${d ? "text-gray-500 hover:text-gray-200 hover:bg-white/8" : "text-gray-400 hover:text-gray-700 hover:bg-gray-100"}`} aria-label="Close">
+              {icons.x}
+            </button>
+          </div>
+
+          {/* Modal body */}
+          <div className="p-6">
+            {/* TABLEAU — Live embed */}
+            {activeModal.type === "tableau" && (
+              <div className="space-y-4">
+                <div className="rounded-xl overflow-hidden border" style={{ height: 440, borderColor: d ? "rgba(59,130,246,0.2)" : "#bfdbfe" }}>
+                  <iframe
+                    src="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=yes&:tabs=no"
+                    className="w-full h-full"
+                    title="Global Macro Dashboard — Tableau"
+                    loading="lazy"
+                    allowFullScreen
+                  />
+                </div>
+                <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {projTags.map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" : "bg-blue-50 text-blue-700 border border-blue-200"}`}>{t}</span>)}
+                </div>
+                <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study {icons.chevR}</a>
+              </div>
+            )}
+
+            {/* STREAMLIT — Embedded live app */}
+            {activeModal.type === "streamlit" && (
+              <div className="space-y-4">
+                <div className={`rounded-xl overflow-hidden border ${d ? "border-violet-500/20" : "border-violet-200"}`} style={{ height: 480 }}>
+                  <iframe
+                    src="https://prabin-genai-finance.streamlit.app/?embedded=true"
+                    className="w-full h-full"
+                    title="GenAI Finance Streamlit Dashboard"
+                    loading="lazy"
+                    allowFullScreen
+                  />
+                </div>
+                <p className={`text-[12px] ${d ? "text-gray-500" : "text-gray-500"}`}>
+                  Live Streamlit app — if the app shows a "sleeping" screen, click "Yes, get this app back up!" to wake it. The app loads within ~15 seconds.
+                </p>
+                <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {projTags.slice(0, 5).map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-violet-500/10 text-violet-400 border border-violet-500/20" : "bg-violet-50 text-violet-700 border border-violet-200"}`}>{t}</span>)}
+                </div>
+                <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study {icons.chevR}</a>
+              </div>
+            )}
+
+            {/* PYTHON — Syntax-highlighted code preview */}
+            {activeModal.type === "python" && (
+              <div className="space-y-4">
+                <div>
+                  <p className={`text-[10px] font-bold tracking-[0.15em] uppercase mb-2 ${d ? "text-cyan-400/70" : "text-cyan-600/70"}`}>Python Implementation</p>
+                  <pre className={`rounded-xl p-4 text-[12px] font-mono overflow-x-auto leading-relaxed ${d ? "bg-gray-900 border border-cyan-500/15 text-cyan-300" : "bg-gray-50 border border-cyan-200 text-cyan-800"}`}
+                    style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                    <code>{code}</code>
+                  </pre>
+                </div>
+                <div>
+                  <p className={`text-[10px] font-bold tracking-[0.15em] uppercase mb-2 ${d ? "text-cyan-400/70" : "text-cyan-600/70"}`}>Sample Output</p>
+                  <div className={`rounded-xl p-4 font-mono text-[12px] leading-relaxed ${d ? "bg-gray-900 border border-white/[0.06] text-emerald-400" : "bg-gray-50 border border-gray-200 text-emerald-700"}`}>
+                    {projId === "sp100-equity-analytics" ? (
+                      <>
+                        <p className="opacity-60 mb-2">{'>>> # Sharpe Ratios (annualised)'}</p>
+                        <p>NVDA    2.841</p><p>META    1.963</p><p>MSFT    1.447</p>
+                        <p>AAPL    1.289</p><p>GOOGL   1.102</p><p>V       0.987</p>
+                        <p>dtype: float64</p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="opacity-60 mb-2">{'>>> # Black-Scholes call price'}</p>
+                        <p>d1 = 0.2341, d2 = 0.0841</p>
+                        <p>N(d1) = 0.5925, N(d2) = 0.5335</p>
+                        <p className="mt-1 text-yellow-400 font-semibold">Call option price: $7.4892</p>
+                      </>
+                    )}
+                  </div>
+                </div>
+                <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
+                <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study & notebook {icons.chevR}</a>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  })() : null;
+
   return (
+    <>
+    {Modal}
     <div>
       {/* ═══ HERO ═══ */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
@@ -588,7 +774,7 @@ function Home({ c, d, nav }) {
                 title="GitHub">
                 {icons.github}
               </a>
-              <a href="https://linkedin.com/in/prabin-pandey-1482362b7/" target="_blank" rel="noopener noreferrer"
+              <a href="https://linkedin.com/in/prabin-pandey" target="_blank" rel="noopener noreferrer"
                 className={`px-4 py-3.5 rounded-xl text-[13px] font-semibold flex items-center gap-2 border transition-all duration-200 hover:-translate-y-0.5 ${d ? "border-white/10 text-gray-400 hover:bg-white/5 hover:text-gray-200 hover:border-white/18" : "border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300"}`}
                 title="LinkedIn">
                 {icons.linkedin}
@@ -703,6 +889,9 @@ function Home({ c, d, nav }) {
                 iconBg: d ? "bg-emerald-500/10 text-emerald-400" : "bg-emerald-50 text-emerald-600",
                 tagBg: d ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15" : "bg-emerald-50 text-emerald-700 border border-emerald-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(16,185,129,0.12)]" : "",
+                btnLabel: "View Model", btnHref: "/projects/pe-debt-covenant-model",
+                platform: "Excel · Python · Claude AI",
+                platformColor: d ? "text-emerald-400" : "text-emerald-600",
               },
               {
                 icon: icons.bar,
@@ -714,6 +903,9 @@ function Home({ c, d, nav }) {
                 iconBg: d ? "bg-violet-500/10 text-violet-400" : "bg-violet-50 text-violet-600",
                 tagBg: d ? "bg-violet-500/10 text-violet-400 border border-violet-500/15" : "bg-violet-50 text-violet-700 border border-violet-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(139,92,246,0.12)]" : "",
+                btnLabel: "View Code & Output", btnHref: "/projects/sp100-equity-analytics",
+                platform: "Python · yfinance · Pandas",
+                platformColor: d ? "text-violet-400" : "text-violet-600",
               },
               {
                 icon: icons.trend,
@@ -725,6 +917,9 @@ function Home({ c, d, nav }) {
                 iconBg: d ? "bg-blue-500/10 text-blue-400" : "bg-blue-50 text-blue-600",
                 tagBg: d ? "bg-blue-500/10 text-blue-400 border border-blue-500/15" : "bg-blue-50 text-blue-700 border border-blue-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(59,130,246,0.12)]" : "",
+                btnLabel: "View Code & Output", btnHref: "/projects/black-scholes-options-pricing",
+                platform: "Python · NumPy · SciPy",
+                platformColor: d ? "text-blue-400" : "text-blue-600",
               },
               {
                 icon: icons.db,
@@ -736,6 +931,9 @@ function Home({ c, d, nav }) {
                 iconBg: d ? "bg-amber-500/10 text-amber-400" : "bg-amber-50 text-amber-600",
                 tagBg: d ? "bg-amber-500/10 text-amber-400 border border-amber-500/15" : "bg-amber-50 text-amber-700 border border-amber-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(245,158,11,0.12)]" : "",
+                btnLabel: "View Code & Output", btnHref: "/projects/black-scholes-greeks-implied-vol",
+                platform: "Python · BeautifulSoup · SEC",
+                platformColor: d ? "text-amber-400" : "text-amber-600",
               },
               {
                 icon: icons.zap,
@@ -747,6 +945,9 @@ function Home({ c, d, nav }) {
                 iconBg: d ? "bg-indigo-500/10 text-indigo-400" : "bg-indigo-50 text-indigo-600",
                 tagBg: d ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/15" : "bg-indigo-50 text-indigo-700 border border-indigo-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(99,102,241,0.14)]" : "",
+                btnLabel: "View System", btnHref: "/projects/genai-finance-system",
+                platform: "Streamlit · Power BI · Tableau",
+                platformColor: d ? "text-indigo-400" : "text-indigo-600",
               },
               {
                 icon: icons.shield,
@@ -758,6 +959,9 @@ function Home({ c, d, nav }) {
                 iconBg: d ? "bg-rose-500/10 text-rose-400" : "bg-rose-50 text-rose-600",
                 tagBg: d ? "bg-rose-500/10 text-rose-400 border border-rose-500/15" : "bg-rose-50 text-rose-700 border border-rose-200",
                 glow: d ? "group-hover:shadow-[0_8px_32px_rgba(244,63,94,0.12)]" : "",
+                btnLabel: "View Research", btnHref: "/projects/genai-finance-system",
+                platform: "Python · ECE Analysis · Claude AI",
+                platformColor: d ? "text-rose-400" : "text-rose-600",
               },
             ].map((cap, i) => (
               <div key={i} className={`cap-card card-premium group relative rounded-2xl border p-6 overflow-hidden flex flex-col ${cap.glow} ${d ? `bg-gray-900/60 ${cap.accent}` : `bg-white ${cap.accent} shadow-sm hover:shadow-xl`}`} style={{ animationDelay: `${i * 0.07}s` }}>
@@ -769,70 +973,31 @@ function Home({ c, d, nav }) {
                 <span className={`absolute top-3.5 right-4 text-[28px] font-black tabular-nums leading-none pointer-events-none select-none ${d ? "text-white/[0.04] group-hover:text-white/[0.08]" : "text-black/[0.04] group-hover:text-black/[0.07]"} transition-colors duration-300`}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
+                {/* Platform badge */}
+                <p className={`text-[10px] font-semibold tracking-wide mb-3 ${cap.platformColor}`}>{cap.platform}</p>
                 {/* Icon */}
                 <div className={`inline-flex p-3 rounded-2xl mb-5 ${cap.iconBg} group-hover:scale-110 transition-transform duration-300 w-fit`}>
                   {cap.icon}
                 </div>
                 <h3 className={`text-[14px] font-bold leading-snug mb-3 ${d ? "text-gray-100 group-hover:text-white" : "text-gray-900"} transition-colors duration-200`}>{cap.title}</h3>
                 <p className={`text-[13px] leading-relaxed mb-5 flex-1 ${d ? "text-gray-500" : "text-gray-600"}`}>{cap.desc}</p>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-1.5 mb-4">
                   {cap.tools.map(t => (
                     <span key={t} className={`text-[11px] font-medium px-2 py-0.5 rounded-md ${cap.tagBg}`}>{t}</span>
                   ))}
                 </div>
+                {/* View Model button */}
+                <a
+                  href={cap.btnHref}
+                  className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3.5 py-2 rounded-lg border transition-all duration-200 w-fit group-hover:gap-2 ${d ? `bg-gradient-to-r ${cap.gradBar} bg-opacity-10 border-white/10 text-white hover:border-white/20` : `border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50`}`}
+                  style={d ? { background: `linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))` } : {}}
+                >
+                  {cap.btnLabel} <span className="transition-transform duration-200 translate-x-0 group-hover:translate-x-0.5 inline-block">{icons.chevR}</span>
+                </a>
               </div>
             ))}
           </div>
 
-          {/* AI Workflow Strip */}
-          <div
-            ref={wfRef}
-            className={`mt-12 rounded-2xl border overflow-hidden relative transition-all duration-700 ${wfVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"} ${d ? "border-white/[0.06] bg-gradient-to-br from-indigo-950/50 via-gray-900/60 to-violet-950/30" : "border-indigo-100 bg-gradient-to-br from-indigo-50/70 via-white to-violet-50/40"}`}
-          >
-            {/* Subtle glow orb */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-16 blur-3xl rounded-full ${d ? "bg-indigo-500/8" : "bg-indigo-100/60"}`} />
-            </div>
-            <div className="relative px-6 py-7">
-              <p className={`text-[10px] font-bold tracking-[0.22em] uppercase mb-7 text-center ${d ? "text-indigo-400/70" : "text-indigo-500/80"}`}>
-                AI-Augmented Workflow · Human Validation at Every Step
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center">
-                {[
-                  { step: "01", label: "Market / Filing Data", sub: "yfinance · SEC · Bloomberg", icon: icons.db, color: d ? "bg-indigo-500/15 text-indigo-400" : "bg-indigo-50 text-indigo-600" },
-                  { step: "02", label: "AI-Assisted Analysis", sub: "Python · Claude · Modeling", icon: icons.brain, color: d ? "bg-violet-500/15 text-violet-400" : "bg-violet-50 text-violet-600" },
-                  { step: "03", label: "Human Validation", sub: "Cross-check · Source verify", icon: icons.shield, color: d ? "bg-emerald-500/20 text-emerald-400" : "bg-emerald-50 text-emerald-600" },
-                  { step: "04", label: "Financial Output", sub: "Reports · Dashboards · Models", icon: icons.bar, color: d ? "bg-indigo-500/15 text-indigo-400" : "bg-indigo-50 text-indigo-600" },
-                ].map((step, i, arr) => (
-                  <div key={i} className="flex flex-col sm:flex-row items-center">
-                    <div
-                      className={`group flex flex-col items-center text-center px-6 py-3 rounded-2xl cursor-default transition-all duration-500 ${d ? "hover:bg-white/[0.04]" : "hover:bg-white"}`}
-                      style={{ opacity: wfVis ? 1 : 0, transform: wfVis ? "translateY(0)" : "translateY(12px)", transitionDelay: `${i * 0.1}s` }}
-                    >
-                      <div className={`w-11 h-11 rounded-2xl flex items-center justify-center mb-3 ${step.color} transition-transform duration-300 group-hover:scale-110 ${i === 2 ? (d ? "shadow-[0_0_18px_rgba(16,185,129,0.2)]" : "") : ""}`}>
-                        {step.icon}
-                      </div>
-                      <span className={`text-[9px] font-black tracking-[0.2em] uppercase mb-1 ${d ? "text-gray-700" : "text-gray-400"}`}>{step.step}</span>
-                      <span className={`text-[12px] font-bold ${d ? "text-gray-200" : "text-gray-800"}`}>{step.label}</span>
-                      <span className={`text-[10px] mt-0.5 ${d ? "text-gray-600" : "text-gray-400"}`}>{step.sub}</span>
-                    </div>
-                    {i < arr.length - 1 && (
-                      <>
-                        {/* Desktop: right arrow */}
-                        <div className="hidden sm:flex items-center mx-0.5">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`${d ? "text-indigo-700/50" : "text-indigo-200"}`} style={{ animation: "pulse 2.5s ease-in-out infinite", animationDelay: `${i * 0.4}s` }}><polyline points="9 18 15 12 9 6"/></svg>
-                        </div>
-                        {/* Mobile: down arrow */}
-                        <div className={`sm:hidden flex items-center my-1 ${d ? "text-indigo-700/50" : "text-indigo-200"}`}>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: "pulse 2.5s ease-in-out infinite", animationDelay: `${i * 0.4}s` }}><polyline points="6 9 12 15 18 9"/></svg>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -840,51 +1005,26 @@ function Home({ c, d, nav }) {
       <section className={`py-28 section-reveal ${d ? "bg-gradient-to-b from-gray-950/0 via-gray-900/40 to-gray-950/0" : "bg-gradient-to-b from-white/0 via-gray-50/90 to-white/0"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Section header + filter tabs */}
+          {/* Section header */}
           <div className="mb-10">
             <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-3 ${d ? "text-indigo-400" : "text-indigo-600"}`}>Applied Analytical Work</p>
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-7">
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight">Featured Systems</h2>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5">
+              <div>
+                <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-2">Featured Systems</h2>
+                <p className={`text-[13px] ${d ? "text-gray-500" : "text-gray-500"}`}>Production-grade models, dashboards, and analytics systems — click any card to explore.</p>
+              </div>
               <a
                 href="/projects"
-                className={`inline-flex items-center gap-1.5 text-[12px] font-semibold transition-all duration-200 hover:gap-2.5 ${d ? "text-gray-500 hover:text-indigo-400" : "text-gray-400 hover:text-indigo-600"}`}
+                className={`inline-flex items-center gap-1.5 text-[12px] font-semibold transition-all duration-200 hover:gap-2.5 flex-shrink-0 ${d ? "text-gray-500 hover:text-indigo-400" : "text-gray-400 hover:text-indigo-600"}`}
               >
-                View all 21 projects <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">{icons.chevR}</span>
+                View all 21 projects <span className="transition-transform duration-200 inline-block">{icons.chevR}</span>
               </a>
-            </div>
-            {/* Category Filter Tabs — All at end */}
-            <div className="flex flex-wrap gap-2">
-              {(["Financial Modeling (Excel)", "Power BI", "Tableau", "Python", "GenAI Finance", "All"] as const).map(tab => {
-                const isActive = featTab === tab;
-                const activeStyle =
-                  tab === "Financial Modeling (Excel)" ? (d ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-300" : "bg-emerald-50 border-emerald-300 text-emerald-700") :
-                  tab === "Power BI"                   ? (d ? "bg-amber-500/15  border-amber-500/40  text-amber-300"  : "bg-amber-50  border-amber-300  text-amber-700")  :
-                  tab === "Tableau"                    ? (d ? "bg-blue-500/15   border-blue-500/40   text-blue-300"   : "bg-blue-50   border-blue-300   text-blue-700")   :
-                  tab === "Python"                     ? (d ? "bg-cyan-500/15   border-cyan-500/40   text-cyan-300"   : "bg-cyan-50   border-cyan-300   text-cyan-700")   :
-                  tab === "GenAI Finance"              ? (d ? "bg-violet-500/15 border-violet-500/40 text-violet-300" : "bg-violet-50 border-violet-300 text-violet-700") :
-                  /* All */                              (d ? "bg-white/[0.06]  border-white/20       text-gray-200"   : "bg-gray-100  border-gray-300   text-gray-700");
-                const inactiveStyle = d
-                  ? "border-white/[0.08] text-gray-500 hover:border-white/15 hover:text-gray-300"
-                  : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700";
-                const label =
-                  tab === "Financial Modeling (Excel)" ? "Financial Modeling" : tab;
-                return (
-                  <button
-                    key={tab}
-                    onClick={() => setFeatTab(tab)}
-                    className={`cat-tab text-[11px] font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-200 ${isActive ? activeStyle : inactiveStyle}`}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
             </div>
           </div>
 
-          {/* Featured Cards Grid — key on featTab so card-enter animation re-fires on tab change */}
-          <div key={featTab} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {/* Featured Cards Grid — all projects shown in grid without filtering */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {featured
-              .filter(p => featTab === "All" || p.cat === featTab)
               .map((p, idx) => {
                 const accentMap: Record<string, { stripe: string; glow: string; badge: string; hoverBorder: string; badgeLabel: string }> = {
                   "Financial Modeling (Excel)": { stripe: "from-emerald-500 to-teal-400",  glow: "rgba(16,185,129,0.22)",  badge: d ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/25"  : "bg-emerald-50 text-emerald-700 border-emerald-200",  hoverBorder: d ? "hover:border-emerald-500/35" : "hover:border-emerald-300", badgeLabel: "Financial Modeling" },
@@ -897,6 +1037,7 @@ function Home({ c, d, nav }) {
 
                 const featHref: Record<string, string> = {
                   "pe":                              "/projects/pe-debt-covenant-model",
+                  "amazon-valuation-model":          "/projects/amazon-valuation-model",
                   "pbi":                             "/projects/campus-operations-analytics",
                   "tab1":                            "/projects/global-macro-dashboard",
                   "genai-in-finance":                "/projects/genai-finance-system",
@@ -908,12 +1049,19 @@ function Home({ c, d, nav }) {
                   "black-scholes-dividend-extension":`/projects/black-scholes-dividend-extension`,
                 };
 
+                // Modal type — determines whether clicking primary CTA opens a modal or navigates
+                const modalType: Record<string, string> = {
+                  "Tableau": "tableau",
+                  "GenAI Finance": "streamlit",
+                  "Python": "python",
+                };
+
                 // Platform-specific primary CTA label
                 const ctaLabel: Record<string, string> = {
                   "Financial Modeling (Excel)": "View Model",
                   "Power BI": "View Dashboard",
                   "Tableau": "View Dashboard",
-                  "Python": "View Notebook",
+                  "Python": "View Code & Output",
                   "GenAI Finance": "View System",
                 };
                 // Python code teasers for featured cards
@@ -926,11 +1074,12 @@ function Home({ c, d, nav }) {
                   "black-scholes-dividend-extension": "def bs_dividend(S, K, r, q, T, sigma, option):",
                 };
                 const projectHref = featHref[p.id] || "/projects";
+                const mType = modalType[p.cat];
                 return (
                   <div
                     key={p.id}
                     className={`featured-card relative rounded-2xl border overflow-hidden group flex flex-col ${d ? `bg-gray-900/75 border-white/[0.08] ${ac.hoverBorder}` : `bg-white border-gray-200 shadow-sm ${ac.hoverBorder}`}`}
-                    style={{ animationDelay: `${idx * 0.08}s`, "--hover-glow": ac.glow } as React.CSSProperties}
+                    style={{ animationDelay: `${idx * 0.06}s`, "--hover-glow": ac.glow } as React.CSSProperties}
                   >
                     {/* Left platform accent stripe */}
                     <div className={`absolute top-0 left-0 w-[3px] h-full bg-gradient-to-b ${ac.stripe} opacity-55 group-hover:opacity-100 transition-opacity duration-300`} />
@@ -948,7 +1097,7 @@ function Home({ c, d, nav }) {
                       </div>
 
                       {/* Title */}
-                      <h3 className={`text-[17px] font-[760] leading-snug mb-3 ${d ? "text-gray-100 group-hover:text-white" : "text-gray-900"} transition-colors`}>{p.title}</h3>
+                      <h3 className={`text-[16px] font-[760] leading-snug mb-3 ${d ? "text-gray-100 group-hover:text-white" : "text-gray-900"} transition-colors`}>{p.title}</h3>
 
                       {/* Python code teaser */}
                       {p.cat === "Python" && pyTeaser[p.id] && (
@@ -960,8 +1109,20 @@ function Home({ c, d, nav }) {
                         </div>
                       )}
 
+                      {/* Tableau embed teaser */}
+                      {p.cat === "Tableau" && (
+                        <div className={`mb-3.5 rounded-lg overflow-hidden border ${d ? "border-blue-500/15" : "border-blue-200"}`} style={{ height: 100 }}>
+                          <iframe
+                            src="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=no&:tabs=no"
+                            className="w-full h-full pointer-events-none"
+                            title="Tableau preview"
+                            loading="lazy"
+                          />
+                        </div>
+                      )}
+
                       {/* Summary */}
-                      <p className={`text-[13px] leading-relaxed mb-4 flex-1 line-clamp-3 ${d ? "text-gray-500" : "text-gray-500"}`}>{p.sum}</p>
+                      <p className={`text-[12.5px] leading-relaxed mb-4 flex-1 line-clamp-3 ${d ? "text-gray-500" : "text-gray-500"}`}>{p.sum}</p>
 
                       {/* Tag chips */}
                       <div className="flex flex-wrap gap-1.5 mb-5">
@@ -976,26 +1137,48 @@ function Home({ c, d, nav }) {
                         const rgb = ac.glow.replace("rgba(","").split(",").slice(0,3).join(",");
                         return (
                           <div className="flex items-center gap-2">
-                            <a
-                              href={projectHref}
-                              onClick={(e) => e.stopPropagation()}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold border transition-all duration-200"
-                              style={{
-                                borderColor: `rgba(${rgb},0.32)`,
-                                color:       d ? `rgba(${rgb},0.95)` : `rgba(${rgb},0.85)`,
-                                background:  `rgba(${rgb},0.06)`,
-                              }}
-                              onMouseEnter={(e) => {
-                                (e.currentTarget as HTMLAnchorElement).style.background = `rgba(${rgb},0.12)`;
-                                (e.currentTarget as HTMLAnchorElement).style.borderColor = `rgba(${rgb},0.5)`;
-                              }}
-                              onMouseLeave={(e) => {
-                                (e.currentTarget as HTMLAnchorElement).style.background = `rgba(${rgb},0.06)`;
-                                (e.currentTarget as HTMLAnchorElement).style.borderColor = `rgba(${rgb},0.32)`;
-                              }}
-                            >
-                              {ctaLabel[p.cat] || "View Project"} {icons.chevR}
-                            </a>
+                            {mType ? (
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setActiveModal({ type: mType, project: p as Record<string, unknown> }); }}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold border transition-all duration-200"
+                                style={{
+                                  borderColor: `rgba(${rgb},0.32)`,
+                                  color:       d ? `rgba(${rgb},0.95)` : `rgba(${rgb},0.85)`,
+                                  background:  `rgba(${rgb},0.06)`,
+                                }}
+                                onMouseEnter={(e) => {
+                                  (e.currentTarget as HTMLButtonElement).style.background = `rgba(${rgb},0.12)`;
+                                  (e.currentTarget as HTMLButtonElement).style.borderColor = `rgba(${rgb},0.5)`;
+                                }}
+                                onMouseLeave={(e) => {
+                                  (e.currentTarget as HTMLButtonElement).style.background = `rgba(${rgb},0.06)`;
+                                  (e.currentTarget as HTMLButtonElement).style.borderColor = `rgba(${rgb},0.32)`;
+                                }}
+                              >
+                                {ctaLabel[p.cat] || "View Project"} {icons.chevR}
+                              </button>
+                            ) : (
+                              <a
+                                href={projectHref}
+                                onClick={(e) => e.stopPropagation()}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold border transition-all duration-200"
+                                style={{
+                                  borderColor: `rgba(${rgb},0.32)`,
+                                  color:       d ? `rgba(${rgb},0.95)` : `rgba(${rgb},0.85)`,
+                                  background:  `rgba(${rgb},0.06)`,
+                                }}
+                                onMouseEnter={(e) => {
+                                  (e.currentTarget as HTMLAnchorElement).style.background = `rgba(${rgb},0.12)`;
+                                  (e.currentTarget as HTMLAnchorElement).style.borderColor = `rgba(${rgb},0.5)`;
+                                }}
+                                onMouseLeave={(e) => {
+                                  (e.currentTarget as HTMLAnchorElement).style.background = `rgba(${rgb},0.06)`;
+                                  (e.currentTarget as HTMLAnchorElement).style.borderColor = `rgba(${rgb},0.32)`;
+                                }}
+                              >
+                                {ctaLabel[p.cat] || "View Project"} {icons.chevR}
+                              </a>
+                            )}
                             <a
                               href={projectHref}
                               onClick={(e) => e.stopPropagation()}
@@ -1130,6 +1313,7 @@ function Home({ c, d, nav }) {
         </div>
       </section>
     </div>
+    </>
   );
 }
 
