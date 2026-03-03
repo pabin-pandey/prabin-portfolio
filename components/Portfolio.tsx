@@ -495,8 +495,9 @@ function Home({ c, d, nav }) {
     return () => clearTimeout(t);
   }, [ci, del, ri, hero.roles]);
 
-  // Amazon DCF from excelProjects
+  // Excel models from excelProjects (have live embed URLs)
   const amazonDcf = excelProjects.find(p => p.id === "amazon-valuation-model");
+  const peExit    = excelProjects.find(p => p.id === "pe-exit-analysis");
   const featured = [
     // Amazon DCF Valuation — Excel model
     ...(amazonDcf ? [{
@@ -510,7 +511,18 @@ function Home({ c, d, nav }) {
       embedUrl: (amazonDcf as unknown as { embedUrl: string }).embedUrl ?? null,
       modelUrl: (amazonDcf as unknown as { modelUrl: string }).modelUrl ?? "",
     }] : []),
-    ...projects.filter(p => p.featured),
+    // PE Exit Strategy — Excel model (has live embed URL)
+    ...(peExit ? [{
+      id: peExit.id,
+      title: peExit.title,
+      cat: "Financial Modeling (Excel)" as const,
+      yr: "2024",
+      sum: peExit.summary,
+      featured: true,
+      tags: (peExit.tags as string[]).slice(0, 5),
+      embedUrl: (peExit as unknown as { embedUrl: string }).embedUrl ?? null,
+    }] : []),
+    ...projects.filter(p => p.featured && p.id !== "pe"),
     // S&P 100 Equity Analytics Python project
     ...pythonProjects.filter(p => p.id === "sp100-equity-analytics").map(p => ({
       id: p.id,
@@ -607,25 +619,25 @@ function Home({ c, d, nav }) {
               <div className="space-y-4">
                 <div className={`rounded-xl overflow-hidden border relative ${d ? "border-violet-500/20" : "border-violet-200"}`} style={{ height: 480 }}>
                   <iframe
-                    src="https://prabin-genai-finance.streamlit.app/?embedded=true"
+                    src="https://prabin-portfolio-analytics.streamlit.app/?embedded=true"
                     className="w-full h-full"
-                    title="GenAI Finance Streamlit Dashboard"
+                    title="GenAI Finance — Portfolio Analytics Dashboard"
                     loading="lazy"
                     allowFullScreen
                   />
                 </div>
-                {/* Open externally + wake-up hint */}
+                {/* Open externally hint */}
                 <div className={`flex items-start justify-between gap-3 rounded-xl p-3.5 border ${d ? "bg-violet-500/5 border-violet-500/15" : "bg-violet-50 border-violet-200"}`}>
                   <div className="flex items-start gap-2.5 flex-1 min-w-0">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={d ? "#a78bfa" : "#7c3aed"} strokeWidth="2" strokeLinecap="round" className="shrink-0 mt-0.5">
                       <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
                     </svg>
                     <p className={`text-[11px] leading-relaxed ${d ? "text-gray-500" : "text-gray-600"}`}>
-                      If the app shows a sign-in or sleeping screen, click <strong className={d ? "text-violet-400" : "text-violet-700"}>"Yes, get this app back up!"</strong> to wake it (~15 s), or open it directly in a new tab.
+                      Live portfolio analytics dashboard. If the app is sleeping, click <strong className={d ? "text-violet-400" : "text-violet-700"}>"Yes, get this app back up!"</strong> to wake it (~15 s).
                     </p>
                   </div>
                   <a
-                    href="https://prabin-genai-finance.streamlit.app/"
+                    href="https://prabin-portfolio-analytics.streamlit.app/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-colors ${d ? "border-violet-500/30 text-violet-400 hover:bg-violet-500/10 hover:border-violet-400/50" : "border-violet-300 text-violet-700 hover:bg-violet-100"}`}
@@ -1140,18 +1152,6 @@ function Home({ c, d, nav }) {
                         </div>
                       )}
 
-                      {/* Tableau embed teaser */}
-                      {p.cat === "Tableau" && (
-                        <div className={`mb-3.5 rounded-lg overflow-hidden border ${d ? "border-blue-500/15" : "border-blue-200"}`} style={{ height: 100 }}>
-                          <iframe
-                            src="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=no&:tabs=no"
-                            className="w-full pointer-events-none border-0"
-                            title="Tableau preview"
-                            loading="lazy"
-                            style={{ marginTop: -185, height: "calc(100% + 185px)" }}
-                          />
-                        </div>
-                      )}
 
                       {/* Summary */}
                       <p className={`text-[12.5px] leading-relaxed mb-4 flex-1 line-clamp-3 ${d ? "text-gray-500" : "text-gray-500"}`}>{p.sum}</p>
