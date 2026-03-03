@@ -487,6 +487,13 @@ function Home({ c, d, nav }) {
   useSectionReveal();
 
   useEffect(() => {
+    if (!activeModal) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setActiveModal(null); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [activeModal]);
+
+  useEffect(() => {
     const cur = hero.roles[ri % hero.roles.length];
     const t = setTimeout(() => {
       if (!del) { if (ci < cur.length) setCi(ci + 1); else setTimeout(() => setDel(true), 1500); }
@@ -564,20 +571,30 @@ function Home({ c, d, nav }) {
     const projSum = proj.sum as string;
     const projTags = (proj.tags as string[]) || [];
     const projHref = `/projects/${projId}`;
+    const hasEmbedUrl = !!(proj.embedUrl as string) || !!((proj.embed as Record<string, unknown>)?.url as string);
+    const isEmbedType = activeModal.type === "tableau" || activeModal.type === "streamlit" || (activeModal.type === "excel" && hasEmbedUrl);
 
     return (
       <div
-        className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-        style={{ background: "rgba(0,0,0,0.82)", backdropFilter: "blur(8px)" }}
+        className="fixed inset-0 z-[9999] flex items-center justify-center"
+        style={{ background: "rgba(0,0,0,0.88)", backdropFilter: "blur(6px)", padding: isEmbedType ? 0 : "1rem" }}
         onClick={() => setActiveModal(null)}
       >
         <div
-          className={`relative w-full ${(activeModal.type === "tableau" || activeModal.type === "python") ? "max-w-5xl max-h-[92vh]" : "max-w-3xl max-h-[85vh]"} overflow-y-auto rounded-2xl border shadow-2xl ${d ? "bg-gray-950 border-white/10" : "bg-white border-gray-200"}`}
+          className={`relative flex flex-col ${isEmbedType ? "w-full h-full" : `w-full ${activeModal.type === "python" ? "max-w-5xl max-h-[92vh]" : "max-w-3xl max-h-[85vh]"} overflow-y-auto rounded-2xl border shadow-2xl`} ${d ? "bg-gray-950 border-white/10" : "bg-white border-gray-200"}`}
           onClick={(e) => e.stopPropagation()}
-          style={{ animation: "fadeInScale 0.22s cubic-bezier(0.16,1,0.3,1)" }}
+          style={{
+            animation: isEmbedType ? "fadeIn 0.18s ease" : "fadeInScale 0.22s cubic-bezier(0.16,1,0.3,1)",
+            ...(isEmbedType ? {
+              paddingTop:    "env(safe-area-inset-top,0px)",
+              paddingLeft:   "env(safe-area-inset-left,0px)",
+              paddingRight:  "env(safe-area-inset-right,0px)",
+              paddingBottom: "env(safe-area-inset-bottom,0px)",
+            } : {}),
+          }}
         >
           {/* Modal header */}
-          <div className={`sticky top-0 flex items-start justify-between gap-4 p-6 border-b ${d ? "bg-gray-950/95 border-white/[0.07]" : "bg-white border-gray-100"}`} style={{ backdropFilter: "blur(12px)" }}>
+          <div className={`shrink-0 flex items-start justify-between gap-4 p-5 border-b ${d ? "bg-gray-950/95 border-white/[0.07]" : "bg-white border-gray-100"}`} style={{ backdropFilter: "blur(12px)" }}>
             <div>
               <p className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-1 ${activeModal.type === "tableau" ? (d ? "text-blue-400" : "text-blue-600") : activeModal.type === "streamlit" ? (d ? "text-violet-400" : "text-violet-600") : activeModal.type === "excel" ? (d ? "text-emerald-400" : "text-emerald-600") : activeModal.type === "powerbi" ? (d ? "text-yellow-400" : "text-yellow-600") : (d ? "text-cyan-400" : "text-cyan-600")}`}>
                 {activeModal.type === "tableau" ? "Live Tableau Dashboard" : activeModal.type === "streamlit" ? "Streamlit App" : activeModal.type === "excel" ? "Live Excel Model" : activeModal.type === "powerbi" ? "Dashboard Preview · Power BI" : activeModal.type === "python" ? "Code & Outputs · Python Notebook" : "Python Code & Output"}
@@ -590,66 +607,47 @@ function Home({ c, d, nav }) {
           </div>
 
           {/* Modal body */}
-          <div className="p-6">
-            {/* TABLEAU — Live embed (full-height, T-logo cropped, no toolbar) */}
+          <div className={isEmbedType ? "flex-1 min-h-0 flex flex-col overflow-hidden" : "p-6"}>
+            {/* TABLEAU — Live fullscreen embed */}
             {activeModal.type === "tableau" && (
-              <div className="space-y-4">
-                <div className="rounded-xl overflow-hidden border" style={{ height: "min(72vh, 680px)", borderColor: d ? "rgba(59,130,246,0.2)" : "#bfdbfe" }}>
+              <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+                <div className="flex-1 min-h-0 overflow-hidden">
                   <iframe
                     src="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=no&:tabs=no"
                     className="w-full border-0"
                     title="Global Macro Dashboard — Tableau"
-                    loading="lazy"
+                    loading="eager"
                     allowFullScreen
+                    allow="fullscreen; clipboard-write"
                     style={{ marginTop: -185, height: "calc(100% + 185px)" }}
                   />
                 </div>
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex flex-wrap gap-1.5">
-                    {projTags.map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" : "bg-blue-50 text-blue-700 border border-blue-200"}`}>{t}</span>)}
+                <div className={`shrink-0 flex items-center justify-between gap-3 px-5 py-2.5 border-t ${d ? "border-white/[0.06] bg-gray-950/80" : "border-gray-100 bg-white"}`}>
+                  <div className="flex flex-wrap gap-1.5 overflow-hidden">
+                    {projTags.slice(0, 4).map(t => <span key={t} className={`text-[11px] px-2 py-0.5 rounded-md font-medium ${d ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" : "bg-blue-50 text-blue-700 border border-blue-200"}`}>{t}</span>)}
                   </div>
-                  <a href="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD" target="_blank" rel="noopener noreferrer" className={`flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-colors ${d ? "border-blue-500/30 text-blue-400 hover:bg-blue-500/10" : "border-blue-300 text-blue-700 hover:bg-blue-50"}`}>Full Screen ↗</a>
+                  <a href={projHref} className={`flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>Full case study {icons.chevR}</a>
                 </div>
-                <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study {icons.chevR}</a>
               </div>
             )}
 
-            {/* STREAMLIT — Embedded live app */}
+            {/* STREAMLIT — Fullscreen live app */}
             {activeModal.type === "streamlit" && (
-              <div className="space-y-4">
-                <div className={`rounded-xl overflow-hidden border relative ${d ? "border-violet-500/20" : "border-violet-200"}`} style={{ height: 480 }}>
+              <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+                <div className="flex-1 min-h-0 overflow-hidden">
                   <iframe
                     src="https://prabin-portfolio-analytics.streamlit.app/?embedded=true"
-                    className="w-full h-full"
+                    className="w-full h-full border-0"
                     title="GenAI Finance — Portfolio Analytics Dashboard"
-                    loading="lazy"
+                    loading="eager"
                     allowFullScreen
+                    allow="fullscreen; clipboard-write; microphone; camera"
                   />
                 </div>
-                {/* Open externally hint */}
-                <div className={`flex items-start justify-between gap-3 rounded-xl p-3.5 border ${d ? "bg-violet-500/5 border-violet-500/15" : "bg-violet-50 border-violet-200"}`}>
-                  <div className="flex items-start gap-2.5 flex-1 min-w-0">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={d ? "#a78bfa" : "#7c3aed"} strokeWidth="2" strokeLinecap="round" className="shrink-0 mt-0.5">
-                      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-                    </svg>
-                    <p className={`text-[11px] leading-relaxed ${d ? "text-gray-500" : "text-gray-600"}`}>
-                      Live portfolio analytics dashboard. If the app is sleeping, click <strong className={d ? "text-violet-400" : "text-violet-700"}>"Yes, get this app back up!"</strong> to wake it (~15 s).
-                    </p>
-                  </div>
-                  <a
-                    href="https://prabin-portfolio-analytics.streamlit.app/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-colors ${d ? "border-violet-500/30 text-violet-400 hover:bg-violet-500/10 hover:border-violet-400/50" : "border-violet-300 text-violet-700 hover:bg-violet-100"}`}
-                  >
-                    Open app <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                  </a>
+                <div className={`shrink-0 flex items-center justify-between gap-3 px-5 py-2.5 border-t ${d ? "border-white/[0.06] bg-gray-950/80" : "border-gray-100 bg-white"}`}>
+                  <p className={`text-[11px] ${d ? "text-gray-500" : "text-gray-500"}`}>Sleeping? Click <strong className={d ? "text-violet-400" : "text-violet-700"}>&ldquo;Yes, get this app back up!&rdquo;</strong> (~15 s)</p>
+                  <a href="https://prabin-portfolio-analytics.streamlit.app/" target="_blank" rel="noopener noreferrer" className={`flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-colors ${d ? "border-violet-500/30 text-violet-400 hover:bg-violet-500/10" : "border-violet-300 text-violet-700 hover:bg-violet-100"}`}>Open app ↗</a>
                 </div>
-                <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {projTags.slice(0, 5).map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-violet-500/10 text-violet-400 border border-violet-500/20" : "bg-violet-50 text-violet-700 border border-violet-200"}`}>{t}</span>)}
-                </div>
-                <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study {icons.chevR}</a>
               </div>
             )}
 
@@ -660,22 +658,23 @@ function Home({ c, d, nav }) {
               const cs = proj.cs as Record<string, string> | undefined;
               if (embedUrl) {
                 return (
-                  <div className="space-y-4">
-                    <div className="rounded-xl overflow-hidden border" style={{ height: 420, borderColor: d ? "rgba(52,211,153,0.25)" : "#a7f3d0" }}>
+                  <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+                    <div className="flex-1 min-h-0 overflow-hidden">
                       <iframe
                         src={embedUrl}
                         className="w-full h-full border-0"
                         title={projTitle}
-                        loading="lazy"
+                        loading="eager"
                         allowFullScreen
-                        allow="fullscreen"
+                        allow="fullscreen; clipboard-write"
                       />
                     </div>
-                    <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {projTags.map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-emerald-50 text-emerald-700 border border-emerald-200"}`}>{t}</span>)}
+                    <div className={`shrink-0 flex items-center justify-between gap-3 px-5 py-2.5 border-t ${d ? "border-white/[0.06] bg-gray-950/80" : "border-gray-100 bg-white"}`}>
+                      <div className="flex flex-wrap gap-1.5 overflow-hidden">
+                        {projTags.slice(0, 4).map(t => <span key={t} className={`text-[11px] px-2 py-0.5 rounded-md font-medium ${d ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-emerald-50 text-emerald-700 border border-emerald-200"}`}>{t}</span>)}
+                      </div>
+                      <a href={projHref} className={`flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>Full case study {icons.chevR}</a>
                     </div>
-                    <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study {icons.chevR}</a>
                   </div>
                 );
               }

@@ -829,12 +829,13 @@ function EmbedFrame({
           marginTop: clipTop > 0 ? -clipTop : undefined,
           height:    clipTop > 0 ? `calc(100% + ${clipTop}px)` : "100%",
         }}
+        loading="eager"
         onLoad={() => {
           if (timerRef.current) clearTimeout(timerRef.current);
           setStatus("loaded");
         }}
         allowFullScreen
-        allow="fullscreen"
+        allow="fullscreen; autoplay; clipboard-write; microphone; camera"
       />
     </div>
   );
@@ -1189,8 +1190,8 @@ function ModelViewerModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
-      style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(6px)" }}
+      className={`fixed inset-0 z-50 flex ${cfg.modalType === "iframe" ? "items-stretch" : "items-end sm:items-center justify-center"}`}
+      style={{ background: "rgba(0,0,0,0.82)", backdropFilter: "blur(6px)" }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
@@ -1198,13 +1199,20 @@ function ModelViewerModal({
     >
       <div
         ref={dialogRef}
-        className="relative flex flex-col w-full sm:max-w-4xl rounded-t-2xl sm:rounded-2xl overflow-hidden"
+        className={`relative flex flex-col overflow-hidden ${cfg.modalType === "iframe" ? "w-full h-full rounded-none" : "w-full sm:max-w-4xl rounded-t-2xl sm:rounded-2xl"}`}
         style={{
-          background:  "rgb(15,20,30)",
-          border:      "1px solid rgba(255,255,255,0.08)",
-          boxShadow:   `0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(${cfg.accentRgb},0.08)`,
-          maxHeight:   isPreview ? "min(92vh, 860px)" : p.platformType === "tableau_dashboard" ? "min(92vh, 820px)" : "min(90vh, 740px)",
-          height:      isPreview ? "min(92vh, 860px)" : p.platformType === "tableau_dashboard" ? "min(92vh, 820px)" : "min(90vh, 740px)",
+          background: "rgb(15,20,30)",
+          border:     cfg.modalType === "iframe" ? "none" : "1px solid rgba(255,255,255,0.08)",
+          boxShadow:  cfg.modalType === "iframe" ? "none" : `0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(${cfg.accentRgb},0.08)`,
+          ...(cfg.modalType !== "iframe" ? {
+            maxHeight: isPreview ? "min(92vh, 860px)" : p.platformType === "tableau_dashboard" ? "min(92vh, 820px)" : "min(90vh, 740px)",
+            height:    isPreview ? "min(92vh, 860px)" : p.platformType === "tableau_dashboard" ? "min(92vh, 820px)" : "min(90vh, 740px)",
+          } : {
+            paddingTop:    "env(safe-area-inset-top,0px)",
+            paddingBottom: "env(safe-area-inset-bottom,0px)",
+            paddingLeft:   "env(safe-area-inset-left,0px)",
+            paddingRight:  "env(safe-area-inset-right,0px)",
+          }),
         }}
       >
         {/* ── Header ── */}
