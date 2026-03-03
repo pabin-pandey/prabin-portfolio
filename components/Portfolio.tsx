@@ -3,6 +3,7 @@ import Link from "next/link";
 import { pythonProjects } from "@/lib/projects-data";
 import { excelProjects } from "@/lib/excel-projects-data";
 import { rProjects } from "@/lib/r-projects-data";
+import ProfessionalNotebookParser from "@/components/ProfessionalNotebookParser";
 
 /* ════════════════════════════════════════════════════════════════
    CONTENT JSON — Single source of truth for the entire site.
@@ -559,7 +560,7 @@ function Home({ c, d, nav }) {
         onClick={() => setActiveModal(null)}
       >
         <div
-          className={`relative w-full ${activeModal.type === "tableau" ? "max-w-5xl max-h-[92vh]" : "max-w-3xl max-h-[85vh]"} overflow-y-auto rounded-2xl border shadow-2xl ${d ? "bg-gray-950 border-white/10" : "bg-white border-gray-200"}`}
+          className={`relative w-full ${(activeModal.type === "tableau" || activeModal.type === "python") ? "max-w-5xl max-h-[92vh]" : "max-w-3xl max-h-[85vh]"} overflow-y-auto rounded-2xl border shadow-2xl ${d ? "bg-gray-950 border-white/10" : "bg-white border-gray-200"}`}
           onClick={(e) => e.stopPropagation()}
           style={{ animation: "fadeInScale 0.22s cubic-bezier(0.16,1,0.3,1)" }}
         >
@@ -567,7 +568,7 @@ function Home({ c, d, nav }) {
           <div className={`sticky top-0 flex items-start justify-between gap-4 p-6 border-b ${d ? "bg-gray-950/95 border-white/[0.07]" : "bg-white border-gray-100"}`} style={{ backdropFilter: "blur(12px)" }}>
             <div>
               <p className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-1 ${activeModal.type === "tableau" ? (d ? "text-blue-400" : "text-blue-600") : activeModal.type === "streamlit" ? (d ? "text-violet-400" : "text-violet-600") : activeModal.type === "excel" ? (d ? "text-emerald-400" : "text-emerald-600") : activeModal.type === "powerbi" ? (d ? "text-yellow-400" : "text-yellow-600") : (d ? "text-cyan-400" : "text-cyan-600")}`}>
-                {activeModal.type === "tableau" ? "Live Tableau Dashboard" : activeModal.type === "streamlit" ? "Streamlit App" : activeModal.type === "excel" ? "Live Excel Model" : activeModal.type === "powerbi" ? "Dashboard Preview · Power BI" : "Python Code & Output"}
+                {activeModal.type === "tableau" ? "Live Tableau Dashboard" : activeModal.type === "streamlit" ? "Streamlit App" : activeModal.type === "excel" ? "Live Excel Model" : activeModal.type === "powerbi" ? "Dashboard Preview · Power BI" : activeModal.type === "python" ? "Code & Outputs · Python Notebook" : "Python Code & Output"}
               </p>
               <h3 className={`text-[17px] font-bold leading-snug ${d ? "text-white" : "text-gray-900"}`}>{projTitle}</h3>
             </div>
@@ -719,6 +720,21 @@ function Home({ c, d, nav }) {
                 <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study {icons.chevR}</a>
               </div>
             )}
+
+            {/* PYTHON — Inline notebook parser */}
+            {activeModal.type === "python" && (() => {
+              const pyProject = pythonProjects.find(p => p.id === projId);
+              if (!pyProject) return (
+                <p className={`text-[13px] ${d ? "text-gray-400" : "text-gray-600"}`}>
+                  Notebook not found. <a href={projHref} className="text-indigo-400 hover:text-indigo-300 underline">View project page →</a>
+                </p>
+              );
+              return (
+                <div>
+                  <ProfessionalNotebookParser notebookPath={pyProject.notebookPath} />
+                </div>
+              );
+            })()}
           </div>
         </div>
       </div>
@@ -1057,12 +1073,13 @@ function Home({ c, d, nav }) {
                   "black-scholes-dividend-extension":`/projects/black-scholes-dividend-extension`,
                 };
 
-                // Modal type — Python navigates directly to real project page (no modal)
+                // Modal type — Python opens inline notebook modal
                 const modalType: Record<string, string> = {
                   "Tableau":                    "tableau",
                   "GenAI Finance":              "streamlit",
                   "Financial Modeling (Excel)": "excel",
                   "Power BI":                   "powerbi",
+                  "Python":                     "python",
                 };
 
                 // Platform-specific primary CTA label
@@ -1083,7 +1100,12 @@ function Home({ c, d, nav }) {
                   "black-scholes-dividend-extension": "def bs_dividend(S, K, r, q, T, sigma, option):",
                 };
                 const projectHref = featHref[p.id] || "/projects";
-                const mType = modalType[p.cat];
+                // For Excel, only open modal when there's actually an embed URL to show
+                const hasExcelEmbed = p.cat === "Financial Modeling (Excel)" &&
+                  !!((p as Record<string, unknown>).embedUrl as string);
+                const mType = p.cat === "Financial Modeling (Excel)"
+                  ? (hasExcelEmbed ? "excel" : undefined)
+                  : modalType[p.cat];
                 return (
                   <div
                     key={p.id}
@@ -1123,9 +1145,10 @@ function Home({ c, d, nav }) {
                         <div className={`mb-3.5 rounded-lg overflow-hidden border ${d ? "border-blue-500/15" : "border-blue-200"}`} style={{ height: 100 }}>
                           <iframe
                             src="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=no&:tabs=no"
-                            className="w-full h-full pointer-events-none"
+                            className="w-full pointer-events-none border-0"
                             title="Tableau preview"
                             loading="lazy"
+                            style={{ marginTop: -185, height: "calc(100% + 185px)" }}
                           />
                         </div>
                       )}
@@ -1188,13 +1211,6 @@ function Home({ c, d, nav }) {
                                 {ctaLabel[p.cat] || "View Project"} {icons.chevR}
                               </a>
                             )}
-                            <a
-                              href={projectHref}
-                              onClick={(e) => e.stopPropagation()}
-                              className={`inline-flex items-center gap-1 text-[12px] font-medium transition-colors duration-200 ${d ? "text-gray-600 hover:text-gray-300" : "text-gray-400 hover:text-gray-700"}`}
-                            >
-                              Case Study →
-                            </a>
                           </div>
                         );
                       })()}
