@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import NotebookViewer from "@/components/NotebookViewer";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -813,12 +814,36 @@ function EmbedFrame({
   return (
     <div className="relative w-full h-full" style={{ overflow: "hidden" }}>
       {status === "loading" && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gray-900 z-10">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-950/95 z-10">
           <div
-            className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
-            style={{ borderColor: `rgba(${accentRgb},0.3)`, borderTopColor: `rgb(${accentRgb})` }}
-          />
-          <p className="text-[12px] text-gray-600">Loading model…</p>
+            className="flex flex-col items-center gap-4 px-8 py-7 rounded-2xl"
+            style={{
+              background: "rgba(15,20,30,0.98)",
+              border: `1px solid rgba(${accentRgb},0.2)`,
+              boxShadow: `0 0 40px rgba(${accentRgb},0.08)`,
+            }}
+          >
+            {/* Spinner */}
+            <div className="relative w-12 h-12">
+              <div
+                className="absolute inset-0 rounded-full border-2 border-t-transparent animate-spin"
+                style={{ borderColor: `rgba(${accentRgb},0.15)`, borderTopColor: `rgb(${accentRgb})` }}
+              />
+              <div
+                className="absolute inset-1 rounded-full border border-t-transparent animate-spin"
+                style={{
+                  borderColor: `rgba(${accentRgb},0.08)`,
+                  borderTopColor: `rgba(${accentRgb},0.4)`,
+                  animationDuration: "1.5s",
+                  animationDirection: "reverse",
+                }}
+              />
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-semibold text-gray-200 mb-1">Loading…</p>
+              <p className="text-[11px] text-gray-500">Fetching embedded content</p>
+            </div>
+          </div>
         </div>
       )}
       <iframe
@@ -1072,37 +1097,13 @@ function PreviewUnified({ p, cfg }: { p: Project; cfg: PlatformCfg }) {
           </div>
         )}
 
-        {/* ── 4. Code Block ── */}
+        {/* ── 4. Notebook Viewer ── */}
         {p.codePreview && (
           <div>
             <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-2">
-              {langLabel} · Key Implementation
+              {langLabel} · Code &amp; Output
             </p>
-            <div className="rounded-xl overflow-hidden border border-white/[0.06]">
-              {/* Fake title bar */}
-              <div
-                className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]"
-                style={{ background: "rgba(255,255,255,0.03)" }}
-              >
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(239,68,68,0.6)" }} />
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(234,179,8,0.6)" }} />
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(34,197,94,0.6)" }} />
-                </div>
-                <span className="text-[10px] text-gray-600">{langLabel}</span>
-              </div>
-              <pre
-                className="p-4 text-[12px] leading-relaxed overflow-x-auto"
-                style={{
-                  background:  "#0d1117",
-                  fontFamily:  "'JetBrains Mono','Fira Code','Cascadia Code',monospace",
-                }}
-              >
-                <code
-                  dangerouslySetInnerHTML={{ __html: hiCode(p.codePreview, lang) }}
-                />
-              </pre>
-            </div>
+            <NotebookViewer projectId={p.id} />
           </div>
         )}
 

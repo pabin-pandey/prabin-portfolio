@@ -3,7 +3,7 @@ import Link from "next/link";
 import { pythonProjects } from "@/lib/projects-data";
 import { excelProjects } from "@/lib/excel-projects-data";
 import { rProjects } from "@/lib/r-projects-data";
-import ProfessionalNotebookParser from "@/components/ProfessionalNotebookParser";
+import NotebookViewer from "@/components/NotebookViewer";
 
 /* ════════════════════════════════════════════════════════════════
    CONTENT JSON — Single source of truth for the entire site.
@@ -493,6 +493,9 @@ function Home({ c, d, nav }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [activeModal]);
 
+  const [iframeReady, setIframeReady] = useState(false);
+  useEffect(() => { setIframeReady(false); }, [activeModal]);
+
   useEffect(() => {
     const cur = hero.roles[ri % hero.roles.length];
     const t = setTimeout(() => {
@@ -611,7 +614,21 @@ function Home({ c, d, nav }) {
             {/* TABLEAU — Live fullscreen embed */}
             {activeModal.type === "tableau" && (
               <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
-                <div className="flex-1 min-h-0 overflow-hidden">
+                <div className="relative flex-1 min-h-0 overflow-hidden">
+                  {!iframeReady && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-950/95">
+                      <div className="flex flex-col items-center gap-4 px-8 py-7 rounded-2xl" style={{ background: "rgba(15,20,30,0.98)", border: "1px solid rgba(96,165,250,0.2)", boxShadow: "0 0 40px rgba(96,165,250,0.08)" }}>
+                        <div className="relative w-12 h-12">
+                          <div className="absolute inset-0 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "rgba(96,165,250,0.15)", borderTopColor: "rgb(96,165,250)" }} />
+                          <div className="absolute inset-1 rounded-full border border-t-transparent animate-spin" style={{ borderColor: "rgba(96,165,250,0.08)", borderTopColor: "rgba(96,165,250,0.4)", animationDuration: "1.5s", animationDirection: "reverse" }} />
+                        </div>
+                        <div className="text-center">
+                          <p className="text-sm font-semibold text-gray-200 mb-1">Loading…</p>
+                          <p className="text-[11px] text-gray-500">Fetching Tableau dashboard</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <iframe
                     src="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=no&:tabs=no"
                     className="w-full border-0"
@@ -620,6 +637,7 @@ function Home({ c, d, nav }) {
                     allowFullScreen
                     allow="fullscreen; clipboard-write"
                     style={{ marginTop: -185, height: "calc(100% + 185px)" }}
+                    onLoad={() => setIframeReady(true)}
                   />
                 </div>
                 <div className={`shrink-0 flex items-center justify-between gap-3 px-5 py-2.5 border-t ${d ? "border-white/[0.06] bg-gray-950/80" : "border-gray-100 bg-white"}`}>
@@ -634,7 +652,21 @@ function Home({ c, d, nav }) {
             {/* STREAMLIT — Fullscreen live app */}
             {activeModal.type === "streamlit" && (
               <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
-                <div className="flex-1 min-h-0 overflow-hidden">
+                <div className="relative flex-1 min-h-0 overflow-hidden">
+                  {!iframeReady && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-950/95">
+                      <div className="flex flex-col items-center gap-4 px-8 py-7 rounded-2xl" style={{ background: "rgba(15,20,30,0.98)", border: "1px solid rgba(167,139,250,0.2)", boxShadow: "0 0 40px rgba(167,139,250,0.08)" }}>
+                        <div className="relative w-12 h-12">
+                          <div className="absolute inset-0 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "rgba(167,139,250,0.15)", borderTopColor: "rgb(167,139,250)" }} />
+                          <div className="absolute inset-1 rounded-full border border-t-transparent animate-spin" style={{ borderColor: "rgba(167,139,250,0.08)", borderTopColor: "rgba(167,139,250,0.4)", animationDuration: "1.5s", animationDirection: "reverse" }} />
+                        </div>
+                        <div className="text-center">
+                          <p className="text-sm font-semibold text-gray-200 mb-1">Loading…</p>
+                          <p className="text-[11px] text-gray-500">Connecting to Streamlit app</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <iframe
                     src="https://prabin-portfolio-analytics.streamlit.app/?embedded=true"
                     className="w-full h-full border-0"
@@ -642,6 +674,7 @@ function Home({ c, d, nav }) {
                     loading="eager"
                     allowFullScreen
                     allow="fullscreen; clipboard-write; microphone; camera"
+                    onLoad={() => setIframeReady(true)}
                   />
                 </div>
                 <div className={`shrink-0 flex items-center justify-between gap-3 px-5 py-2.5 border-t ${d ? "border-white/[0.06] bg-gray-950/80" : "border-gray-100 bg-white"}`}>
@@ -659,7 +692,21 @@ function Home({ c, d, nav }) {
               if (embedUrl) {
                 return (
                   <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
-                    <div className="flex-1 min-h-0 overflow-hidden">
+                    <div className="relative flex-1 min-h-0 overflow-hidden">
+                      {!iframeReady && (
+                        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-950/95">
+                          <div className="flex flex-col items-center gap-4 px-8 py-7 rounded-2xl" style={{ background: "rgba(15,20,30,0.98)", border: "1px solid rgba(52,211,153,0.2)", boxShadow: "0 0 40px rgba(52,211,153,0.08)" }}>
+                            <div className="relative w-12 h-12">
+                              <div className="absolute inset-0 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "rgba(52,211,153,0.15)", borderTopColor: "rgb(52,211,153)" }} />
+                              <div className="absolute inset-1 rounded-full border border-t-transparent animate-spin" style={{ borderColor: "rgba(52,211,153,0.08)", borderTopColor: "rgba(52,211,153,0.4)", animationDuration: "1.5s", animationDirection: "reverse" }} />
+                            </div>
+                            <div className="text-center">
+                              <p className="text-sm font-semibold text-gray-200 mb-1">Loading…</p>
+                              <p className="text-[11px] text-gray-500">Fetching Excel model</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       <iframe
                         src={embedUrl}
                         className="w-full h-full border-0"
@@ -667,6 +714,7 @@ function Home({ c, d, nav }) {
                         loading="eager"
                         allowFullScreen
                         allow="fullscreen; clipboard-write"
+                        onLoad={() => setIframeReady(true)}
                       />
                     </div>
                     <div className={`shrink-0 flex items-center justify-between gap-3 px-5 py-2.5 border-t ${d ? "border-white/[0.06] bg-gray-950/80" : "border-gray-100 bg-white"}`}>
@@ -732,20 +780,19 @@ function Home({ c, d, nav }) {
               </div>
             )}
 
-            {/* PYTHON — Inline notebook parser */}
-            {activeModal.type === "python" && (() => {
-              const pyProject = pythonProjects.find(p => p.id === projId);
-              if (!pyProject) return (
-                <p className={`text-[13px] ${d ? "text-gray-400" : "text-gray-600"}`}>
-                  Notebook not found. <a href={projHref} className="text-indigo-400 hover:text-indigo-300 underline">View project page →</a>
-                </p>
-              );
-              return (
-                <div>
-                  <ProfessionalNotebookParser notebookPath={pyProject.notebookPath} />
-                </div>
-              );
-            })()}
+            {/* PYTHON / R — Notebook-style viewer */}
+            {(activeModal.type === "python" || activeModal.type === "r") && (
+              <div className="p-5 overflow-y-auto">
+                <NotebookViewer projectId={projId} />
+                <a
+                  href={projHref}
+                  className={`mt-5 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all ${d ? "border border-white/[0.08] text-gray-400 hover:text-white hover:border-white/[0.16]" : "border border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+                  style={{ background: "rgba(255,255,255,0.02)" }}
+                >
+                  Open Full Case Study →
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>
