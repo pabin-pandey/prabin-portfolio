@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 
 const TABLEAU_URL =
-  "https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=yes";
+  "https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=no";
 
 export default function TableauEmbed() {
   const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading");
@@ -82,7 +82,7 @@ export default function TableauEmbed() {
       {/* ── Embed body ── */}
       <div
         className="relative rounded-b-xl overflow-hidden border border-blue-500/20 bg-gray-900"
-        style={{ minHeight: 380, borderTopWidth: 0 }}
+        style={{ height: "85vh", minHeight: 480, borderTopWidth: 0 }}
       >
         {/* Loading shimmer */}
         {status === "loading" && (
@@ -131,13 +131,14 @@ export default function TableauEmbed() {
           </div>
         )}
 
-        {/* iframe — hidden while error, always mounted so onLoad fires */}
+        {/* iframe — T-logo cropped via marginTop clip, always mounted so onLoad fires */}
         <iframe
           src={TABLEAU_URL}
           title="Global Macro Dashboard — Tableau Public"
           className="w-full border-0"
           style={{
-            height: "clamp(340px, 50vw, 520px)",
+            marginTop: -185,
+            height: "calc(100% + 185px)",
             display: status === "error" ? "none" : "block",
           }}
           onLoad={() => {

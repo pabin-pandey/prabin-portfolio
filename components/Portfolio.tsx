@@ -543,49 +543,6 @@ function Home({ c, d, nav }) {
     "Financial Analytics (R)":   "from-sky-400 to-blue-400",
   };
 
-  /* ═══ Python code snippets for modal previews ═══ */
-  const pythonCodeSnippets: Record<string, string> = {
-    "sp100-equity-analytics": `import yfinance as yf
-import pandas as pd
-import numpy as np
-
-# S&P 100 tickers
-tickers = ["AAPL","MSFT","AMZN","GOOGL","META","NVDA","JPM","JNJ","UNH","V"]
-
-def fetch_sp100_data(tickers: list, start: str, end: str) -> pd.DataFrame:
-    """Fetch adjusted close prices for S&P 100 constituents."""
-    data = yf.download(tickers, start=start, end=end, auto_adjust=True)["Close"]
-    return data.dropna(how="all", axis=1)
-
-# Compute returns & correlation matrix
-prices = fetch_sp100_data(tickers, "2019-01-01", "2024-12-31")
-returns = prices.pct_change().dropna()
-corr_matrix = returns.corr()
-
-# Annualised Sharpe ratio per stock
-sharpe = (returns.mean() * 252) / (returns.std() * np.sqrt(252))
-print(sharpe.sort_values(ascending=False).head(10))`,
-    "black-scholes-options-pricing": `import numpy as np
-from scipy.stats import norm
-
-def black_scholes(S: float, K: float, r: float, T: float,
-                  sigma: float, option: str = "call") -> float:
-    """
-    Black-Scholes option pricing model.
-    S=spot, K=strike, r=risk-free rate, T=time to expiry,
-    sigma=implied volatility, option='call'|'put'.
-    """
-    d1 = (np.log(S / K) + (r + 0.5 * sigma**2) * T) / (sigma * np.sqrt(T))
-    d2 = d1 - sigma * np.sqrt(T)
-    if option == "call":
-        return S * norm.cdf(d1) - K * np.exp(-r * T) * norm.cdf(d2)
-    return K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
-
-# Example: AAPL call — S=$180, K=$185, r=5.3%, T=30 days, σ=28%
-price = black_scholes(180, 185, 0.053, 30/365, 0.28)
-print(f"Call option price: $\{price:.4f\}")`,
-  };
-
   /* ═══ Modal Component (inline) ═══ */
   const Modal = activeModal ? (() => {
     const proj = activeModal.project as Record<string, unknown>;
@@ -594,7 +551,6 @@ print(f"Call option price: $\{price:.4f\}")`,
     const projSum = proj.sum as string;
     const projTags = (proj.tags as string[]) || [];
     const projHref = `/projects/${projId}`;
-    const code = pythonCodeSnippets[projId] || `# ${projTitle}\n# Code available on GitHub\n# View full project for complete implementation`;
 
     return (
       <div
@@ -603,7 +559,7 @@ print(f"Call option price: $\{price:.4f\}")`,
         onClick={() => setActiveModal(null)}
       >
         <div
-          className={`relative w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-2xl border shadow-2xl ${d ? "bg-gray-950 border-white/10" : "bg-white border-gray-200"}`}
+          className={`relative w-full ${activeModal.type === "tableau" ? "max-w-5xl max-h-[92vh]" : "max-w-3xl max-h-[85vh]"} overflow-y-auto rounded-2xl border shadow-2xl ${d ? "bg-gray-950 border-white/10" : "bg-white border-gray-200"}`}
           onClick={(e) => e.stopPropagation()}
           style={{ animation: "fadeInScale 0.22s cubic-bezier(0.16,1,0.3,1)" }}
         >
@@ -622,21 +578,24 @@ print(f"Call option price: $\{price:.4f\}")`,
 
           {/* Modal body */}
           <div className="p-6">
-            {/* TABLEAU — Live embed */}
+            {/* TABLEAU — Live embed (full-height, T-logo cropped, no toolbar) */}
             {activeModal.type === "tableau" && (
               <div className="space-y-4">
-                <div className="rounded-xl overflow-hidden border" style={{ height: 440, borderColor: d ? "rgba(59,130,246,0.2)" : "#bfdbfe" }}>
+                <div className="rounded-xl overflow-hidden border" style={{ height: "min(72vh, 680px)", borderColor: d ? "rgba(59,130,246,0.2)" : "#bfdbfe" }}>
                   <iframe
-                    src="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=yes&:tabs=no"
-                    className="w-full h-full"
+                    src="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=no&:tabs=no"
+                    className="w-full border-0"
                     title="Global Macro Dashboard — Tableau"
                     loading="lazy"
                     allowFullScreen
+                    style={{ marginTop: -185, height: "calc(100% + 185px)" }}
                   />
                 </div>
-                <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {projTags.map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" : "bg-blue-50 text-blue-700 border border-blue-200"}`}>{t}</span>)}
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex flex-wrap gap-1.5">
+                    {projTags.map(t => <span key={t} className={`text-[11px] px-2.5 py-0.5 rounded-lg font-medium ${d ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" : "bg-blue-50 text-blue-700 border border-blue-200"}`}>{t}</span>)}
+                  </div>
+                  <a href="https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD" target="_blank" rel="noopener noreferrer" className={`flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-colors ${d ? "border-blue-500/30 text-blue-400 hover:bg-blue-500/10" : "border-blue-300 text-blue-700 hover:bg-blue-50"}`}>Full Screen ↗</a>
                 </div>
                 <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study {icons.chevR}</a>
               </div>
@@ -681,40 +640,6 @@ print(f"Call option price: $\{price:.4f\}")`,
               </div>
             )}
 
-            {/* PYTHON — Syntax-highlighted code preview */}
-            {activeModal.type === "python" && (
-              <div className="space-y-4">
-                <div>
-                  <p className={`text-[10px] font-bold tracking-[0.15em] uppercase mb-2 ${d ? "text-cyan-400/70" : "text-cyan-600/70"}`}>Python Implementation</p>
-                  <pre className={`rounded-xl p-4 text-[12px] font-mono overflow-x-auto leading-relaxed ${d ? "bg-gray-900 border border-cyan-500/15 text-cyan-300" : "bg-gray-50 border border-cyan-200 text-cyan-800"}`}
-                    style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-                    <code>{code}</code>
-                  </pre>
-                </div>
-                <div>
-                  <p className={`text-[10px] font-bold tracking-[0.15em] uppercase mb-2 ${d ? "text-cyan-400/70" : "text-cyan-600/70"}`}>Sample Output</p>
-                  <div className={`rounded-xl p-4 font-mono text-[12px] leading-relaxed ${d ? "bg-gray-900 border border-white/[0.06] text-emerald-400" : "bg-gray-50 border border-gray-200 text-emerald-700"}`}>
-                    {projId === "sp100-equity-analytics" ? (
-                      <>
-                        <p className="opacity-60 mb-2">{'>>> # Sharpe Ratios (annualised)'}</p>
-                        <p>NVDA    2.841</p><p>META    1.963</p><p>MSFT    1.447</p>
-                        <p>AAPL    1.289</p><p>GOOGL   1.102</p><p>V       0.987</p>
-                        <p>dtype: float64</p>
-                      </>
-                    ) : (
-                      <>
-                        <p className="opacity-60 mb-2">{'>>> # Black-Scholes call price'}</p>
-                        <p>d1 = 0.2341, d2 = 0.0841</p>
-                        <p>N(d1) = 0.5925, N(d2) = 0.5335</p>
-                        <p className="mt-1 text-yellow-400 font-semibold">Call option price: $7.4892</p>
-                      </>
-                    )}
-                  </div>
-                </div>
-                <p className={`text-[13px] leading-relaxed ${d ? "text-gray-400" : "text-gray-600"}`}>{projSum}</p>
-                <a href={projHref} className={`inline-flex items-center gap-1.5 text-[13px] font-semibold ${d ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-800"}`}>View full case study & notebook {icons.chevR}</a>
-              </div>
-            )}
 
             {/* EXCEL — Live OneDrive iframe, or inline case study if no embed URL */}
             {activeModal.type === "excel" && (() => {
@@ -1132,11 +1057,10 @@ print(f"Call option price: $\{price:.4f\}")`,
                   "black-scholes-dividend-extension":`/projects/black-scholes-dividend-extension`,
                 };
 
-                // Modal type — determines whether clicking primary CTA opens a modal or navigates
+                // Modal type — Python navigates directly to real project page (no modal)
                 const modalType: Record<string, string> = {
                   "Tableau":                    "tableau",
                   "GenAI Finance":              "streamlit",
-                  "Python":                     "python",
                   "Financial Modeling (Excel)": "excel",
                   "Power BI":                   "powerbi",
                 };

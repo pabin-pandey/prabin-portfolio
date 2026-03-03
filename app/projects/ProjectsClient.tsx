@@ -318,7 +318,7 @@ const PROJECTS: Project[] = [
     href:         "/projects/global-macro-dashboard",
     platformType: "tableau_dashboard",
     modelUrl:     "https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD",
-    embedUrl:     "https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=yes",
+    embedUrl:     "https://public.tableau.com/views/TableauFinalProject_17716017323360/GLOBALMACRODASHBOARD?:embed=yes&:showVizHome=no&:toolbar=no",
     techStack:    ["Tableau", "LOD Expressions", "Table Calculations", "World Bank Data", "Excel"],
     deliverables: ["Dashboard", "Charts", "Report"],
     keyMetrics: [
@@ -755,12 +755,14 @@ function EmbedFrame({
   timeoutMs,
   modelUrl,
   accentRgb,
+  clipTop = 0,
 }: {
   url: string;
   title: string;
   timeoutMs: number;
   modelUrl: string;
   accentRgb: string;
+  clipTop?: number;
 }) {
   const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -809,7 +811,7 @@ function EmbedFrame({
   }
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full" style={{ overflow: "hidden" }}>
       {status === "loading" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gray-900 z-10">
           <div
@@ -822,7 +824,11 @@ function EmbedFrame({
       <iframe
         src={url}
         title={title}
-        className="w-full h-full border-0"
+        className="w-full border-0"
+        style={{
+          marginTop: clipTop > 0 ? -clipTop : undefined,
+          height:    clipTop > 0 ? `calc(100% + ${clipTop}px)` : "100%",
+        }}
         onLoad={() => {
           if (timerRef.current) clearTimeout(timerRef.current);
           setStatus("loaded");
@@ -1197,8 +1203,8 @@ function ModelViewerModal({
           background:  "rgb(15,20,30)",
           border:      "1px solid rgba(255,255,255,0.08)",
           boxShadow:   `0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(${cfg.accentRgb},0.08)`,
-          maxHeight:   isPreview ? "min(92vh, 860px)" : "min(90vh, 740px)",
-          height:      isPreview ? "min(92vh, 860px)" : "min(90vh, 740px)",
+          maxHeight:   isPreview ? "min(92vh, 860px)" : p.platformType === "tableau_dashboard" ? "min(92vh, 820px)" : "min(90vh, 740px)",
+          height:      isPreview ? "min(92vh, 860px)" : p.platformType === "tableau_dashboard" ? "min(92vh, 820px)" : "min(90vh, 740px)",
         }}
       >
         {/* ── Header ── */}
@@ -1253,6 +1259,7 @@ function ModelViewerModal({
               timeoutMs={cfg.timeoutMs}
               modelUrl={p.modelUrl}
               accentRgb={cfg.accentRgb}
+              clipTop={p.platformType === "tableau_dashboard" ? 185 : 0}
             />
           )}
           {cfg.modalType === "iframe" && !p.embedUrl && (
