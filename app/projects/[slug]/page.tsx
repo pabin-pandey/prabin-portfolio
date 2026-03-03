@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { pythonProjects, PythonProject } from '@/lib/projects-data';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import ProfessionalNotebookParser from '@/components/ProfessionalNotebookParser';
 import BackButton from '@/components/BackButton';
 
@@ -40,9 +40,13 @@ type TabId = 'overview' | 'code' | 'insights';
 
 export default function ProjectDetailPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const slug = params.slug as string;
   const project = pythonProjects.find((p) => p.id === slug);
-  const [activeTab, setActiveTab] = useState<TabId>('overview');
+
+  const rawTab = searchParams.get('tab');
+  const initialTab: TabId = rawTab === 'code' ? 'code' : rawTab === 'insights' ? 'insights' : 'overview';
+  const [activeTab, setActiveTab] = useState<TabId>(initialTab);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);

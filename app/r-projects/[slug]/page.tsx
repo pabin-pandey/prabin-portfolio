@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import BackButton from '@/components/BackButton';
 import { rProjects } from '@/lib/r-projects-data';
 
@@ -58,10 +58,14 @@ function CopyButton({ code }: { code: string }) {
 }
 
 export default function RProjectPage() {
-  const params  = useParams();
-  const slug    = params.slug as string;
-  const project = rProjects.find(p => p.id === slug);
-  const [activeTab, setActiveTab] = useState<TabId>('overview');
+  const params       = useParams();
+  const searchParams = useSearchParams();
+  const slug         = params.slug as string;
+  const project      = rProjects.find(p => p.id === slug);
+
+  const rawTab = searchParams.get('tab');
+  const initialTab: TabId = rawTab === 'code' ? 'code' : 'overview';
+  const [activeTab, setActiveTab] = useState<TabId>(initialTab);
 
   if (!project) {
     return (

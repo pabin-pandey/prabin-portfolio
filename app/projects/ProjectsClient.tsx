@@ -1394,6 +1394,11 @@ export default function ProjectsClient() {
         return;
       }
       if (cfg.modalType === "preview_panel") {
+        // Python & R: skip intermediate modal — navigate directly to Code & Outputs tab
+        if (p.platformType === "python_model" || p.platformType === "r_analysis") {
+          router.push(p.href + "?tab=code");
+          return;
+        }
         setModal({ project: p });
         return;
       }
