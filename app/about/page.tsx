@@ -6,11 +6,11 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "About Prabin Pandey — MS Financial Analysis, Temple University",
   description:
-    "Prabin Pandey is an MS Financial Analysis candidate (GPA 3.98) at Temple University Fox School of Business. CFA Level I Candidate specializing in quantitative modeling, derivatives pricing, portfolio analytics, and AI-integrated finance.",
+    "Prabin Pandey is an MS Financial Analysis candidate (GPA 3.98) at Temple University Fox School of Business. CFA Level II Candidate (passed Level I, March 2026) specializing in quantitative modeling, derivatives pricing, portfolio analytics, and AI-integrated finance.",
   alternates: { canonical: "https://www.prabinpandey.com/about" },
   openGraph: {
     title: "About Prabin Pandey",
-    description: "MS Financial Analysis candidate at Temple University (GPA 3.98). CFA Level I Candidate. Quantitative modeling, derivatives pricing, AI-integrated finance.",
+    description: "MS Financial Analysis candidate at Temple University (GPA 3.98). CFA Level II Candidate — passed Level I March 2026. Quantitative modeling, derivatives pricing, AI-integrated finance.",
     url: "https://www.prabinpandey.com/about",
   },
 };
@@ -33,7 +33,7 @@ const education = [
     degree:  "MS Financial Analysis",
     period:  "Expected May 2026",
     gpa:     "3.98",
-    badge:   "CFA Level I Candidate",
+    badge:   "CFA Level II Candidate",
     courses: [
       "Corporate Value Management",
       "Asset Pricing",
@@ -155,6 +155,57 @@ export default function AboutPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Certifications */}
+        <section className="mb-12">
+          <h2 className="text-xl font-bold text-white mb-6 pb-2 border-b border-white/[0.06]">Certifications</h2>
+          <div className="space-y-4">
+            {/* CFA Level II Candidate */}
+            <div className="bg-gray-900 border border-amber-500/20 rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className="w-11 h-11 rounded-xl bg-amber-500/10 flex items-center justify-center shrink-0">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="text-amber-400">
+                    <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-amber-300">CFA Level II Candidate</p>
+                  <p className="text-xs text-gray-400 mt-0.5">CFA Institute · In Progress · Sitting 2026</p>
+                  <p className="text-xs text-gray-500 mt-1">Passed Level I — March 2026</p>
+                </div>
+              </div>
+              <span className="inline-block text-xs px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 font-medium">In Progress</span>
+            </div>
+            {/* CFA Level I — Passed */}
+            <div className="bg-gray-900 border border-emerald-500/20 rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className="w-11 h-11 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="text-emerald-400">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-emerald-300">CFA Program Level I — Passed</p>
+                  <p className="text-xs text-gray-400 mt-0.5">CFA Institute · Issued March 19, 2026 · Does not expire</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Covers investment tools, asset classes, portfolio construction, and ethical standards.
+                  </p>
+                </div>
+              </div>
+              <a
+                href="https://credentials.cfainstitute.org/24088f49-c4f7-40bd-b4f4-1c2c5142d530#acc.uWxHGLBh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-all"
+              >
+                Verify Credential
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </a>
+            </div>
           </div>
         </section>
 

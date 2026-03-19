@@ -16,12 +16,12 @@ const DEFAULT_CONTENT = {
     roles: ["AI-Augmented Financial Analyst", "Quantitative Systems Builder", "Investment Analytics Specialist"],
     desc: "MS Financial Analysis candidate at Temple University (Fox School of Business). I build quantitative financial systems — derivatives pricing engines, portfolio risk analytics, SEC document intelligence pipelines, and AI-integrated decision-support dashboards — with documented human validation at every AI-assisted step.",
     cta1: "View Projects", cta2: "Download Resume",
-    stats: [{ v: "3.98", l: "GPA" }, { v: "20+", l: "Projects" }, { v: "10+", l: "Tools" }, { v: "CFA", l: "Level 1 Candidate" }]
+    stats: [{ v: "3.98", l: "GPA" }, { v: "20+", l: "Projects" }, { v: "10+", l: "Tools" }, { v: "CFA", l: "Level II Candidate" }]
   },
   about: {
     bio: "Finance professional specializing in corporate valuation, derivative pricing, and machine learning. With a strong foundation spanning quantitative modeling and data science, I bridge traditional finance with cutting-edge technology — from building complex Excel models for PE transactions to creating interactive Power BI dashboards and Python-based valuation tools.",
     education: [
-      { school: "Temple University, Fox School of Business", degree: "MS Financial Analysis", period: "Expected May 2026", gpa: "3.98", courses: "Corporate Value Management, Asset Pricing, ML in Finance, Financial Time Series, Data Science in Finance, Derivative Valuation, AI in Portfolio Management", badge: "CFA Level I Candidate" },
+      { school: "Temple University, Fox School of Business", degree: "MS Financial Analysis", period: "Expected May 2026", gpa: "3.98", courses: "Corporate Value Management, Asset Pricing, ML in Finance, Financial Time Series, Data Science in Finance, Derivative Valuation, AI in Portfolio Management", badge: "CFA Level II Candidate" },
       { school: "Tribhuvan University", degree: "BBA", period: "Dec 2023", gpa: "3.81", courses: "Business Administration — Finance focus", badge: "Valedictorian" }
     ],
     experience: [
@@ -36,7 +36,7 @@ const DEFAULT_CONTENT = {
       { n: "Bloomberg Terminal", cat: "Finance", lv: 80 }, { n: "FactSet", cat: "Finance", lv: 75 },
       { n: "Capital IQ", cat: "Finance", lv: 75 }
     ],
-    certs: ["CFA Level I Candidate"],
+    certs: ["CFA Level II Candidate", "CFA Level I — Passed"],
     now: "Bringing expertise in quantitative modeling, data analytics, and AI-integrated finance to roles at the intersection of financial analysis and technology. Available May 2026."
   },
   projects: [
@@ -925,7 +925,7 @@ function Home({ c, d, nav }) {
               { label: "GPA", value: "3.98", sub: "Fox School of Business", color: "text-emerald-400" },
               { label: "Projects Built", value: "20+", sub: "Production-grade systems", color: "text-indigo-400" },
               { label: "LLMs Benchmarked", value: "9", sub: "Calibration analysis", color: "text-violet-400" },
-              { label: "Designation", value: "CFA Candidate", sub: "Level I — sitting 2026", color: "text-amber-400" },
+              { label: "Designation", value: "CFA Candidate", sub: "Level II — passed Level I Mar 2026", color: "text-amber-400" },
               { label: "Available", value: "May 2026", sub: "Philadelphia, PA · Open to relocation", color: "text-blue-400" },
             ].map((item, i) => (
               <div key={i} className={`flex items-center gap-3 px-6 py-1 ${i > 0 ? `border-l ${d ? "border-white/[0.07]" : "border-gray-200"}` : ""}`}>
@@ -1555,15 +1555,34 @@ function About({ c, d }) {
           <h2 className="text-2xl font-bold tracking-tight">Certifications</h2>
         </div>
         <div className="flex flex-wrap gap-4">
-          {about.certs.map((cert, i) => (
-            <div key={i} className={`flex items-center gap-4 px-6 py-4 rounded-2xl border hover-lift transition-all duration-200 ${d ? "bg-amber-500/[0.04] border-amber-500/20 hover:border-amber-500/35" : "bg-amber-50 border-amber-200 hover:border-amber-300"}`}>
-              <div className={`p-2.5 rounded-xl ${d ? "bg-amber-500/15 text-amber-400" : "bg-amber-100 text-amber-600"}`}>{icons.award}</div>
-              <div>
-                <p className={`font-bold text-sm tracking-tight ${d ? "text-amber-300" : "text-amber-800"}`}>{cert}</p>
-                <p className={`text-xs mt-0.5 ${d ? "text-amber-500/60" : "text-amber-600/70"}`}>In progress · sitting 2026</p>
+          {about.certs.map((cert, i) => {
+            const isPassed = cert.toLowerCase().includes("passed");
+            return (
+              <div key={i} className={`flex items-center gap-4 px-6 py-4 rounded-2xl border hover-lift transition-all duration-200 ${
+                isPassed
+                  ? (d ? "bg-emerald-500/[0.04] border-emerald-500/20 hover:border-emerald-500/35" : "bg-emerald-50 border-emerald-200 hover:border-emerald-300")
+                  : (d ? "bg-amber-500/[0.04] border-amber-500/20 hover:border-amber-500/35" : "bg-amber-50 border-amber-200 hover:border-amber-300")
+              }`}>
+                <div className={`p-2.5 rounded-xl ${isPassed ? (d ? "bg-emerald-500/15 text-emerald-400" : "bg-emerald-100 text-emerald-600") : (d ? "bg-amber-500/15 text-amber-400" : "bg-amber-100 text-amber-600")}`}>{icons.award}</div>
+                <div className="flex-1">
+                  <p className={`font-bold text-sm tracking-tight ${isPassed ? (d ? "text-emerald-300" : "text-emerald-800") : (d ? "text-amber-300" : "text-amber-800")}`}>{cert}</p>
+                  <p className={`text-xs mt-0.5 ${isPassed ? (d ? "text-emerald-500/70" : "text-emerald-600/70") : (d ? "text-amber-500/60" : "text-amber-600/70")}`}>
+                    {isPassed ? "CFA Institute · Issued March 2026 · Verified" : "CFA Institute · In progress · Sitting 2026"}
+                  </p>
+                </div>
+                {isPassed && (
+                  <a
+                    href="https://credentials.cfainstitute.org/24088f49-c4f7-40bd-b4f4-1c2c5142d530#acc.uWxHGLBh"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all ${d ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20" : "bg-emerald-100 border-emerald-300 text-emerald-700 hover:bg-emerald-200"}`}
+                  >
+                    Verify ↗
+                  </a>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
