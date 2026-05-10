@@ -14,14 +14,14 @@ const DEFAULT_CONTENT = {
   hero: {
     greeting: "Hi, I'm", name: "Prabin Pandey",
     roles: ["AI-Augmented Financial Analyst", "Quantitative Systems Builder", "Investment Analytics Specialist"],
-    desc: "MS Financial Analysis candidate at Temple University (Fox School of Business). I build quantitative financial systems — derivatives pricing engines, portfolio risk analytics, SEC document intelligence pipelines, and AI-integrated decision-support dashboards — with documented human validation at every AI-assisted step.",
+    desc: "MS Financial Analysis graduate from Temple University (Fox School of Business) — Dean's Excellence Award recipient. I build quantitative financial systems — derivatives pricing engines, portfolio risk analytics, SEC document intelligence pipelines, and AI-integrated decision-support dashboards — with documented human validation at every AI-assisted step.",
     cta1: "View Projects", cta2: "Download Resume",
     stats: [{ v: "3.98", l: "GPA" }, { v: "20+", l: "Projects" }, { v: "10+", l: "Tools" }, { v: "CFA", l: "Level II Candidate" }]
   },
   about: {
     bio: "Finance professional specializing in corporate valuation, derivative pricing, and machine learning. With a strong foundation spanning quantitative modeling and data science, I bridge traditional finance with cutting-edge technology — from building complex Excel models for PE transactions to creating interactive Power BI dashboards and Python-based valuation tools.",
     education: [
-      { school: "Temple University, Fox School of Business", degree: "MS Financial Analysis", period: "Expected May 2026", gpa: "3.98", courses: "Corporate Value Management, Asset Pricing, ML in Finance, Financial Time Series, Data Science in Finance, Derivative Valuation, AI in Portfolio Management", badge: "CFA Level II Candidate" },
+      { school: "Temple University, Fox School of Business", degree: "MS Financial Analysis", period: "May 2026", gpa: "3.98", courses: "Corporate Value Management, Asset Pricing, ML in Finance, Financial Time Series, Data Science in Finance, Derivative Valuation, AI in Portfolio Management", badge: "Dean's Excellence Award | CFA Level II Candidate" },
       { school: "Tribhuvan University", degree: "BBA", period: "Dec 2023", gpa: "3.81", courses: "Business Administration — Finance focus", badge: "Valedictorian" }
     ],
     experience: [
@@ -37,7 +37,7 @@ const DEFAULT_CONTENT = {
       { n: "Capital IQ", cat: "Finance", lv: 75 }
     ],
     certs: ["CFA Level II Candidate", "CFA Level I — Passed"],
-    now: "Bringing expertise in quantitative modeling, data analytics, and AI-integrated finance to roles at the intersection of financial analysis and technology. Available May 2026."
+    now: "MS Financial Analysis graduate from Temple University — Dean's Excellence Award recipient. Bringing expertise in quantitative modeling, data analytics, and AI-integrated finance to roles at the intersection of financial analysis and technology. Now available."
   },
   projects: [
     { id: "pe", title: "Private Equity Transaction & Debt Covenant Model – Pharma Brands Inc.", cat: "Financial Modeling (Excel)", yr: "2024", sum: "Comprehensive 3-statement financial model for Pharma Brands Inc. special dividend recapitalization. Includes projected IS/BS/CF, debt schedule with term loan + revolver, and debt covenant compliance testing (Total Debt/EBITDA ≤ 3.0x, EBIT/Interest ≥ 6.0x). All covenants pass across the 5-year projection.", tags: ["Financial Modeling", "LBO", "Debt Covenants", "Sensitivity Analysis", "3-Statement Model", "Recapitalization"], tools: ["Excel"], metrics: ["6-sheet integrated model", "$3.25B revenue base growing to $4.07B", "All covenants pass (5 years)", "Debt/EBITDA from 2.46x → 0.0x", "EBIT/Interest from 13.1x → 97.0x"], featured: true, cs: { problem: "Pharma Brands Inc. is evaluating a $1B special dividend payment funded by a leveraged recapitalization. The transaction requires a comprehensive financial model to project the company's ability to service new debt (term loan + revolver) while maintaining compliance with restrictive debt covenants over a 5-year horizon.", approach: "Built a fully integrated 6-sheet Excel model: Transaction summary, Projected Income Statement, Balance Sheet, Cash Flow Statement, Debt Schedule (term loan + revolver with automatic sweep), and RE/Fixed Assets Schedule. Revenue assumptions drive through all statements with dynamic debt paydown from excess cash flow.", data: "Pharma Brands Inc. base year (2021) actuals: $3.25B revenue, $345M EBITDA (10.6% margin), $202M net income. $200M term loan at 6% with 20% annual amortization. Revolver facility at 6% interest on average balance. 25% tax rate.", methods: "Revenue growth (5% → 4%), margin expansion (EBITDA 10.6% → 13.0%), COGS/SGA/distribution assumptions as % of revenue, working capital modeling (DSO, DIO, DPO), CapEx at ~2.2% of revenue, automatic cash sweep to repay revolver, dual covenant testing: Total Debt/EBITDA (max 3.0x stepping to 1.5x) and EBIT/Interest Coverage (min 6.0x stepping to 12.0x).", results: "Model projects full revolver paydown by 2026 ($763M → $0). All debt covenants pass across the entire projection period. Net income grows from $200M to $331M. Cash position rebuilds to $133M by 2026. EBITDA margin improves from 11.0% to 13.0% through operational efficiencies.", learnings: "Deepened understanding of leveraged recapitalizations, cash sweep mechanics, covenant step-down structures, and the critical interplay between operating cash flow generation and debt service capacity. The model demonstrates how strong free cash flow can support aggressive leverage while maintaining covenant compliance." }, embed: { type: "excel", url: "", fallback: "Excel Model — Paste your OneDrive/SharePoint embed URL in the admin panel" }, isExcel: true },
@@ -402,7 +402,7 @@ export default function App() {
                     <span className={`text-xs font-bold tracking-[0.15em] uppercase ${dark ? "text-emerald-400" : "text-emerald-600"}`}>Available for opportunities</span>
                   </div>
                   <h3 className={`text-2xl sm:text-3xl font-black tracking-tight mb-2 ${dark ? "text-white" : "text-gray-900"}`}>Seeking Summer 2026 Opportunities</h3>
-                  <p className={`text-sm leading-relaxed ${dark ? "text-gray-400" : "text-gray-600"}`}>Investment analytics, financial data engineering, AI-augmented research, and quantitative finance roles. Available May 2026.</p>
+                  <p className={`text-sm leading-relaxed ${dark ? "text-gray-400" : "text-gray-600"}`}>Investment analytics, financial data engineering, AI-augmented research, and quantitative finance roles. MS Financial Analysis graduate — now available.</p>
                   {/* Role type chips */}
                   <div className="flex flex-wrap gap-2 mt-4">
                     {["Quantitative Finance", "Financial Data Engineering", "AI Analytics", "Portfolio Analytics"].map(role => (
@@ -926,7 +926,7 @@ function Home({ c, d, nav }) {
               { label: "Projects Built", value: "20+", sub: "Production-grade systems", color: "text-indigo-400" },
               { label: "LLMs Benchmarked", value: "9", sub: "Calibration analysis", color: "text-violet-400" },
               { label: "Designation", value: "CFA Candidate", sub: "Level II — passed Level I Mar 2026", color: "text-amber-400" },
-              { label: "Available", value: "May 2026", sub: "Philadelphia, PA · Open to relocation", color: "text-blue-400" },
+              { label: "Available", value: "Now", sub: "Philadelphia, PA · Open to relocation", color: "text-blue-400" },
             ].map((item, i) => (
               <div key={i} className={`flex items-center gap-3 px-6 py-1 ${i > 0 ? `border-l ${d ? "border-white/[0.07]" : "border-gray-200"}` : ""}`}>
                 <div className="text-center sm:text-left">
@@ -1597,7 +1597,7 @@ function About({ c, d }) {
           <div className="relative">
             <div className="flex items-center gap-2.5 mb-4">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 flex-shrink-0" style={{ animation: "pulse 2s ease-in-out infinite" }} />
-              <span className={`text-[11px] font-bold uppercase tracking-[0.18em] ${d ? "text-emerald-400" : "text-emerald-600"}`}>Open to opportunities — Available May 2026</span>
+              <span className={`text-[11px] font-bold uppercase tracking-[0.18em] ${d ? "text-emerald-400" : "text-emerald-600"}`}>Open to opportunities — MS Graduate · Now Available</span>
             </div>
             <p className={`text-[15px] leading-[1.8] ${d ? "text-gray-300" : "text-gray-700"}`}>{about.now}</p>
             <div className="flex flex-wrap gap-2 mt-5">

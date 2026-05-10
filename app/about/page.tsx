@@ -6,7 +6,7 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "About Prabin Pandey — MS Financial Analysis, Temple University",
   description:
-    "Prabin Pandey is an MS Financial Analysis candidate (GPA 3.98) at Temple University Fox School of Business. CFA Level II Candidate (passed Level I, March 2026) specializing in quantitative modeling, derivatives pricing, portfolio analytics, and AI-integrated finance.",
+    "Prabin Pandey is an MS Financial Analysis graduate (GPA 3.98) from Temple University Fox School of Business — Dean's Excellence Award recipient. CFA Level II Candidate (passed Level I, March 2026) specializing in quantitative modeling, derivatives pricing, portfolio analytics, and AI-integrated finance.",
   alternates: { canonical: "https://www.prabinpandey.com/about" },
   openGraph: {
     title: "About Prabin Pandey",
@@ -31,9 +31,9 @@ const education = [
   {
     school:  "Temple University, Fox School of Business",
     degree:  "MS Financial Analysis",
-    period:  "Expected May 2026",
+    period:  "May 2026",
     gpa:     "3.98",
-    badge:   "CFA Level II Candidate",
+    badge:   "Dean's Excellence Award | CFA Level II Candidate",
     courses: [
       "Corporate Value Management",
       "Asset Pricing",
@@ -265,7 +265,7 @@ export default function AboutPage() {
           </div>
           <p className="text-gray-300 text-sm leading-relaxed">
             Bringing expertise in quantitative modeling, data analytics, and AI-integrated finance to roles at the
-            intersection of financial analysis and technology. Available May 2026.
+            intersection of financial analysis and technology. MS Financial Analysis graduate — now available.
           </p>
           <Link href="/contact" className="inline-flex items-center gap-1.5 mt-4 text-[13px] font-semibold bg-gradient-to-r from-indigo-500 to-violet-500 text-white px-5 py-2.5 rounded-xl hover:from-indigo-600 hover:to-violet-600 transition-all">
             Get in Touch →
