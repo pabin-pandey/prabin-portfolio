@@ -895,7 +895,7 @@ function Home({ c, d, nav }) {
             {/* Credential chips */}
             <div className="animate-fadeUp-6 flex flex-wrap items-center gap-2 mt-7">
               {[
-                { text: "CFA Level I", sub: "Candidate" },
+                { text: "CFA Level II", sub: "Candidate" },
                 { text: "Bloomberg · FactSet · Capital IQ", sub: "Proficient" },
                 { text: "Python · R · SQL", sub: "Quant Stack" },
                 { text: "Fox School of Business", sub: "MS Financial Analysis" },
@@ -1415,7 +1415,7 @@ function About({ c, d }) {
         <div className="flex flex-wrap gap-2 mt-7">
           {[
             { label: "Fox School of Business", sub: "MS Financial Analysis" },
-            { label: "CFA Level I", sub: "Candidate" },
+            { label: "CFA Level II", sub: "Candidate" },
             { label: "Bloomberg · FactSet · Capital IQ", sub: "Proficient" },
           ].map(chip => (
             <div key={chip.label} className="cred-chip">
