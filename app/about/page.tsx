@@ -6,7 +6,7 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "About Prabin Pandey — MS Financial Analysis, Temple University",
   description:
-    "Prabin Pandey is an MS Financial Analysis graduate (GPA 3.98) from Temple University Fox School of Business — Dean's Excellence Award recipient. CFA Level II Candidate (passed Level I, March 2026) specializing in quantitative modeling, derivatives pricing, portfolio analytics, and AI-integrated finance.",
+    "Prabin Pandey is an MS Financial Analysis candidate (GPA 3.98) at Temple University Fox School of Business. CFA Level II Candidate (passed Level I, March 2026) specializing in quantitative modeling, derivatives pricing, portfolio analytics, and AI-integrated finance.",
   alternates: { canonical: "https://www.prabinpandey.com/about" },
   openGraph: {
     title: "About Prabin Pandey",
@@ -31,9 +31,9 @@ const education = [
   {
     school:  "Temple University, Fox School of Business",
     degree:  "MS Financial Analysis",
-    period:  "May 2026",
+    period:  "Expected May 2026",
     gpa:     "3.98",
-    badge:   "Dean's Excellence Award | CFA Level II Candidate",
+    badge:   "CFA Level II Candidate",
     courses: [
       "Corporate Value Management",
       "Asset Pricing",
@@ -63,12 +63,11 @@ const experience = [
   {
     co:     "Sethi Clarity Advisers",
     role:   "Associate Financial Consultant",
-    period: "Sep 2025 – Dec 2025",
+    period: "September 2025 – December 2025",
     pts: [
-      "Engineered AI-driven financial planning models simulating retirement income trajectories, net worth accumulation, and multi-scenario contribution strategies for client portfolios.",
-      "Developed AI-based analytical tools to evaluate investment allocations, optimize portfolio construction, and monitor client performance against benchmarks.",
-      "Maintained client investment data in portfolio management software, ensuring accurate performance reporting and audit-ready financial records.",
-      "Designed and developed an internal financial planning website, integrating AI-driven models into a user-friendly interface to streamline data input and advisory analysis.",
+      "Developed multi-scenario valuation models in Excel and Python to analyze portfolio allocations, stress-test return assumptions across market environments, and benchmark risk-adjusted performance against targets — supporting data-driven investment decisions.",
+      "Built AI-integrated analytical tools to simulate financial scenarios, identify valuation discrepancies across investment positions, and monitor portfolio performance against benchmarks; improved reporting accuracy and consistency across multi-scenario outputs.",
+      "Designed automated financial reporting dashboards with real-time data pipelines and AI-driven analytics, streamlining investment reporting workflows and enabling continuous performance monitoring for senior stakeholder review.",
     ],
   },
   {
@@ -82,11 +81,10 @@ const experience = [
   {
     co:     "Global IME Bank",
     role:   "Customer Relations Intern",
-    period: "Mar – May 2023",
+    period: "March 2024 – May 2024",
     pts: [
-      "Organized and maintained client documentation, tax records, and collateral files, supporting audit readiness.",
-      "Prepared financial reports and cost summaries to inform management decisions on lending terms, product pricing, and operational planning.",
-      "Counseled clients on banking products, insurance, and wealth management strategies.",
+      "Prepared collateral valuation reports and credit risk summaries assessing fixed income pricing, debt service coverage ratios, and risk-adjusted lending terms to support management decisions on capital allocation; maintained audit-ready client financial records.",
+      "Analyzed client financial profiles using cash flow modeling and ratio analysis, translating complex financial data into structured, risk-appropriate investment recommendations across diverse client engagements.",
     ],
   },
 ];
@@ -265,7 +263,7 @@ export default function AboutPage() {
           </div>
           <p className="text-gray-300 text-sm leading-relaxed">
             Bringing expertise in quantitative modeling, data analytics, and AI-integrated finance to roles at the
-            intersection of financial analysis and technology. MS Financial Analysis graduate — now available.
+            intersection of financial analysis and technology. Available May 2026.
           </p>
           <Link href="/contact" className="inline-flex items-center gap-1.5 mt-4 text-[13px] font-semibold bg-gradient-to-r from-indigo-500 to-violet-500 text-white px-5 py-2.5 rounded-xl hover:from-indigo-600 hover:to-violet-600 transition-all">
             Get in Touch →
